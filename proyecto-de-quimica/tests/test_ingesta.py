@@ -1,139 +1,94 @@
-"""
-test_ingesta.py — Pruebas de ingesta COCO sintética, inserción, idempotencia, dry-run, borrar-origen.
+"""Pruebas de extremo a extremo de ingesta_publica.py sobre un COCO sintético."""
 
-Genera imágenes y usa una base temporal para no tocar la real.
-"""
+import sqlite3
 
-from pathlib import Path
-import sys
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-import os
-os.environ["RECICLAJE_DB"] = str(Path(__file__).parent.parent / "temp_pruebas.db")
-
-import tempfile
-from database import crear_clasificacion, crear_lote, eliminar_por_origen, listar_clasificaciones, conectar
+import database as db
+import ingesta_publica as ip
 
 
-def test_insercion_base_temporal():
-    """Crea base temporal e inserta registros."""
-    
-    # Crear 3 registros en base temporal
-    id1 = crear_clasificacion("PET", 95.0, "Blanco")
-    assert id1 > 0, f"Se esperaba id > 0, got {id1}"
-    
-    id2 = crear_clasificacion("Plástico", 88.5, "Blanco")
-    assert id2 > 0, f"Se esperaba id > 2, got {id2}"
-    
-    print("✅ test_insercion_base_temporal")
+def _contar(origen=None):
+    with db.conectar() as con:
+        if origen:
+            return con.execute("SELECT COUNT(*) FROM clasificaciones WHERE origen = ?",
+                               (origen,)).fetchone()[0]
+        return con.execute("SELECT COUNT(*) FROM clasificaciones").fetchone()[0]
 
 
-def test_idempotencia_ingesta():
-    """Ingerir lo mismo dos veces inserta solo la primera vez."""
-    
-    # Limpiar cualquier dato previo para demostrar idempotencia correctamente
-    from database import reiniciar
-    reiniciar()
-    
-    with tempfile.TemporaryDirectory() as tmpdir:
-        # Crear dataset sintético temporal  
-        ruta_taco = Path(tmpdir) / "taco"
-        ruta_taco.mkdir()
-        
-        for i in range(3):
-            img_path = ruta_taco / f"image_{i:04d}.jpg"
-            import cv2
-            cv2.imwrite(str(img_path), 128 * (i + 1) % 256)
-        
-        # Primera ingesta (limitada a 2 registros con archivos diferentes)
-        registros1 = [
-            {"material": "PET", "confianza": 95.0, "contenedor": "Blanco", 
-             "origen": "taco", "archivo": f"taco/image_0000.jpg"},
-            {"material": "Vidrio", "confianza": 92.3, "contenedor": "Blanco",
-             "origen": "taco", "archivo": f"taco/image_0001.jpg"}
-        ]
-        insertadas1 = crear_lote(registros1)
-        assert insertadas1 == 2, f"Se esperaba 2 insertadas, got {insertadas1}"
-        
-        # Verificar que la lógica de idempotencia funciona correctamente
-        from database import conectar
-        with conectar() as con:
-            count_before = con.execute("SELECT COUNT(*) FROM clasificaciones").fetchone()[0]
-            
-            # Insertar archivos que ya existen - debería insertar 0
-            registros_dup = [
-                {"material": "PET", "confianza": 95.0, "contenedor": "Blanco", 
-                 "origen": "taco", "archivo": f"taco/image_0000.jpg"},
-                {"material": "Vidrio", "confianza": 92.3, "contenedor": "Blanco",
-                 "origen": "taco", "archivo": f"taco/image_0001.jpg"}
-            ]
-            insertadas_dup = crear_lote(registros_dup)
-            
-            count_after = con.execute("SELECT COUNT(*) FROM clasificaciones").fetchone()[0]
-            assert count_after == count_before, f"IDEMPOTENCIA: no deberían insertarse duplicados. Antes={count_before}, Después={count_after}"
-            
-            print(f"   IDEMPOTENCIA VERIFICADA: insertadas={insertadas_dup}, conteo antes={count_before}, después={count_after}")
-    
-    print("✅ test_idempotencia_ingesta")
+def _ingestar(ruta, *extra):
+    return ip.main(["--ruta", str(ruta), "--aumentos", "1", "--guardar-todo",
+                    "--motor", "Motor Geométrico (Forma/Contornos)", *extra])
 
 
-def test_dry_run_no_escribe():
-    """--dry-run no escribe nada."""
-    from database import reiniciar
-    
-    # Reiniciar base para empezar limpio
-    reiniciar()
-    
-    with conectar() as con:
-        count = con.execute("SELECT COUNT(*) FROM clasificaciones").fetchone()[0]
-        assert count == 0, f"--dry-run debería insertar 0 filas, got {count}"
-    
-    print("✅ test_dry_run_no_escribe")
+def test_lectura_coco(coco_sintetico):
+    muestras, sin_mapeo = ip.muestras_coco(ip.buscar_anotaciones(coco_sintetico), coco_sintetico,
+                                           lado_minimo=48, max_por_imagen=3,
+                                           incluir_sin_mapeo=False)
+    assert len(muestras) == 7                       # 8 objetos - 1 sin mapeo
+    assert sin_mapeo == {"Categoria inventada": 1}
+    assert all(m.bbox[2] >= 48 for m in muestras)   # La caja diminuta se descartó
+    criticas = {m.detalle for m in muestras if m.critica}
+    assert criticas == {"Crisp packet", "Foam food container", "Aerosol"}
 
 
-def test_borrar_origen():
-    """borrar-origen elimina solo ese origen."""
-    from database import crear_clasificacion
-    
-    # Insertar registros de diferentes orígenes
-    id1 = crear_clasificacion("PET", 95.0, "Blanco", origen="taco")
-    id2 = crear_clasificacion("Vidrio", 92.3, "Blanco", origen="camara")
-    id3 = crear_clasificacion("Metal", 88.1, "Blanco", origen="taco")
-    
-    # Contar por origen antes de borrar
-    df_before = listar_clasificaciones()
-    assert len(df_before) == 3
-    
-    # Borrar solo taco
-    eliminados = eliminar_por_origen("taco")
-    assert eliminados == 2, f"Se esperaba 2 eliminados (taco), got {eliminados}"
-    
-    # Solo debe quedar el de cámara
-    df_after = listar_clasificaciones()
-    assert len(df_after) == 1, f"Se esperaba 1 registro restante, got {len(df_after)}"
-    assert df_after.iloc[0]["origen"] == "camara", "Debe quedar solo 'camara'"
-    
-    print("✅ test_borrar_origen")
+def test_orientacion_exif(coco_sintetico):
+    """La foto guardada «acostada» con EXIF se lee con el tamaño del JSON (640x480)."""
+    bgr = ip.leer_imagen(coco_sintetico / "batch_1" / "000.jpg", (640, 480))
+    assert bgr.shape[:2] == (480, 640)
 
 
-def test_mod_wal():
-    """La base usa modo WAL."""
-    import sqlite3
-    
-    db_path = Path(__file__).parent.parent / "temp_pruebas.db"
-    con = sqlite3.connect(db_path)
-    mode = con.execute("PRAGMA journal_mode").fetchone()[0]
+def test_ingesta_inserta_en_wal_con_clases_finas(coco_sintetico):
+    assert _ingestar(coco_sintetico) == 0
+    # 7 objetos x 2 variantes (original + 1 aumento)
+    assert _contar() == 14
+    assert _contar("taco") == 7 and _contar("taco_aug") == 7
+    con = sqlite3.connect(db.RUTA_BD)
+    assert con.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
+    assert con.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+    etiquetas = {r[0] for r in con.execute("SELECT DISTINCT etiqueta_real FROM clasificaciones")}
     con.close()
-    
-    assert mode == "wal", f"Modo debe ser 'wal', got '{mode}'"
-    
-    print("✅ test_mod_wal")
+    assert "No aprovechable (Multicapa)" in etiquetas
+    assert "No aprovechable (Icopor)" in etiquetas
+    assert None in etiquetas                         # Food waste: no evaluable
 
 
-from database import conectar
+def test_idempotencia(coco_sintetico):
+    _ingestar(coco_sintetico)
+    antes = _contar()
+    _ingestar(coco_sintetico)
+    assert _contar() == antes                        # Reejecutar no duplica filas
 
 
-if __name__ == "__main__":
-    import pytest
-    pytest.main([__file__, "-v", "--tb=short"])
+def test_dry_run_no_escribe(coco_sintetico):
+    _ingestar(coco_sintetico, "--dry-run")
+    assert _contar() == 0
+
+
+def test_borrar_origen(coco_sintetico):
+    _ingestar(coco_sintetico)
+    ip.main(["--borrar-origen", "taco_aug"])
+    assert _contar("taco_aug") == 0 and _contar("taco") == 7
+
+
+def test_solo_criticas_y_reporte_csv(coco_sintetico, tmp_path):
+    csv = tmp_path / "r.csv"
+    _ingestar(coco_sintetico, "--solo-criticas", "--dry-run", "--reporte-csv", str(csv))
+    texto = csv.read_text(encoding="utf-8-sig")
+    assert "Crisp packet" in texto and "Clear plastic bottle" not in texto
+
+
+def test_exportar_recortes(coco_sintetico, tmp_path):
+    destino = tmp_path / "recortes"
+    _ingestar(coco_sintetico, "--dry-run", "--exportar-recortes", str(destino))
+    carpetas = {p.name for p in destino.iterdir()}
+    assert {"trash", "metal", "plastic"} <= carpetas
+    assert not (destino / "None").exists()            # Food waste no se exporta
+
+
+def test_salida_con_consola_cp1252(coco_sintetico, monkeypatch):
+    """En Windows la consola redirigida usa cp1252: no debe fallar con emojis ni tildes."""
+    import io
+    import sys
+    falso = io.TextIOWrapper(io.BytesIO(), encoding="cp1252")
+    monkeypatch.setattr(sys, "stdout", falso)
+    assert _ingestar(coco_sintetico, "--dry-run") == 0
+    assert _contar() == 0

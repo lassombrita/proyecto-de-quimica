@@ -1,145 +1,66 @@
-"""
-test_database.py — Pruebas de grupo_material y funciones del tablero.
+"""Pruebas de database.py: validación por grupos y consultas del tablero."""
 
-Verifica la lógica de agrupación de materiales y las consultas analíticas.
-"""
+import pytest
 
-from pathlib import Path
-import sys
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-import os
-os.environ["RECICLAJE_DB"] = str(Path(__file__).parent.parent / "temp_pruebas.db")
-
-from database import grupo_material, resumen_kpis, conteo_por_material, \
-    proporcion_aprovechable, volumen_por_dia, datos_validacion
+import database as db
 
 
-def test_grupo_material_no_ape():
-    """grupo_material reduce 'No aprovechable (Multicapa)' a 'No aprovechable'."""
-    result = grupo_material("No aprovechable (Multicapa)")
-    assert result == "No aprovechable", \
-        f"Se esperaba 'No aprovechable', got {result!r}"
-    
-    print("✅ test_grupo_material_no_ape")
+@pytest.mark.parametrize("material, grupo", [
+    ("No aprovechable (Multicapa)", "No aprovechable"),
+    ("No aprovechable (Icopor)", "No aprovechable"),
+    ("Metal (Blanco)", "Metal"),
+    ("Cartón (Tetra Pak)", "Papel/Cartón"),
+    ("Papel (Blanco)", "Papel/Cartón"),
+    ("Plástico (Blanco)", "Plástico"),
+    ("PET", "Plástico"),
+    ("PEAD", "Plástico"),
+    ("Papel/Cartón", "Papel/Cartón"),
+    ("No identificado", "No identificado"),
+])
+def test_grupo_material(material, grupo):
+    assert db.grupo_material(material) == grupo
 
 
-def test_grupo_material_metal():
-    """grupo_material reduce 'Metal (Blanco)' a 'Metal'."""
-    result = grupo_material("Metal (Blanco)")
-    assert result == "Metal", \
-        f"Se esperaba 'Metal', got {result!r}"
-    
-    print("✅ test_grupo_material_metal")
+def _poblar():
+    db.crear_lote([
+        {"material": "Papel/Cartón", "confianza": 90, "contenedor": "Blanco", "origen": "taco",
+         "motor": "m", "etiqueta_real": "No aprovechable (Icopor)", "archivo": "a#1",
+         "fecha_hora": "2026-11-01 08:00:00"},
+        {"material": "No aprovechable", "confianza": 80, "contenedor": "Negro", "origen": "taco",
+         "motor": "m", "etiqueta_real": "No aprovechable (Multicapa)", "archivo": "a#2",
+         "fecha_hora": "2026-11-02 09:00:00"},
+        {"material": "Metal", "confianza": 70, "contenedor": "Blanco", "origen": "camara"},
+    ])
 
 
-def test_grupo_material_pet():
-    """grupo_material reduce 'PET' a 'Plástico'."""
-    result = grupo_material("PET")
-    assert result == "Plástico", \
-        f"Se esperaba 'Plástico', got {result!r}"
-    
-    print("✅ test_grupo_material_pet")
+def test_crear_lote_ignora_duplicados():
+    fila = {"material": "Metal", "confianza": 70, "contenedor": "Blanco", "origen": "taco",
+            "motor": "m", "archivo": "x#1"}
+    assert db.crear_lote([fila]) == 1
+    assert db.crear_lote([fila]) == 0
 
 
-def test_grupo_material_pead():
-    """grupo_material reduce 'PEAD' a 'Plástico'."""
-    result = grupo_material("PEAD")
-    assert result == "Plástico", \
-        f"Se esperaba 'Plástico', got {result!r}"
-    
-    print("✅ test_grupo_material_pead")
+def test_validaciones():
+    with pytest.raises(ValueError):
+        db.crear_clasificacion("Metal", 70, "Azul")
+    with pytest.raises(ValueError):
+        db.crear_clasificacion("Metal", 150, "Blanco")
 
 
-def test_grupo_material_vidrio():
-    """grupo_material mantiene 'Vidrio' como grupo."""
-    result = grupo_material("Vidrio")
-    assert result == "Vidrio", \
-        f"Se esperaba 'Vidrio', got {result!r}"
-    
-    print("✅ test_grupo_material_vidrio")
+def test_funciones_del_tablero():
+    _poblar()
+    assert db.resumen_kpis()["total"] == 3
+    assert set(db.origenes_disponibles()) == {"camara", "taco"}
+    assert db.conteo_por_material()["cantidad"].sum() == 3
+    assert db.proporcion_aprovechable()["cantidad"].sum() == 3
+    assert not db.volumen_por_dia().empty
+    assert db.listar_clasificaciones(origenes=["taco"]).shape[0] == 2
 
 
-def test_grupo_material_papel_carton():
-    """grupo_material mantiene 'Papel/Cartón' como grupo."""
-    result = grupo_material("Papel/Cartón")
-    assert result == "Papel/Cartón", \
-        f"Se esperaba 'Papel/Cartón', got {result!r}"
-    
-    print("✅ test_grupo_material_papel_carton")
-
-
-def test_resumen_kpis():
-    """resumen_kpis devuelve diccionario con campos esperados."""
-    result = resumen_kpis()
-    assert isinstance(result, dict), "Se esperaba un diccionario"
-    
-    campos_esperados = ["total", "confianza_promedio", "aprovechables", 
-                        "primera", "ultima"]
-    for campo in campos_esperados:
-        assert campo in result, f"Falta campo '{campo}' en resumen_kpis()"
-    
-    # total debe ser un número
-    assert isinstance(result["total"], (int, float))
-    
-    print("✅ test_resumen_kpis")
-
-
-def test_conteo_por_material():
-    """conteo_por_material devuelve DataFrame con campos esperados."""
-    df = conteo_por_material()
-    assert df is not None, "Debe devolver un DataFrame"
-    
-    # Debería tener al menos estas columnas
-    if not df.empty:
-        cols_esperadas = ["material", "contenedor", "cantidad", 
-                          "confianza_media"]
-        for col in cols_esperadas:
-            assert col in df.columns, \
-                f"Debe tener columna '{col}', tiene {list(df.columns)}"
-    
-    print("✅ test_conteo_por_material")
-
-
-def test_proporcion_aprovechable():
-    """proporcion_aprovechable devuelve DataFrame agrupado por tipo."""
-    df = proporcion_aprovechable()
-    assert df is not None, "Debe devolver un DataFrame"
-    
-    # Debería tener al menos estas columnas
-    if not df.empty:
-        assert "tipo" in df.columns, \
-            f"Debe tener columna 'tipo', tiene {list(df.columns)}"
-        assert "cantidad" in df.columns
-    
-    print("✅ test_proporcion_aprovechable")
-
-
-def test_volumen_por_dia():
-    """volumen_por_dia devuelve DataFrame diario."""
-    df = volumen_por_dia()
-    assert df is not None, "Debe devolver un DataFrame"
-    
-    # Debería tener estas columnas
-    if not df.empty:
-        assert "dia" in df.columns
-        assert "tipo" in df.columns
-    
-    print("✅ test_volumen_por_dia")
-
-
-def test_datos_validacion():
-    """datos_validacion devuelve pares (etiqueta_real, material)."""
-    df = datos_validacion()
-    # Puede devolver vacío si no hay etiquetas reales
-    if not df.empty:
-        assert "etiqueta_real" in df.columns
-        assert "material" in df.columns
-    
-    print("✅ test_datos_validacion")
-
-
-if __name__ == "__main__":
-    import pytest
-    pytest.main([__file__, "-v", "--tb=short"])
+def test_validacion_del_tablero_compara_por_grupo():
+    """Misma lógica que app.seccion_validacion: icopor->papel es error; multicapa->no aprov. acierta."""
+    _poblar()
+    df = db.datos_validacion()
+    df["acierto"] = df["material"].map(db.grupo_material) == df["etiqueta_real"].map(db.grupo_material)
+    resultado = dict(zip(df["etiqueta_real"], df["acierto"]))
+    assert resultado == {"No aprovechable (Icopor)": False, "No aprovechable (Multicapa)": True}

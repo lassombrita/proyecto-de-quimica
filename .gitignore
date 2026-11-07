@@ -19,3 +19,11 @@ models/respaldo/
 proyecto-de-quimica/entrenamiento/cache/
 proyecto-de-quimica/entrenamiento/salidas/
 proyecto-de-quimica/models/respaldo/
+
+# Datasets y temporales (en cualquier nivel del repositorio)
+TACO/
+para_revision/
+temp_recortes/
+.lmstudio/
+.pytest_cache/
+*.zip

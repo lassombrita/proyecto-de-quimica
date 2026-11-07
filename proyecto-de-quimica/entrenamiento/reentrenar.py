@@ -64,244 +64,6 @@ sys.path.insert(0, str(RAIZ))
 
 import ingesta_publica as ip  # noqa: E402  (reutiliza lectura COCO, mapeo y aumentos)
 
-# ===========================================================================
-# COMPATIBILIDAD CON INGESTA_PUBLICA
-# ===========================================================================
-@dataclass(frozen=True)
-class ClaseNormativa:
-    nombre: str
-    contenedor: str | None = None
-    evaluable: bool = True
-    metalizada: bool = False
-    critica: bool = False
-    clase_trashnet: str | None = None
-
-@dataclass
-class MuestraCompat:
-    archivo: str
-    ruta: Path | None = None
-    bbox: tuple | None = None
-    tam_anotado: tuple | None = None
-    clase: ClaseNormativa | None = None
-    detalle: str = ""
-    critica: bool = False
-
-ip.ClaseNormativa = ClaseNormativa
-ip.Muestra = MuestraCompat
-
-MAPEO_TRASHNET_A_CLASE = {
-    "cardboard": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="cardboard"),
-    "glass": ClaseNormativa("Vidrio", "Blanco", clase_trashnet="glass"),
-    "metal": ClaseNormativa("Metal", "Blanco", clase_trashnet="metal"),
-    "paper": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="paper"),
-    "plastic": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "trash": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-}
-
-MAPEO_TACO = {
-    "Aluminium foil": ClaseNormativa("Metal", "Blanco", clase_trashnet="metal", metalizada=True),
-    "Battery": ClaseNormativa("Peligroso", None, evaluable=False, clase_trashnet=None),
-    "Aluminium blister pack": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash", metalizada=True),
-    "Carded blister pack": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Other plastic bottle": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Clear plastic bottle": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Glass bottle": ClaseNormativa("Vidrio", "Blanco", clase_trashnet="glass"),
-    "Plastic bottle cap": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Metal bottle cap": ClaseNormativa("Metal", "Blanco", clase_trashnet="metal"),
-    "Broken glass": ClaseNormativa("Vidrio", "Blanco", clase_trashnet="glass"),
-    "Food Can": ClaseNormativa("Metal", "Blanco", clase_trashnet="metal"),
-    "Aerosol": ClaseNormativa("Metal (Blanco)", "Blanco", clase_trashnet="metal", critica=True),
-    "Drink can": ClaseNormativa("Metal", "Blanco", clase_trashnet="metal"),
-    "Toilet tube": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="cardboard"),
-    "Other carton": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="cardboard"),
-    "Egg carton": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="cardboard"),
-    "Drink carton": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="cardboard"),
-    "Corrugated carton": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="cardboard"),
-    "Meal carton": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="cardboard"),
-    "Pizza box": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="cardboard"),
-    "Paper cup": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Disposable plastic cup": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Foam cup": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash", critica=True),
-    "Glass cup": ClaseNormativa("Vidrio", "Blanco", clase_trashnet="glass"),
-    "Other plastic cup": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Food waste": ClaseNormativa("Orgánico", "Verde", evaluable=False, clase_trashnet=None),
-    "Glass jar": ClaseNormativa("Vidrio", "Blanco", clase_trashnet="glass"),
-    "Plastic lid": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Metal lid": ClaseNormativa("Metal", "Blanco", clase_trashnet="metal"),
-    "Other plastic": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Magazine paper": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="paper"),
-    "Tissues": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Wrapping paper": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="paper"),
-    "Normal paper": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="paper"),
-    "Paper bag": ClaseNormativa("Papel/Cartón", "Blanco", clase_trashnet="paper"),
-    "Plastified paper bag": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Plastic film": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Six pack rings": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Garbage bag": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Other plastic wrapper": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Single-use carrier bag": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Polypropylene bag": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Crisp packet": ClaseNormativa("No aprovechable (Multicapa)", "Negro", clase_trashnet="trash", metalizada=True, critica=True),
-    "Spread tub": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Tupperware": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Disposable food container": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Foam food container": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash", critica=True),
-    "Other plastic container": ClaseNormativa("Plástico", "Blanco", clase_trashnet="plastic"),
-    "Plastic glooves": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Plastic utensils": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Pop tab": ClaseNormativa("Metal", "Blanco", clase_trashnet="metal"),
-    "Rope & strings": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Scrap metal": ClaseNormativa("Metal", "Blanco", clase_trashnet="metal"),
-    "Shoe": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Squeezable tube": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Plastic straw": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Paper straw": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-    "Styrofoam piece": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash", critica=True),
-    "Unlabeled litter": ClaseNormativa("No identificado", None, evaluable=False, clase_trashnet=None),
-    "Cigarette": ClaseNormativa("No aprovechable", "Negro", clase_trashnet="trash"),
-}
-
-def _mapear_cat(nombre: str, supercategoria: str | None = None) -> ClaseNormativa:
-    if nombre in MAPEO_TRASHNET_A_CLASE:
-        return MAPEO_TRASHNET_A_CLASE[nombre]
-    if nombre in MAPEO_TACO:
-        return MAPEO_TACO[nombre]
-    for k, v in MAPEO_TACO.items():
-        if k.lower() == nombre.lower():
-            return v
-    for k, v in MAPEO_TRASHNET_A_CLASE.items():
-        if k.lower() == nombre.lower():
-            return v
-    if supercategoria:
-        for k, v in MAPEO_TACO.items():
-            if k.lower() == supercategoria.lower():
-                return v
-    return ClaseNormativa(nombre, None, evaluable=False, clase_trashnet=None)
-
-ip.mapear_categoria = _mapear_cat
-
-def _buscar_anotaciones(ruta: Path) -> list[Path]:
-    if (ruta / "annotations.json").is_file():
-        return [ruta / "annotations.json"]
-    jsons = list(ruta.glob("**/annotations.json")) + list(ruta.glob("**/*_annotations.coco.json"))
-    return sorted(set(jsons))
-
-ip.buscar_anotaciones = _buscar_anotaciones
-
-def _muestras_coco(rutas_json: list[Path], ruta_raiz: Path, lado_minimo: int = 48,
-                   max_por_imagen: int = 3, incluir_sin_mapeo: bool = False):
-    muestras = []
-    faltantes = 0
-    for r_json in rutas_json:
-        dir_base = r_json.parent
-        with open(r_json, encoding="utf-8") as f:
-            datos = json.load(f)
-        imgs = {im["id"]: im for im in datos.get("images", [])}
-        cats = {c["id"]: c["name"] for c in datos.get("categories", [])}
-        por_imagen = defaultdict(list)
-        for an in datos.get("annotations", []):
-            if "bbox" not in an or len(an["bbox"]) < 4:
-                continue
-            _, _, w, h = an["bbox"]
-            if min(w, h) >= lado_minimo:
-                por_imagen[an["image_id"]].append(an)
-        for id_img, anotaciones in por_imagen.items():
-            im_info = imgs.get(id_img)
-            if not im_info:
-                continue
-            arch_img = dir_base / im_info["file_name"]
-            if not arch_img.is_file():
-                arch_img = ruta_raiz / im_info["file_name"]
-            if not arch_img.is_file():
-                faltantes += 1
-                continue
-            anotaciones = sorted(anotaciones, key=lambda a: a.get("area", a["bbox"][2]*a["bbox"][3]), reverse=True)[:max_por_imagen]
-            for an in anotaciones:
-                nom_cat = cats.get(an["category_id"], "")
-                cn = _mapear_cat(nom_cat)
-                if not incluir_sin_mapeo and cn.clase_trashnet is None:
-                    continue
-                tam_anotado = (im_info.get("height"), im_info.get("width"))
-                rel_path = im_info["file_name"].replace("\\", "/")
-                muestras.append(MuestraCompat(
-                    archivo=f"{rel_path}#{an['id']}",
-                    ruta=arch_img,
-                    bbox=tuple(an["bbox"]),
-                    tam_anotado=tam_anotado,
-                    clase=cn,
-                    detalle=nom_cat,
-                    critica=getattr(cn, "critica", False)
-                ))
-    return muestras, faltantes
-
-ip.muestras_coco = _muestras_coco
-
-def _muestras_carpeta(ruta: Path, solo_prueba: bool = False):
-    muestras = []
-    if ruta.is_dir():
-        for sub in ruta.iterdir():
-            if not sub.is_dir():
-                continue
-            cn = _mapear_cat(sub.name)
-            for ext in (".jpg", ".jpeg", ".png", ".webp"):
-                for f in sorted(sub.glob(f"*{ext}")):
-                    muestras.append(MuestraCompat(
-                        archivo=f"{sub.name}/{f.name}",
-                        ruta=f,
-                        bbox=None,
-                        tam_anotado=None,
-                        clase=cn,
-                        detalle=sub.name
-                    ))
-    return muestras
-
-ip.muestras_carpeta = _muestras_carpeta
-
-def _recortar_func(imagen: np.ndarray, bbox: tuple[float, float, float, float] | None, margen: float = 0.30) -> np.ndarray:
-    if bbox is None:
-        return imagen
-    h_img, w_img = imagen.shape[:2]
-    x, y, w, h = bbox
-    pad_x = int(w * margen)
-    pad_y = int(h * margen)
-    x0 = max(0, int(x - pad_x))
-    y0 = max(0, int(y - pad_y))
-    x1 = min(w_img, int(x + w + pad_x))
-    y1 = min(h_img, int(y + h + pad_y))
-    rec = imagen[y0:y1, x0:x1]
-    return rec if rec.size > 0 else imagen
-
-ip.recortar = _recortar_func
-_orig_leer = ip.leer_imagen
-ip.leer_imagen = lambda ruta, tam_anotado=None: _orig_leer(Path(ruta))
-_orig_sim = ip.simular_camara
-ip.simular_camara = lambda bgr, calidad_jpeg=75: _orig_sim(bgr, calidad_jpeg)
-
-def _generar_variantes(muestra: MuestraCompat, base: np.ndarray, aumentos: int = 2,
-                       incluir_original: bool = True, semilla: int = 42, calidad_jpeg: int = 75):
-    if incluir_original:
-        yield 0, ip.simular_camara(base, calidad_jpeg)
-    try:
-        import albumentations as A
-        alto, ancho = base.shape[:2]
-        radio = max(8, int(0.30 * min(alto, ancho)))
-        metalizada = getattr(muestra.clase, "metalizada", False) or muestra.critica
-        aug = A.Compose([
-            A.LongestMaxSize(max_size=640, p=1.0),
-            A.RandomCrop(height=max(16, int(alto * 0.85)), width=max(16, int(ancho * 0.85)), p=0.8),
-            A.RandomBrightnessContrast(brightness_limit=(-0.25, 0.20), contrast_limit=(-0.20, 0.20), p=0.8),
-            A.ImageCompression(compression_type="jpeg", quality_range=(55, 85), p=0.9),
-        ], seed=semilla)
-        for i in range(1, aumentos + 1):
-            yield i, aug(image=base)["image"]
-    except Exception:
-        rng = np.random.default_rng(semilla)
-        for i in range(1, aumentos + 1):
-            factor = rng.uniform(0.7, 1.3)
-            yield i, np.clip(base.astype(np.float32) * factor, 0, 255).astype(np.uint8)
-
-ip.generar_variantes = _generar_variantes
-
 try:
     import onnx
     from onnx import helper, numpy_helper
@@ -1022,6 +784,19 @@ def ejecutar(args: argparse.Namespace) -> int:
     return 0
 
 
+
+def _consola_utf8() -> None:
+    """
+    Fuerza UTF-8 en la consola. En Windows, cuando la salida se redirige a un archivo
+    o la ejecuta otra herramienta, Python usa cp1252 y falla con tildes o emojis.
+    """
+    for flujo in (sys.stdout, sys.stderr):
+        try:
+            flujo.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv: list[str] | None = None) -> int:
     """
     Punto de entrada de la línea de comandos.
@@ -1032,6 +807,7 @@ def main(argv: list[str] | None = None) -> int:
     Returns:
         Código de salida del proceso.
     """
+    _consola_utf8()
     p = argparse.ArgumentParser(description="Reentrena el clasificador con TACO + TrashNet + fotos propias.",
                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     defecto_trashnet = RAIZ / "entrenamiento" / "dataset-resized"

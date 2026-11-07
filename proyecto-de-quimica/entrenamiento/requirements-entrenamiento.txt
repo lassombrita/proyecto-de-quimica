@@ -8,3 +8,4 @@ opencv-python-headless>=4.9
 numpy>=1.26
 # reentrenar.py reutiliza ingesta_publica.py: instale también ../requirements.txt
 # (albumentations, pycocotools, pandas). onnxruntime no es necesario para reentrenar.py.
+pytest>=8.0             # Pruebas automáticas: python -m pytest -q

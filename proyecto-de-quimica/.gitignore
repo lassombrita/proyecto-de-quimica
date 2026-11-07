@@ -23,3 +23,9 @@ TACO/
 nul
 # Carpeta de archivos para revisión externa (no se sube)
 para_revision/
+
+# Archivos temporales de pruebas y diagnósticos
+temp_recortes/
+temp_pruebas.db
+*.zip
+.lmstudio/

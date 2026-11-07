@@ -66,13 +66,21 @@ La aplicación sigue una **arquitectura en capas**: cada módulo tiene una sola 
 ├── app.py                 # Interfaz, navegación, selector de motor y diagnóstico
 ├── vision_engine.py       # Motor central multi-engine (Color, Geometría, IA, Híbrido)
 ├── vision_mock.py         # Enrutador/wrapper de compatibilidad hacia vision_engine.py
+├── ingesta_publica.py     # Ingesta COCO (TACO/Roboflow) + aumento de datos -> SQLite
+├── RESULTADOS.md          # Línea base del modelo frente a TACO
+├── scripts/
+│   └── diagnostico_recortes.py     # Cuadrícula visual de recortes TACO
+├── tests/                 # Pruebas automáticas (pytest)
 ├── docs/
-│   └── AUDITORIA_Y_CORRECCION_VISION.md  # Informe técnico de auditoría y correcciones
+│   ├── AUDITORIA_Y_CORRECCION_VISION.md  # Informe técnico de auditoría y correcciones
+│   ├── VERIFICACION.md             # Auditoría y pruebas
+│   ├── GUIA_EXPOSICION.md          # Guion y preguntas para la exposición
+│   └── resultados/                 # CSV de las mediciones
 ├── models/
 │   ├── trashnet_mobilenetv2.onnx   # Red neuronal entrenada (se ejecuta con OpenCV)
 │   ├── reporte_entrenamiento.txt   # Métricas de exactitud
 │   └── licencias/                  # Licencias de los datos y pesos usados
-├── entrenamiento/         # Scripts para convertir, entrenar y evaluar el modelo
+├── entrenamiento/         # Convertir, entrenar, evaluar y reentrenar (reentrenar.py)
 ├── database.py            # Persistencia SQLite
 ├── requirements.txt       # Dependencias
 ├── assets/
@@ -275,63 +283,54 @@ El botón **🗑️ Reiniciar datos** de la barra lateral elimina todos los regi
 
 ## Cómo ejecutar el proyecto
 
-### 📦 Paso 1: Instalar dependencias
-
+### 1. Instalar dependencias
 ```bash
 pip install -r requirements.txt
 ```
 
-### 🎥 Paso 2: Abrir la app (primera vez)
-
-Para probar la cámara web:
+### 2. Abrir la app
 ```bash
 streamlit run app.py
 ```
-La app se abre en http://localhost:8501.
+Se abre en http://localhost:8501. La base de datos (`data/reciclaje.db`) se crea sola.
 
-> **Importante:** La primera vez, asegúrate de que tu cámara funcione antes de cargar datos masivos. El sistema no guarda en `data/reciclaje.db` hasta que tú lo decidas.
-
-### 📂 Paso 3: Poblar el tablero con TACO (opcional)
-
-Si quieres usar el dataset de entrenamiento de ejemplo:
-
+### 3. Poblar el tablero con TACO (datos públicos)
+Requiere descargar TACO (https://github.com/pedropro/TACO) en una carpeta **fuera** del proyecto.
 ```bash
-# Usa una base temporal para las pruebas
-set RECICLAJE_DB=temp_pruebas.db  # Windows PowerShell/CMD
-export RECICLAJE_DB="temp_pruebas.db"  # macOS/Linux
+# Medir sin escribir en la base (línea base):
+python ingesta_publica.py --ruta ../TACO/data --limite 800 --dry-run --reporte-csv docs/resultados/linea_base_taco_v2.csv
+# Poblar el tablero (originales + 2 variantes aumentadas por objeto):
+python ingesta_publica.py --ruta ../TACO/data --aumentos 2 --distribuir-dias 30
+# Deshacer:
+python ingesta_publica.py --borrar-origen taco_aug
+```
+Resultados de la línea base: [RESULTADOS.md](RESULTADOS.md).
 
-python ingesta_publica.py --ruta TACO/data --limite 40 --aumentos 1 --guardar-todo --distribuir-dias 7
+### 4. Verificar los recortes (opcional)
+```bash
+python scripts/diagnostico_recortes.py --ruta ../TACO/data --aumentados
+```
+Genera `docs/img/diagnostico_recortes.jpg`.
+
+### 5. Reentrenar el modelo
+Requiere TrashNet (`dataset-resized.zip` de https://github.com/garythung/trashnet) descomprimido en `entrenamiento/dataset-resized/`.
+```bash
+pip install -r entrenamiento/requirements-entrenamiento.txt
+python entrenamiento/reentrenar.py --taco ../TACO/data
+```
+Solo reemplaza el modelo si mejora en fotos nunca vistas; guarda el anterior en `models/respaldo/<fecha>/`.
+
+### 6. Restaurar el modelo anterior
+```bash
+python entrenamiento/reentrenar.py --restaurar models/respaldo/<fecha>
 ```
 
-Para usar la base real:
-```bash
-# Sin argumentos, usa data/reciclaje.db automáticamente
-streamlit run app.py
-```
-
-### 🎓 Paso 4: Reentrenar el modelo (opcional)
-
-Si tienes fotos nuevas y quieres mejorar el modelo:
-
-```bash
-python entrenamiento/reentrenar.py --taco TACO/data --limite 200 --no-reemplazar
-```
-
-> Esto crea un nuevo modelo pero no borra el original.
-
-### 🔁 Paso 5: Restaurar el modelo (si cambió)
-
-```bash
-python entrenamiento/restaurar.py models/backup_*.onnx models/trashnet_mobilenetv2.onnx
-```
-
-### 🧪 Paso 6: Correr las pruebas automáticas
-
+### 7. Correr las pruebas automáticas
 ```bash
 python -m pytest -q
 ```
-
-> Ejecuta esto con la variable `RECICLAJE_DB` configurada para no tocar la base real.
+Usan bases de datos temporales: no tocan `data/reciclaje.db`. Detalle en [docs/VERIFICACION.md](docs/VERIFICACION.md).
+Guía para presentar el proyecto: [docs/GUIA_EXPOSICION.md](docs/GUIA_EXPOSICION.md).
 
 ---
 

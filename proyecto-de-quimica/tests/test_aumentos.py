@@ -1,99 +1,72 @@
-"""
-test_aumentos.py — Pruebas de reproducibilidad y tamaños de aumentos.
-"""
+"""Pruebas del aumento de datos (albumentations) y de la simulación de webcam."""
 
-from pathlib import Path
-import sys
-import os
+import albumentations as A
 import numpy as np
+import pytest
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-os.environ["RECICLAJE_DB"] = str(Path(__file__).parent.parent / "temp_pruebas.db")
-
-from albumentations import Compose, ColorJitter, HorizontalFlip
+import ingesta_publica as ip
 
 
-def crear_imagen_prueba():
-    """Crea una imagen de prueba con patrón."""
-    img = np.zeros((224, 224, 3), dtype=np.uint8)
-    for i in range(224):
-        for j in range(224):
-            img[j, i] = [i % 256, j % 256, (i + j) % 256]
-    return img
+@pytest.fixture
+def muestra_multicapa():
+    return ip.Muestra(archivo="batch_1/000.jpg#1", ruta=None, bbox=None, tam_anotado=None,
+                      clase=ip.CLASES_NORMATIVAS["No aprovechable (Multicapa)"],
+                      detalle="Crisp packet", critica=True)
 
 
-def test_aumentos_no_recortan():
-    """Las aumentadas mantienen la misma dimensión que el original."""
-    
-    transformaciones = Compose([
-        ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1, hue=0.05),
-        HorizontalFlip(p=1.0),
-    ])
-    
-    original = crear_imagen_prueba()
-    
-    variantes = []
-    for i in range(3):
-        resultado = transformaciones(image=original)
-        variantes.append(np.array(resultado["image"]))
-    
-    assert variantes[0].shape == (224, 224, 3)
-    assert variantes[1].shape == (224, 224, 3)
-    assert variantes[2].shape == (224, 224, 3)
-    
-    print("✅ test_aumentos_no_recortan")
+@pytest.fixture
+def imagen():
+    rng = np.random.default_rng(1)
+    img = np.full((400, 300, 3), 120, np.uint8)
+    img[60:340, 50:250] = (40, 40, 200)
+    return np.clip(img + rng.normal(0, 5, img.shape), 0, 255).astype(np.uint8)
 
 
-def test_reproducibilidad_con_semillas():
-    """La misma semilla produce las mismas imágenes."""
-    
-    def crear_transforms():
-        # Usar solo HorizontalFlip para reproducibilidad (ColorJitter no es determinístico en Albumentations 2.x)
-        aug = Compose([HorizontalFlip(p=1.0)])
-        return aug
-    
-    original = crear_imagen_prueba()
-    
-    aug1 = crear_transforms()
-    img1a = np.array(aug1(image=original)["image"])
-    
-    aug2 = crear_transforms()  # Mismo transformador
-    img2a = np.array(aug2(image=original)["image"])
-    
-    assert np.array_equal(img1a, img2a), "Imágenes con el mismo transformador NO son idénticas"
-    
-    print("✅ test_reproducibilidad_con_semillas")
+def _variantes(muestra, imagen, semilla):
+    return [v for _, v in ip.generar_variantes(muestra, imagen, aumentos=3, incluir_original=True,
+                                               semilla=semilla, calidad_jpeg=75)]
 
 
-def test_diferentes_semillas_dan_diferentes_imagenes():
-    """Diferentes transformaciones producen diferentes imágenes."""
-    
-    aug_flip = Compose([HorizontalFlip(p=1.0)])
-    aug_no_flip = Compose([])  # Sin transformación
-    
-    img_a = np.array(aug_flip(image=crear_imagen_prueba())["image"])
-    img_b = np.array(aug_no_flip(image=crear_imagen_prueba())["image"])
-    
-    assert not np.array_equal(img_a, img_b), "Transformaciones diferentes deberían producir imágenes distintas"
-    
-    print("✅ test_diferentes_semillas_dan_diferentes_imagenes")
+def test_reproducible_con_la_misma_semilla(muestra_multicapa, imagen):
+    a = _variantes(muestra_multicapa, imagen, semilla=1)
+    b = _variantes(muestra_multicapa, imagen, semilla=1)
+    assert len(a) == 4
+    assert all(np.array_equal(x, y) for x, y in zip(a, b))
 
 
-def test_albumentations_v2_compatible():
-    """Verifica que albumentations 2.x es compatible."""
-    import albumentations
-    
-    assert hasattr(albumentations, "Compose")
-    assert hasattr(albumentations, "ColorJitter")
-    
-    transform = albumentations.ColorJitter(brightness=0.1, p=1.0)
-    result = transform(image=np.zeros((224, 224, 3), dtype=np.uint8))
-    assert result is not None
-    
-    print("✅ test_albumentations_v2_compatible")
+def test_semillas_distintas_dan_variantes_distintas(muestra_multicapa, imagen):
+    a = _variantes(muestra_multicapa, imagen, semilla=1)
+    b = _variantes(muestra_multicapa, imagen, semilla=2)
+    assert any(not np.array_equal(x, y) for x, y in zip(a[1:], b[1:]))
 
 
-if __name__ == "__main__":
-    import pytest
-    pytest.main([__file__, "-v", "--tb=short"])
+def test_tubería_contiene_las_transformaciones_pedidas():
+    aumentador = ip.construir_aumentador(400, 300, metalizada=True, semilla=0)
+    tipos = {type(t) for t in aumentador.transforms}
+    for requerida in (A.RandomCrop, A.RandomSunFlare, A.RandomBrightnessContrast,
+                      A.ImageCompression):
+        assert requerida in tipos
+    destello = next(t for t in aumentador.transforms if isinstance(t, A.RandomSunFlare))
+    assert destello.p == pytest.approx(0.8)          # Más destellos en metalizados
+    normal = ip.construir_aumentador(400, 300, metalizada=False, semilla=0)
+    assert next(t for t in normal.transforms if isinstance(t, A.RandomSunFlare)).p == pytest.approx(0.3)
+
+
+def test_recorte_conserva_el_88_por_ciento(muestra_multicapa, imagen):
+    for _, v in list(ip.generar_variantes(muestra_multicapa, imagen, aumentos=3,
+                                          incluir_original=False, semilla=3, calidad_jpeg=75)):
+        assert v.shape[0] == int(400 * 0.88) and v.shape[1] == int(300 * 0.88)
+        assert v.dtype == np.uint8 and v.shape[2] == 3
+
+
+def test_simular_camara_limita_a_640(imagen):
+    grande = np.repeat(np.repeat(imagen, 4, axis=0), 4, axis=1)       # 1600 x 1200
+    assert max(ip.simular_camara(grande).shape[:2]) == 640
+    assert ip.simular_camara(imagen).shape == imagen.shape            # No agranda
+
+
+def test_recortar_con_margen_y_caja_invalida(imagen):
+    r = ip.recortar(imagen, (50, 60, 200, 280), margen=0.30)
+    assert r.shape[:2] == (min(400, 60 + 280 + 84) - max(0, 60 - 84), 300)
+    with pytest.raises(ValueError):
+        ip.recortar(imagen, (1000, 1000, 50, 50), margen=0.1)
