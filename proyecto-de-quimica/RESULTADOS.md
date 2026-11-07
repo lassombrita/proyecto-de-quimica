@@ -1,48 +1,57 @@
-# RESULTADOS - LÍNEA BASE (MobileNetV2 vs Residuos Colombianos)
+# RESULTADOS DE LINEA BASE - 2026-11-07 03:12
 
-## Resumen de Ejecución
+## Resumen General
+- Total imagenes procesadas: 800
+- Clases unicas de TACO: 55
+- Exactitud global: 12.4% (sin aplicar umbral, con etiqueta real)
+- Motor: Motor Hibrido Estricto
+- Umbral: >60%
+- Modo: DRY-RUN (sin persistencia)
 
-```
-Procesadas: 454/454 en 33.1s (13.7 img/s) | errores: 0
-DRY-RUN: se habrían guardado 407 registros.
-```
+## Conteo por Clase de TACO (Top 20)
+- Plastic film: 115
+- Clear plastic bottle: 77
+- Other plastic wrapper: 53
+- Drink can: 47
+- Unlabeled litter: 46
+- Other plastic: 36
+- Plastic bottle cap: 28
+- Other carton: 25
+- Glass bottle: 24
+- Single-use carrier bag: 24
+- Styrofoam piece: 22
+- Paper cup: 20
+- Disposable plastic cup: 19
+- Plastic lid: 19
+- Plastic straw: 18
+- Corrugated carton: 17
+- Normal paper: 15
+- Other plastic bottle: 15
+- Aluminium foil: 13
+- Cigarette: 13
 
-## Métricas del Modelo (Brecha de Dominio)
+## Conteo por Material
+- Papel/Cartón: 397
+- PET: 144
+- Metal: 114
+- No aprovechable: 65
+- No identificado: 33
+- PEAD: 25
+- Vidrio: 22
 
-- **Exactitud global: 14.6%**
-- **Exactitud sobre identificados: 15.0%**
-- **No identificado (fallback): 3.1%**
+## Conteo por Grupo Normativo  
+- Papel/Cartón: 397
+- Plástico: 169
+- Metal: 114
+- No aprovechable: 65
+- No identificado: 33
+- Vidrio: 22
 
-## Matriz de Confusión (MobileNetV2 entrenado en TrashNet EE.UU.)
+## Observaciones
+- Las categorias como Plastic film (115 muestras) son las mas frecuentes en el dataset.
+- El material mas comun es Papel/Carton (397 muestras).
+- El grupo normativo mas grande es plastico (169 muestras).
+- Algunas etiquetas de TACO se mapean a multiples materiales segun el motor.
 
-| Clase Real \ Predicha | Metal | No aprovechable | Papel/Cartón | Plástico | Vidrio | Recall |
-|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Metal** | 41 | 2 | 3 | 18 | 6 | 1 | **57.7%** |
-| **No aprovechable** | 15 | 15 | 7 | 95 | 37 | 2 | **8.8%** |
-| **Papel/Cartón** | 3 | 3 | 1 | 69 | 3 | 1 | **0.0%** |
-| **Plástico** | 11 | 4 | 1 | 27 | 33 | 4 | **0.0%** |
-| **Vidrio** | 3 | 0 | 1 | 9 | 5 | 6 | **25.0%** |
-
-## Análisis de la Brecha de Dominio
-
-### Clases con Mayor Problema:
-
-1. **"Papel/Cartón"**: 0% recall - casi nunca se identifica correctamente
-2. **"Plástico"**: 0% recall - también muy mal clasificado
-3. **"No aprovechable" (icopor/multicapa)**: solo 8.8% recall - confundido con otras clases
-
-### Clases que Funcionan Mejor:
-
-1. **Metal**: 57.7% recall (mejor desempeño)
-2. **Vidrio**: 25.0% recall  
-3. **No identificado (fallback)**: 3.1% de las imágenes no fueron clasificadas
-
-### Conclusión:
-
-El modelo MobileNetV2 entrenado con **TrashNet (EE.UU.)** tiene una brecha de dominio severa con los residuos colombianos:
-- No reconoce adecuadamente empaques multicapa metalizados, icopor y aerosoles comunes en Colombia
-- Confunde frecuentemente las clases entre sí (problemas de sobreajuste al dataset original)
-
-## Siguiente Paso
-
-Ejecutar el aumento de datos (`--aumentos 2 --distribuir-dias 30`) para poblar la base de datos y comparar el rendimiento en condiciones de webcam vs laboratorio.
+---
+*Generado automaticamente por la linea base del proyecto*

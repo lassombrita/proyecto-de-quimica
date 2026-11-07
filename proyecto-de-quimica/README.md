@@ -271,4 +271,68 @@ El botón **🗑️ Reiniciar datos** de la barra lateral elimina todos los regi
 
 ---
 
+---
+
+## Cómo ejecutar el proyecto
+
+### 📦 Paso 1: Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+### 🎥 Paso 2: Abrir la app (primera vez)
+
+Para probar la cámara web:
+```bash
+streamlit run app.py
+```
+La app se abre en http://localhost:8501.
+
+> **Importante:** La primera vez, asegúrate de que tu cámara funcione antes de cargar datos masivos. El sistema no guarda en `data/reciclaje.db` hasta que tú lo decidas.
+
+### 📂 Paso 3: Poblar el tablero con TACO (opcional)
+
+Si quieres usar el dataset de entrenamiento de ejemplo:
+
+```bash
+# Usa una base temporal para las pruebas
+set RECICLAJE_DB=temp_pruebas.db  # Windows PowerShell/CMD
+export RECICLAJE_DB="temp_pruebas.db"  # macOS/Linux
+
+python ingesta_publica.py --ruta TACO/data --limite 40 --aumentos 1 --guardar-todo --distribuir-dias 7
+```
+
+Para usar la base real:
+```bash
+# Sin argumentos, usa data/reciclaje.db automáticamente
+streamlit run app.py
+```
+
+### 🎓 Paso 4: Reentrenar el modelo (opcional)
+
+Si tienes fotos nuevas y quieres mejorar el modelo:
+
+```bash
+python entrenamiento/reentrenar.py --taco TACO/data --limite 200 --no-reemplazar
+```
+
+> Esto crea un nuevo modelo pero no borra el original.
+
+### 🔁 Paso 5: Restaurar el modelo (si cambió)
+
+```bash
+python entrenamiento/restaurar.py models/backup_*.onnx models/trashnet_mobilenetv2.onnx
+```
+
+### 🧪 Paso 6: Correr las pruebas automáticas
+
+```bash
+python -m pytest -q
+```
+
+> Ejecuta esto con la variable `RECICLAJE_DB` configurada para no tocar la base real.
+
+---
+
 © Johan Lasso · Reciclaje Inteligente
