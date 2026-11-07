@@ -1,0 +1,21 @@
+# Entorno virtual y caché de Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Base de datos local (se genera al ejecutar la app)
+data/
+proyecto-de-quimica/data/
+
+# Dataset descargado para entrenamiento (no se sube al repositorio)
+entrenamiento/dataset-resized/
+proyecto-de-quimica/entrenamiento/dataset-resized/
+
+# Reentrenamiento (reentrenar.py): caché, candidatos y respaldos locales del modelo
+entrenamiento/cache/
+entrenamiento/salidas/
+models/respaldo/
+proyecto-de-quimica/entrenamiento/cache/
+proyecto-de-quimica/entrenamiento/salidas/
+proyecto-de-quimica/models/respaldo/

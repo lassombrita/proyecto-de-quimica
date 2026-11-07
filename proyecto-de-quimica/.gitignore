@@ -9,3 +9,8 @@ data/
 
 # Dataset descargado para entrenamiento (no se sube al repositorio)
 entrenamiento/dataset-resized/
+
+# Reentrenamiento (reentrenar.py): caché, candidatos y respaldos locales del modelo
+entrenamiento/cache/
+entrenamiento/salidas/
+models/respaldo/

@@ -6,3 +6,5 @@ protobuf>=4.25
 grpcio-tools>=1.60     # Solo para compilar caffe.proto en convertir_mobilenet.py
 opencv-python-headless>=4.9
 numpy>=1.26
+# reentrenar.py reutiliza ingesta_publica.py: instale también ../requirements.txt
+# (albumentations, pycocotools, pandas). onnxruntime no es necesario para reentrenar.py.
