@@ -13,4 +13,13 @@ entrenamiento/dataset-resized/
 # Reentrenamiento (reentrenar.py): caché, candidatos y respaldos locales del modelo
 entrenamiento/cache/
 entrenamiento/salidas/
+temp_pruebas.db
 models/respaldo/
+
+# Dataset TACO (no se sube - >100MB)
+TACO/
+
+# Windows null device file (Windows special file)
+nul
+# Carpeta de archivos para revisión externa (no se sube)
+para_revision/

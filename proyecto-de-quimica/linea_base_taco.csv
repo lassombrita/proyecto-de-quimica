@@ -1,0 +1,801 @@
+﻿archivo,clase_dataset,etiqueta_real,material,grupo_predicho,confianza,contenedor,registrado
+batch_9/000027.jpg#4542,Metal bottle cap,Metal,Papel/Cartón,Papel/Cartón,78.7,Blanco,True
+batch_14/000062.jpg#1793,Plastic film,No aprovechable,PET,Plástico,94.6,Blanco,True
+batch_5/000036.JPG#3124,Drink can,Metal,PET,Plástico,87.5,Blanco,True
+batch_5/000107.JPG#3002,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_6/000077.JPG#3288,Glass bottle,Vidrio,No identificado,No identificado,31.3,Negro,False
+batch_15/000052.jpg#2107,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_6/000019.JPG#3548,Plastic bottle cap,Plastico,Papel/Cartón,Papel/Cartón,93.5,Blanco,True
+batch_9/000032.jpg#4566,Plastic film,No aprovechable,No aprovechable,No aprovechable,85.3,Negro,True
+batch_2/000016.JPG#2228,Crisp packet,No aprovechable,Papel/Cartón,Papel/Cartón,79.3,Blanco,True
+batch_14/000027.jpg#1745,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_10/000043.jpg#528,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,96.2,Blanco,True
+batch_10/000050.jpg#544,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_7/000070.JPG#3822,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,62.4,Blanco,True
+batch_11/000029.jpg#767,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,99.1,Blanco,True
+batch_8/000046.jpg#4293,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,83.6,Blanco,True
+batch_6/000024.JPG#3532,Aluminium foil,Metal,No aprovechable,No aprovechable,96.0,Negro,True
+batch_4/000004.JPG#2779,Magazine paper,Papel/Carton,Metal,Metal,65.4,Blanco,True
+batch_11/000082.jpg#873,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_7/000050.JPG#3769,Plastic utensils,No aprovechable,PET,Plástico,90.2,Blanco,True
+batch_14/000022.jpg#1738,Wrapping paper,Papel/Carton,Papel/Cartón,Papel/Cartón,82.4,Blanco,True
+batch_2/000017.JPG#2229,Wrapping paper,Papel/Carton,No aprovechable,No aprovechable,99.7,Negro,True
+batch_5/000000.JPG#3030,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_6/000087.JPG#3273,Other plastic wrapper,No aprovechable,PET,Plástico,95.8,Blanco,True
+batch_3/IMG_5067.JPG#2715,Other carton,Papel/Carton,PEAD,Plástico,60.2,Blanco,True
+batch_15/000005.jpg#1895,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,86.0,Blanco,True
+batch_1/000117.JPG#242,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,94.5,Blanco,True
+batch_14/000065.jpg#1797,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,91.1,Blanco,True
+batch_13/000055.jpg#1616,Battery,,Metal,Metal,99.0,Blanco,True
+batch_2/000031.JPG#2262,Foam food container,No aprovechable,Papel/Cartón,Papel/Cartón,98.0,Blanco,True
+batch_12/000035.jpg#1104,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_14/000067.jpg#1801,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,63.2,Blanco,True
+batch_12/000081.jpg#1333,Other plastic wrapper,No aprovechable,PET,Plástico,99.9,Blanco,True
+batch_6/000041.JPG#3473,Aluminium foil,Metal,Metal,Metal,99.5,Blanco,True
+batch_7/000019.JPG#3668,Disposable food container,Plastico,Vidrio,Vidrio,95.5,Blanco,True
+batch_15/000032.jpg#2055,Foam cup,No aprovechable,Papel/Cartón,Papel/Cartón,97.4,Blanco,True
+batch_5/000020.JPG#3091,Crisp packet,No aprovechable,No aprovechable,No aprovechable,73.3,Negro,True
+batch_15/000018.jpg#1952,Glass bottle,Vidrio,Vidrio,Vidrio,95.9,Blanco,True
+batch_10/000069.jpg#578,Rope & strings,No aprovechable,Papel/Cartón,Papel/Cartón,96.9,Blanco,True
+batch_7/000118.JPG#3948,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_10/000043.jpg#526,Plastic film,No aprovechable,PET,Plástico,97.7,Blanco,True
+batch_12/000031.jpg#1079,Other plastic wrapper,No aprovechable,Metal,Metal,77.7,Blanco,True
+batch_11/000071.jpg#835,Plastic film,No aprovechable,PET,Plástico,100.0,Blanco,True
+batch_8/000091.jpg#4458,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,68.8,Blanco,True
+batch_6/000065.JPG#3404,Clear plastic bottle,Plastico,No aprovechable,No aprovechable,80.5,Negro,True
+batch_12/000041.jpg#1124,Plastic bottle cap,Plastico,No aprovechable,No aprovechable,99.9,Negro,True
+batch_14/000007.jpg#1711,Plastic bottle cap,Plastico,Metal,Metal,95.9,Blanco,True
+batch_4/000007.JPG#2782,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.7,Blanco,True
+batch_15/000007.jpg#1899,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,55.4,Blanco,False
+batch_10/000011.jpg#380,Glass cup,Vidrio,Papel/Cartón,Papel/Cartón,57.1,Blanco,False
+batch_3/IMG_4948.JPG#2688,Clear plastic bottle,Plastico,PET,Plástico,99.0,Blanco,True
+batch_2/000051.JPG#2297,Clear plastic bottle,Plastico,No aprovechable,No aprovechable,98.5,Negro,True
+batch_9/000074.jpg#4678,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_5/000068.JPG#2982,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_9/000010.jpg#4509,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_8/000067.jpg#4396,Plastic film,No aprovechable,PET,Plástico,100.0,Blanco,True
+batch_6/000097.JPG#3253,Clear plastic bottle,Plastico,PEAD,Plástico,91.4,Blanco,True
+batch_1/000095.JPG#173,Shoe,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_6/000024.JPG#3530,Food Can,Metal,Metal,Metal,99.0,Blanco,True
+batch_9/000080.jpg#4698,Plastic film,No aprovechable,PET,Plástico,99.0,Blanco,True
+batch_1/000010.jpg#4,Clear plastic bottle,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_6/000093.JPG#3262,Clear plastic bottle,Plastico,PET,Plástico,76.5,Blanco,True
+batch_3/IMG_4971.JPG#2680,Plastic bottle cap,Plastico,PET,Plástico,99.0,Blanco,True
+batch_10/000068.jpg#577,Plastic film,No aprovechable,Vidrio,Vidrio,64.9,Blanco,True
+batch_15/000015.jpg#1932,Glass bottle,Vidrio,Vidrio,Vidrio,74.2,Blanco,True
+batch_9/000063.jpg#4648,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,73.9,Blanco,True
+batch_9/000090.jpg#4753,Drink can,Metal,PET,Plástico,93.9,Blanco,True
+batch_10/000062.jpg#570,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_1/000025.jpg#103,Drink can,Metal,Papel/Cartón,Papel/Cartón,57.8,Blanco,False
+batch_13/000064.jpg#1642,Tupperware,Plastico,Papel/Cartón,Papel/Cartón,90.7,Blanco,True
+batch_1/000006.jpg#1,Glass bottle,Vidrio,Vidrio,Vidrio,84.5,Blanco,True
+batch_7/000084.JPG#3872,Disposable plastic cup,Plastico,PET,Plástico,99.0,Blanco,True
+batch_9/000070.jpg#4666,Clear plastic bottle,Plastico,PET,Plástico,87.6,Blanco,True
+batch_5/000104.JPG#2991,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,92.5,Blanco,True
+batch_12/000026.jpg#1043,Paper cup,No aprovechable,No aprovechable,No aprovechable,72.1,Negro,True
+batch_7/000033.JPG#3699,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,99.8,Blanco,True
+batch_15/000001.jpg#1888,Plastic bottle cap,Plastico,Papel/Cartón,Papel/Cartón,95.5,Blanco,True
+batch_8/000085.jpg#4446,Clear plastic bottle,Plastico,PET,Plástico,91.4,Blanco,True
+batch_8/000090.jpg#4456,Paper bag,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_11/000040.jpg#780,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_4/000023.JPG#2802,Plastic bottle cap,Plastico,PET,Plástico,100.0,Blanco,True
+batch_5/000041.JPG#3137,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,97.3,Blanco,True
+batch_7/000077.JPG#3834,Clear plastic bottle,Plastico,No aprovechable,No aprovechable,77.7,Negro,True
+batch_9/000008.jpg#4495,Garbage bag,No aprovechable,PET,Plástico,99.0,Blanco,True
+batch_9/000031.jpg#4565,Unlabeled litter,,No aprovechable,No aprovechable,95.5,Negro,True
+batch_13/000056.jpg#1623,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,55.8,Blanco,False
+batch_13/000086.jpg#1677,Clear plastic bottle,Plastico,PET,Plástico,100.0,Blanco,True
+batch_1/000014.jpg#29,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,58.6,Blanco,False
+batch_9/000013.jpg#4515,Unlabeled litter,,No identificado,No identificado,49.7,Negro,False
+batch_1/000085.JPG#153,Plastic straw,No aprovechable,Metal,Metal,99.0,Blanco,True
+batch_1/000032.jpg#54,Drink can,Metal,Metal,Metal,87.8,Blanco,True
+batch_11/000018.jpg#735,Scrap metal,Metal,Papel/Cartón,Papel/Cartón,91.5,Blanco,True
+batch_10/000042.jpg#520,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,82.2,Blanco,True
+batch_13/000026.jpg#1544,Plastic bottle cap,Plastico,No aprovechable,No aprovechable,96.7,Negro,True
+batch_10/000020.jpg#405,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,86.0,Blanco,True
+batch_11/000034.jpg#772,Other plastic bottle,Plastico,Metal,Metal,99.4,Blanco,True
+batch_6/000068.JPG#3393,Plastic utensils,No aprovechable,Papel/Cartón,Papel/Cartón,99.8,Blanco,True
+batch_14/000071.jpg#1806,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,87.0,Blanco,True
+batch_7/000078.JPG#3839,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,90.1,Blanco,True
+batch_12/000025.jpg#1003,Unlabeled litter,,Papel/Cartón,Papel/Cartón,95.2,Blanco,True
+batch_1/000065.JPG#129,Egg carton,Papel/Carton,Papel/Cartón,Papel/Cartón,98.1,Blanco,True
+batch_11/000063.jpg#817,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,81.4,Blanco,True
+batch_7/000013.JPG#3657,Magazine paper,Papel/Carton,PET,Plástico,70.9,Blanco,True
+batch_2/000065.JPG#2326,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,98.3,Blanco,True
+batch_6/000078.JPG#3283,Aerosol,Metal,Metal,Metal,99.0,Blanco,True
+batch_13/000074.jpg#1652,Plastic film,No aprovechable,PET,Plástico,100.0,Blanco,True
+batch_14/000044.jpg#1769,Metal bottle cap,Metal,Papel/Cartón,Papel/Cartón,79.2,Blanco,True
+batch_1/000085.JPG#297,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_12/000090.jpg#1389,Other plastic wrapper,No aprovechable,PET,Plástico,96.7,Blanco,True
+batch_10/000063.jpg#571,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,94.0,Blanco,True
+batch_13/000050.jpg#1588,Unlabeled litter,,Metal,Metal,96.4,Blanco,True
+batch_3/IMG_4965.JPG#2659,Single-use carrier bag,No aprovechable,No aprovechable,No aprovechable,99.5,Negro,True
+batch_14/000087.jpg#1834,Plastic straw,No aprovechable,Metal,Metal,99.0,Blanco,True
+batch_4/000087.JPG#2873,Plastic film,No aprovechable,PET,Plástico,68.2,Blanco,True
+batch_12/000078.jpg#1329,Other plastic wrapper,No aprovechable,PET,Plástico,99.0,Blanco,True
+batch_11/000061.jpg#815,Unlabeled litter,,Papel/Cartón,Papel/Cartón,90.6,Blanco,True
+batch_14/000093.jpg#1844,Unlabeled litter,,PET,Plástico,81.4,Blanco,True
+batch_13/000066.jpg#1644,Metal bottle cap,Metal,Metal,Metal,97.0,Blanco,True
+batch_9/000067.jpg#4658,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,93.4,Blanco,True
+batch_12/000001.jpg#928,Unlabeled litter,,Papel/Cartón,Papel/Cartón,66.1,Blanco,True
+batch_13/000019.jpg#1490,Plastic film,No aprovechable,No identificado,No identificado,32.7,Negro,False
+batch_1/000042.jpg#87,Food Can,Metal,Metal,Metal,100.0,Blanco,True
+batch_9/000050.jpg#4595,Unlabeled litter,,No aprovechable,No aprovechable,82.0,Negro,True
+batch_3/IMG_4887.JPG#2575,Drink can,Metal,Papel/Cartón,Papel/Cartón,74.3,Blanco,True
+batch_8/000038.jpg#4271,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,98.3,Blanco,True
+batch_15/000007.jpg#1902,Tissues,No aprovechable,No identificado,No identificado,37.3,Negro,False
+batch_3/IMG_4901.JPG#2590,Unlabeled litter,,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_12/000043.jpg#1133,Clear plastic bottle,Plastico,PET,Plástico,99.0,Blanco,True
+batch_2/000039.JPG#2278,Drink can,Metal,Papel/Cartón,Papel/Cartón,59.4,Blanco,False
+batch_10/000001.jpg#313,Unlabeled litter,,Papel/Cartón,Papel/Cartón,66.2,Blanco,True
+batch_5/000005.JPG#3042,Drink can,Metal,Papel/Cartón,Papel/Cartón,57.3,Blanco,False
+batch_6/000019.JPG#3547,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,61.8,Blanco,True
+batch_3/IMG_4921.JPG#2617,Foam food container,No aprovechable,PEAD,Plástico,99.0,Blanco,True
+batch_11/000012.jpg#721,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,86.9,Blanco,True
+batch_12/000094.jpg#1415,Unlabeled litter,,Papel/Cartón,Papel/Cartón,98.7,Blanco,True
+batch_8/000088.jpg#4450,Clear plastic bottle,Plastico,PET,Plástico,76.6,Blanco,True
+batch_12/000047.jpg#1155,Plastic film,No aprovechable,No aprovechable,No aprovechable,99.8,Negro,True
+batch_3/IMG_4924.JPG#2621,Disposable food container,Plastico,PET,Plástico,92.6,Blanco,True
+batch_3/IMG_5068.JPG#2725,Magazine paper,Papel/Carton,Papel/Cartón,Papel/Cartón,84.1,Blanco,True
+batch_7/000023.JPG#3686,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,98.1,Blanco,True
+batch_6/000017.JPG#3552,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,54.1,Blanco,False
+batch_2/000027.JPG#2256,Drink can,Metal,Metal,Metal,97.9,Blanco,True
+batch_1/000110.JPG#226,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,98.9,Blanco,True
+batch_13/000034.jpg#1558,Other plastic bottle,Plastico,Metal,Metal,99.0,Blanco,True
+batch_12/000002.jpg#929,Plastic bottle cap,Plastico,Metal,Metal,99.9,Blanco,True
+batch_11/000084.jpg#877,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,98.0,Blanco,True
+batch_11/000027.jpg#754,Plastic glooves,No aprovechable,Papel/Cartón,Papel/Cartón,93.3,Blanco,True
+batch_1/000062.JPG#178,Clear plastic bottle,Plastico,Metal,Metal,64.5,Blanco,True
+batch_12/000086.jpg#1359,Plastic film,No aprovechable,No aprovechable,No aprovechable,75.4,Negro,True
+batch_10/000007.jpg#368,Unlabeled litter,,Papel/Cartón,Papel/Cartón,92.2,Blanco,True
+batch_14/000090.jpg#1839,Other plastic wrapper,No aprovechable,PET,Plástico,70.8,Blanco,True
+batch_6/000035.JPG#3504,Aluminium foil,Metal,Metal,Metal,99.0,Blanco,True
+batch_1/000085.JPG#154,Broken glass,Vidrio,PET,Plástico,99.0,Blanco,True
+batch_14/000017.jpg#1725,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,54.6,Blanco,False
+batch_5/000036.JPG#3122,Plastic film,No aprovechable,PET,Plástico,55.0,Blanco,False
+batch_15/000057.jpg#2124,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_2/000025.JPG#2247,Glass bottle,Vidrio,Vidrio,Vidrio,79.4,Blanco,True
+batch_10/000006.jpg#365,Other plastic,Plastico,PET,Plástico,98.6,Blanco,True
+batch_14/000093.jpg#1842,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,71.3,Blanco,True
+batch_3/IMG_4936.JPG#2631,Unlabeled litter,,Papel/Cartón,Papel/Cartón,90.1,Blanco,True
+batch_1/000082.JPG#146,Crisp packet,No aprovechable,Papel/Cartón,Papel/Cartón,98.9,Blanco,True
+batch_15/000033.jpg#2059,Plastic lid,Plastico,Metal,Metal,64.4,Blanco,True
+batch_12/000019.jpg#960,Foam cup,No aprovechable,PET,Plástico,99.5,Blanco,True
+batch_13/000016.jpg#1480,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,80.8,Blanco,True
+batch_3/IMG_4964.JPG#2658,Plastic film,No aprovechable,No aprovechable,No aprovechable,92.4,Negro,True
+batch_8/000051.jpg#4306,Other plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,53.1,Blanco,False
+batch_15/000064.jpg#2137,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,86.5,Blanco,True
+batch_7/000090.JPG#3907,Clear plastic bottle,Plastico,PET,Plástico,99.0,Blanco,True
+batch_15/000022.jpg#1974,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_9/000044.jpg#4585,Plastic film,No aprovechable,PET,Plástico,99.5,Blanco,True
+batch_1/000121.JPG#247,Metal bottle cap,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_4/000032.JPG#2764,Wrapping paper,Papel/Carton,Metal,Metal,99.0,Blanco,True
+batch_7/000029.JPG#3693,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,89.3,Blanco,True
+batch_3/IMG_4859.JPG#2549,Plastic film,No aprovechable,PEAD,Plástico,99.0,Blanco,True
+batch_11/000044.jpg#789,Plastic film,No aprovechable,Metal,Metal,63.4,Blanco,True
+batch_12/000088.jpg#1373,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_3/IMG_4941.JPG#2653,Shoe,No aprovechable,Papel/Cartón,Papel/Cartón,90.6,Blanco,True
+batch_9/000021.jpg#4529,Plastic film,No aprovechable,PET,Plástico,99.6,Blanco,True
+batch_14/000036.jpg#1756,Pop tab,Metal,Metal,Metal,91.1,Blanco,True
+batch_7/000098.JPG#3923,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,70.1,Blanco,True
+batch_13/000035.jpg#1560,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,70.9,Blanco,True
+batch_15/000023.jpg#1982,Wrapping paper,Papel/Carton,PET,Plástico,79.0,Blanco,True
+batch_6/000031.JPG#3513,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_7/000085.JPG#3889,Unlabeled litter,,Papel/Cartón,Papel/Cartón,73.9,Blanco,True
+batch_2/000088.JPG#2377,Plastic bottle cap,Plastico,Metal,Metal,96.1,Blanco,True
+batch_9/000097.jpg#4777,Glass bottle,Vidrio,Vidrio,Vidrio,82.3,Blanco,True
+batch_7/000102.JPG#3926,Other plastic,Plastico,No identificado,No identificado,38.6,Negro,False
+batch_15/000065.jpg#2144,Drink can,Metal,Metal,Metal,100.0,Blanco,True
+batch_6/000057.JPG#3436,Drink can,Metal,Vidrio,Vidrio,90.0,Blanco,True
+batch_8/000008.jpg#4060,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_15/000073.jpg#2166,Foam cup,No aprovechable,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_7/000079.JPG#3860,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,97.4,Blanco,True
+batch_6/000047.JPG#3464,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,67.6,Blanco,True
+batch_8/000087.jpg#4449,Drink can,Metal,Papel/Cartón,Papel/Cartón,52.8,Blanco,False
+batch_10/000041.jpg#515,Plastic film,No aprovechable,PET,Plástico,99.9,Blanco,True
+batch_9/000060.jpg#4638,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_15/000021.jpg#1970,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,81.6,Blanco,True
+batch_8/000095.jpg#4464,Drink can,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_4/000039.JPG#2818,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,81.2,Blanco,True
+batch_15/000019.jpg#1961,Clear plastic bottle,Plastico,No aprovechable,No aprovechable,60.6,Negro,True
+batch_7/000051.JPG#3776,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,99.8,Blanco,True
+batch_11/000069.jpg#828,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_8/000013.jpg#4077,Clear plastic bottle,Plastico,PET,Plástico,100.0,Blanco,True
+batch_14/000053.jpg#1784,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,74.0,Blanco,True
+batch_14/000005.jpg#1707,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,92.6,Blanco,True
+batch_3/IMG_4883.JPG#2573,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_8/000066.jpg#4392,Drink can,Metal,PET,Plástico,99.1,Blanco,True
+batch_12/000087.jpg#1365,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,65.3,Blanco,True
+batch_3/IMG_4891.JPG#2579,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,97.2,Blanco,True
+batch_8/000013.jpg#4076,Plastic bottle cap,Plastico,Metal,Metal,62.7,Blanco,True
+batch_10/000097.jpg#680,Clear plastic bottle,Plastico,PET,Plástico,76.1,Blanco,True
+batch_5/000075.JPG#2935,Rope & strings,No aprovechable,No aprovechable,No aprovechable,56.9,Negro,False
+batch_5/000020.JPG#3089,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,79.7,Blanco,True
+batch_10/000009.jpg#372,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,93.8,Blanco,True
+batch_8/000084.jpg#4443,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_7/000138.JPG#3995,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_13/000005.jpg#1440,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_5/000039.JPG#3132,Plastic lid,Plastico,No identificado,No identificado,49.7,Negro,False
+batch_2/000068.JPG#2328,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,71.8,Blanco,True
+batch_11/000040.jpg#781,Other plastic wrapper,No aprovechable,PET,Plástico,73.4,Blanco,True
+batch_8/000035.jpg#4254,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,80.4,Blanco,True
+batch_12/000082.jpg#1334,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,73.5,Blanco,True
+batch_1/000121.JPG#246,Plastic bottle cap,Plastico,Papel/Cartón,Papel/Cartón,84.5,Blanco,True
+batch_11/000095.jpg#893,Clear plastic bottle,Plastico,PET,Plástico,89.7,Blanco,True
+batch_1/000047.jpg#12,Food Can,Metal,Metal,Metal,99.0,Blanco,True
+batch_13/000038.jpg#1565,Plastic film,No aprovechable,PET,Plástico,100.0,Blanco,True
+batch_1/000047.jpg#11,Food Can,Metal,Metal,Metal,99.0,Blanco,True
+batch_11/000007.jpg#706,Styrofoam piece,No aprovechable,PET,Plástico,100.0,Blanco,True
+batch_3/IMG_4881.JPG#2682,Unlabeled litter,,No identificado,No identificado,45.0,Negro,False
+batch_13/000092.jpg#1688,Plastic bottle cap,Plastico,Metal,Metal,99.0,Blanco,True
+batch_5/000021.JPG#3093,Plastic film,No aprovechable,No aprovechable,No aprovechable,91.2,Negro,True
+batch_1/000023.jpg#73,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_1/000040.jpg#57,Food Can,Metal,Metal,Metal,99.0,Blanco,True
+batch_1/000128.JPG#263,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,98.5,Blanco,True
+batch_14/000052.jpg#1783,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,79.8,Blanco,True
+batch_6/000021.JPG#3545,Clear plastic bottle,Plastico,PET,Plástico,93.0,Blanco,True
+batch_5/000028.JPG#3106,Clear plastic bottle,Plastico,No identificado,No identificado,43.7,Negro,False
+batch_6/000072.JPG#3331,Unlabeled litter,,Metal,Metal,97.8,Blanco,True
+batch_6/000085.JPG#3275,Clear plastic bottle,Plastico,PET,Plástico,99.9,Blanco,True
+batch_12/000096.jpg#1420,Single-use carrier bag,No aprovechable,PET,Plástico,97.3,Blanco,True
+batch_8/000055.jpg#4343,Garbage bag,No aprovechable,Papel/Cartón,Papel/Cartón,90.7,Blanco,True
+batch_6/000070.JPG#3390,Tupperware,Plastico,PET,Plástico,99.0,Blanco,True
+batch_11/000097.jpg#906,Unlabeled litter,,PET,Plástico,69.9,Blanco,True
+batch_2/000077.JPG#2344,Paper bag,Papel/Carton,No aprovechable,No aprovechable,54.8,Negro,False
+batch_15/000030.jpg#2050,Drink can,Metal,Metal,Metal,99.9,Blanco,True
+batch_1/000105.JPG#213,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,97.5,Blanco,True
+batch_10/000005.jpg#356,Plastic film,No aprovechable,PET,Plástico,91.4,Blanco,True
+batch_2/000035.JPG#2270,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,86.6,Blanco,True
+batch_14/000007.jpg#1710,Other plastic bottle,Plastico,Metal,Metal,67.6,Blanco,True
+batch_6/000023.JPG#3536,Drink carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_5/000111.JPG#3013,Rope & strings,No aprovechable,No identificado,No identificado,39.3,Negro,False
+batch_5/000091.JPG#2955,Styrofoam piece,No aprovechable,No aprovechable,No aprovechable,98.7,Negro,True
+batch_1/000070.JPG#135,Drink can,Metal,Papel/Cartón,Papel/Cartón,64.1,Blanco,True
+batch_2/000021.JPG#2234,Plastic lid,Plastico,Vidrio,Vidrio,99.9,Blanco,True
+batch_13/000070.jpg#1648,Pop tab,Metal,PET,Plástico,100.0,Blanco,True
+batch_6/000086.JPG#3274,Aluminium foil,Metal,Metal,Metal,89.2,Blanco,True
+batch_8/000054.jpg#4336,Garbage bag,No aprovechable,Metal,Metal,99.0,Blanco,True
+batch_1/000071.JPG#136,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.3,Blanco,True
+batch_9/000087.jpg#4738,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,79.4,Blanco,True
+batch_3/IMG_4994.JPG#2494,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,91.9,Blanco,True
+batch_7/000120.JPG#3953,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,64.3,Blanco,True
+batch_4/000058.JPG#2842,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,98.7,Blanco,True
+batch_3/IMG_4897.JPG#2587,Plastic film,No aprovechable,PET,Plástico,76.8,Blanco,True
+batch_3/IMG_5002.JPG#2504,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,81.9,Blanco,True
+batch_10/000093.jpg#652,Glass bottle,Vidrio,Metal,Metal,50.3,Blanco,False
+batch_13/000056.jpg#1624,Paper bag,Papel/Carton,Papel/Cartón,Papel/Cartón,95.6,Blanco,True
+batch_13/000087.jpg#1678,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,99.2,Blanco,True
+batch_6/000041.JPG#3474,Aluminium foil,Metal,No aprovechable,No aprovechable,99.7,Negro,True
+batch_1/000019.jpg#6,Clear plastic bottle,Plastico,PET,Plástico,96.4,Blanco,True
+batch_7/000051.JPG#3778,Pizza box,Papel/Carton,Papel/Cartón,Papel/Cartón,92.6,Blanco,True
+batch_3/IMG_4922.JPG#2619,Paper straw,No aprovechable,Papel/Cartón,Papel/Cartón,75.5,Blanco,True
+batch_14/000049.jpg#1779,Broken glass,Vidrio,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_13/000026.jpg#1543,Drink can,Metal,Papel/Cartón,Papel/Cartón,93.2,Blanco,True
+batch_6/000046.JPG#3466,Clear plastic bottle,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_1/000053.jpg#44,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_3/IMG_5064.JPG#2709,Other carton,Papel/Carton,PET,Plástico,53.1,Blanco,False
+batch_1/000081.JPG#144,Clear plastic bottle,Plastico,PET,Plástico,86.6,Blanco,True
+batch_4/000048.JPG#2829,Plastic film,No aprovechable,No aprovechable,No aprovechable,84.7,Negro,True
+batch_9/000067.jpg#4660,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,63.0,Blanco,True
+batch_8/000031.jpg#4235,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,53.5,Blanco,False
+batch_7/000120.JPG#3951,Other plastic,Plastico,Vidrio,Vidrio,98.9,Blanco,True
+batch_9/000061.jpg#4645,Unlabeled litter,,Papel/Cartón,Papel/Cartón,59.8,Blanco,False
+batch_1/000055.jpg#17,Aerosol,Metal,Metal,Metal,99.0,Blanco,True
+batch_8/000008.jpg#4059,Broken glass,Vidrio,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_13/000003.jpg#1429,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,84.5,Blanco,True
+batch_12/000054.jpg#1196,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,79.0,Blanco,True
+batch_6/000003.JPG#3573,Plastic utensils,No aprovechable,No aprovechable,No aprovechable,50.0,Negro,False
+batch_10/000098.jpg#683,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.5,Blanco,True
+batch_11/000075.jpg#851,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,70.9,Blanco,True
+batch_13/000036.jpg#1562,Clear plastic bottle,Plastico,Metal,Metal,100.0,Blanco,True
+batch_1/000069.JPG#134,Drink can,Metal,Papel/Cartón,Papel/Cartón,97.7,Blanco,True
+batch_5/000034.JPG#3117,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.7,Blanco,True
+batch_14/000088.jpg#1836,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,96.5,Blanco,True
+batch_7/000084.JPG#3873,Plastic lid,Plastico,PET,Plástico,100.0,Blanco,True
+batch_13/000089.jpg#1682,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_4/000088.JPG#2876,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,85.3,Blanco,True
+batch_13/000009.jpg#1448,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,71.1,Blanco,True
+batch_10/000088.jpg#634,Tissues,No aprovechable,No aprovechable,No aprovechable,94.6,Negro,True
+batch_5/000096.JPG#2965,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,80.3,Blanco,True
+batch_1/000022.jpg#72,Other plastic wrapper,No aprovechable,Metal,Metal,76.3,Blanco,True
+batch_1/000016.jpg#101,Glass bottle,Vidrio,No identificado,No identificado,49.8,Negro,False
+batch_1/000088.JPG#159,Glass jar,Vidrio,Vidrio,Vidrio,97.3,Blanco,True
+batch_5/000030.JPG#3113,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,78.7,Blanco,True
+batch_14/000020.jpg#1729,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_14/000022.jpg#1737,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,99.3,Blanco,True
+batch_11/000019.jpg#741,Other plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,58.4,Blanco,False
+batch_7/000068.JPG#3819,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,56.1,Blanco,False
+batch_11/000003.jpg#693,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_6/000008.JPG#3566,Paper cup,No aprovechable,Metal,Metal,99.0,Blanco,True
+batch_11/000073.jpg#840,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_10/000038.jpg#509,Drink carton,Papel/Carton,No identificado,No identificado,48.6,Negro,False
+batch_4/000026.JPG#2804,Other plastic cup,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_12/000089.jpg#1385,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,99.8,Blanco,True
+batch_13/000092.jpg#1687,Clear plastic bottle,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_7/000120.JPG#3950,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_11/000056.jpg#806,Unlabeled litter,,Metal,Metal,98.6,Blanco,True
+batch_8/000095.jpg#4465,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,97.7,Blanco,True
+batch_8/000029.jpg#4220,Drink can,Metal,PET,Plástico,66.7,Blanco,True
+batch_7/000066.JPG#3815,Disposable food container,Plastico,PET,Plástico,77.9,Blanco,True
+batch_6/000102.JPG#3240,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,99.5,Blanco,True
+batch_1/000074.JPG#140,Paper cup,No aprovechable,Vidrio,Vidrio,73.6,Blanco,True
+batch_7/000043.JPG#3724,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,99.2,Blanco,True
+batch_10/000086.jpg#626,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,59.7,Blanco,False
+batch_15/000012.jpg#1923,Other plastic wrapper,No aprovechable,PET,Plástico,99.7,Blanco,True
+batch_9/000049.jpg#4593,Unlabeled litter,,PET,Plástico,98.2,Blanco,True
+batch_2/000032.JPG#2264,Tissues,No aprovechable,Papel/Cartón,Papel/Cartón,85.1,Blanco,True
+batch_2/000059.JPG#2320,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,55.1,Blanco,False
+batch_11/000019.jpg#743,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,50.1,Blanco,False
+batch_15/000051.jpg#2104,Plastic utensils,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_1/000101.JPG#198,Paper straw,No aprovechable,PET,Plástico,95.4,Blanco,True
+batch_8/000059.jpg#4353,Food Can,Metal,Papel/Cartón,Papel/Cartón,81.1,Blanco,True
+batch_1/000088.JPG#158,Food Can,Metal,Metal,Metal,99.0,Blanco,True
+batch_6/000022.JPG#3541,Aluminium foil,Metal,Metal,Metal,99.8,Blanco,True
+batch_13/000053.jpg#1593,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,98.0,Blanco,True
+batch_5/000049.JPG#3154,Paper cup,No aprovechable,No identificado,No identificado,47.7,Negro,False
+batch_7/000136.JPG#3988,Rope & strings,No aprovechable,Papel/Cartón,Papel/Cartón,85.8,Blanco,True
+batch_2/000059.JPG#2317,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,85.8,Blanco,True
+batch_4/000081.JPG#2865,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_9/000034.jpg#4568,Other plastic wrapper,No aprovechable,No aprovechable,No aprovechable,59.5,Negro,False
+batch_1/000007.jpg#22,Glass cup,Vidrio,Papel/Cartón,Papel/Cartón,87.3,Blanco,True
+batch_5/000115.JPG#3024,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.7,Blanco,True
+batch_5/000050.JPG#3165,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.7,Blanco,True
+batch_10/000006.jpg#363,Single-use carrier bag,No aprovechable,PET,Plástico,90.2,Blanco,True
+batch_5/000120.JPG#3008,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,69.4,Blanco,True
+batch_6/000104.JPG#3231,Aluminium foil,Metal,Papel/Cartón,Papel/Cartón,76.0,Blanco,True
+batch_10/000088.jpg#635,Other carton,Papel/Carton,No aprovechable,No aprovechable,95.6,Negro,True
+batch_1/000094.JPG#170,Plastic film,No aprovechable,PET,Plástico,58.6,Blanco,False
+batch_5/000116.JPG#3025,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,68.0,Blanco,True
+batch_5/000049.JPG#3159,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,85.1,Blanco,True
+batch_1/000053.jpg#42,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,83.8,Blanco,True
+batch_6/000065.JPG#3406,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,92.5,Blanco,True
+batch_8/000000.jpg#4041,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_14/000034.jpg#1753,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,98.6,Blanco,True
+batch_15/000056.jpg#2119,Clear plastic bottle,Plastico,PET,Plástico,83.9,Blanco,True
+batch_14/000015.jpg#1721,Plastic utensils,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_7/000080.JPG#3863,Clear plastic bottle,Plastico,PET,Plástico,99.0,Blanco,True
+batch_10/000080.jpg#599,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,73.3,Blanco,True
+batch_13/000035.jpg#1559,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,63.2,Blanco,True
+batch_14/000009.jpg#1713,Other plastic,Plastico,PET,Plástico,99.0,Blanco,True
+batch_13/000003.jpg#1431,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,62.4,Blanco,True
+batch_9/000097.jpg#4776,Glass bottle,Vidrio,PET,Plástico,64.2,Blanco,True
+batch_15/000035.jpg#2062,Unlabeled litter,,Metal,Metal,99.0,Blanco,True
+batch_4/000002.JPG#2775,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,98.5,Blanco,True
+batch_8/000073.jpg#4409,Plastic lid,Plastico,Metal,Metal,77.4,Blanco,True
+batch_15/000010.jpg#1916,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,99.8,Blanco,True
+batch_9/000030.jpg#4563,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_5/000043.JPG#3140,Crisp packet,No aprovechable,Papel/Cartón,Papel/Cartón,99.1,Blanco,True
+batch_10/000076.jpg#590,Plastic film,No aprovechable,No aprovechable,No aprovechable,54.5,Negro,False
+batch_3/IMG_4929.JPG#2683,Plastic film,No aprovechable,PET,Plástico,95.5,Blanco,True
+batch_14/000042.jpg#1764,Other plastic bottle,Plastico,No identificado,No identificado,49.2,Negro,False
+batch_12/000056.jpg#1200,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.1,Blanco,True
+batch_6/000038.JPG#3481,Plastic film,No aprovechable,PET,Plástico,56.0,Blanco,False
+batch_13/000034.jpg#1557,Other plastic bottle,Plastico,PET,Plástico,98.3,Blanco,True
+batch_7/000031.JPG#3698,Plastic lid,Plastico,PEAD,Plástico,96.5,Blanco,True
+batch_2/000058.JPG#2316,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,86.5,Blanco,True
+batch_8/000088.jpg#4451,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_13/000047.jpg#1583,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,71.4,Blanco,True
+batch_6/000020.JPG#3546,Other plastic wrapper,No aprovechable,No identificado,No identificado,34.4,Negro,False
+batch_6/000097.JPG#3256,Crisp packet,No aprovechable,PEAD,Plástico,65.0,Blanco,True
+batch_9/000087.jpg#4739,Aluminium foil,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_1/000084.JPG#149,Disposable plastic cup,Plastico,No aprovechable,No aprovechable,95.9,Negro,True
+batch_5/000056.JPG#3174,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,91.7,Blanco,True
+batch_7/000024.JPG#3690,Unlabeled litter,,Papel/Cartón,Papel/Cartón,58.4,Blanco,False
+batch_6/000056.JPG#3425,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_12/000049.jpg#1159,Disposable plastic cup,Plastico,PET,Plástico,99.7,Blanco,True
+batch_6/000089.JPG#3269,Disposable food container,Plastico,PET,Plástico,93.5,Blanco,True
+batch_13/000006.jpg#1441,Other plastic wrapper,No aprovechable,No aprovechable,No aprovechable,99.9,Negro,True
+batch_9/000052.jpg#4602,Wrapping paper,Papel/Carton,Papel/Cartón,Papel/Cartón,89.7,Blanco,True
+batch_8/000014.jpg#4089,Drink can,Metal,Papel/Cartón,Papel/Cartón,88.2,Blanco,True
+batch_12/000066.jpg#1305,Unlabeled litter,,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_6/000083.JPG#3276,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,62.5,Blanco,True
+batch_7/000094.JPG#3917,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,81.3,Blanco,True
+batch_12/000097.jpg#1421,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,90.8,Blanco,True
+batch_14/000077.jpg#1813,Other plastic bottle,Plastico,PET,Plástico,73.3,Blanco,True
+batch_4/000071.JPG#2855,Tissues,No aprovechable,No aprovechable,No aprovechable,75.8,Negro,True
+batch_10/000085.jpg#617,Plastic film,No aprovechable,No aprovechable,No aprovechable,99.6,Negro,True
+batch_7/000126.JPG#3969,Plastic bottle cap,Plastico,No identificado,No identificado,49.7,Negro,False
+batch_1/000059.jpg#94,Normal paper,Papel/Carton,Vidrio,Vidrio,58.4,Blanco,False
+batch_3/IMG_5037.JPG#2704,Plastic film,No aprovechable,No identificado,No identificado,42.7,Negro,False
+batch_10/000038.jpg#507,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,97.8,Blanco,True
+batch_3/IMG_5053.JPG#2529,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,98.8,Blanco,True
+batch_2/000009.JPG#2218,Plastic lid,Plastico,Papel/Cartón,Papel/Cartón,72.2,Blanco,True
+batch_11/000087.jpg#880,Plastic film,No aprovechable,PET,Plástico,52.0,Blanco,False
+batch_13/000044.jpg#1575,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_3/IMG_5050.JPG#2524,Aerosol,Metal,PET,Plástico,95.0,Blanco,True
+batch_13/000044.jpg#1574,Plastic utensils,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_12/000028.jpg#1056,Aluminium blister pack,No aprovechable,PET,Plástico,89.9,Blanco,True
+batch_3/IMG_4997.JPG#2501,Unlabeled litter,,Papel/Cartón,Papel/Cartón,96.7,Blanco,True
+batch_10/000058.jpg#563,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,56.4,Blanco,False
+batch_3/IMG_4914.JPG#2605,Glass jar,Vidrio,Metal,Metal,99.0,Blanco,True
+batch_14/000051.jpg#1781,Plastic bottle cap,Plastico,PET,Plástico,99.8,Blanco,True
+batch_5/000097.JPG#2966,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,86.8,Blanco,True
+batch_15/000056.jpg#2122,Other plastic wrapper,No aprovechable,PET,Plástico,79.6,Blanco,True
+batch_10/000027.jpg#433,Drink carton,Papel/Carton,PET,Plástico,97.7,Blanco,True
+batch_2/000091.JPG#2380,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,71.0,Blanco,True
+batch_5/000101.JPG#2986,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,91.8,Blanco,True
+batch_11/000079.jpg#861,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,82.4,Blanco,True
+batch_13/000008.jpg#1445,Plastic lid,Plastico,Papel/Cartón,Papel/Cartón,63.1,Blanco,True
+batch_6/000101.JPG#3242,Clear plastic bottle,Plastico,Vidrio,Vidrio,98.7,Blanco,True
+batch_3/IMG_4939.JPG#2634,Paper bag,Papel/Carton,Papel/Cartón,Papel/Cartón,76.6,Blanco,True
+batch_4/000064.JPG#2849,Rope & strings,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_4/000065.JPG#2851,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,98.9,Blanco,True
+batch_10/000049.jpg#542,Other plastic wrapper,No aprovechable,No aprovechable,No aprovechable,98.9,Negro,True
+batch_2/000039.JPG#2279,Unlabeled litter,,Vidrio,Vidrio,59.2,Blanco,False
+batch_14/000054.jpg#1785,Other plastic,Plastico,Vidrio,Vidrio,77.1,Blanco,True
+batch_1/000124.JPG#252,Aluminium foil,Metal,Vidrio,Vidrio,98.4,Blanco,True
+batch_2/000095.JPG#2384,Crisp packet,No aprovechable,Papel/Cartón,Papel/Cartón,62.4,Blanco,True
+batch_7/000006.JPG#3649,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,91.1,Blanco,True
+batch_4/000047.JPG#2828,Rope & strings,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_5/000112.JPG#3016,Plastic film,No aprovechable,PET,Plástico,84.4,Blanco,True
+batch_10/000033.jpg#446,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,85.6,Blanco,True
+batch_14/000073.jpg#1809,Other plastic,Plastico,Metal,Metal,98.9,Blanco,True
+batch_1/000086.JPG#156,Plastic utensils,No aprovechable,Papel/Cartón,Papel/Cartón,95.3,Blanco,True
+batch_1/000015.jpg#100,Crisp packet,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_9/000005.jpg#4487,Clear plastic bottle,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_8/000028.jpg#4205,Clear plastic bottle,Plastico,PET,Plástico,100.0,Blanco,True
+batch_7/000072.JPG#3825,Clear plastic bottle,Plastico,PET,Plástico,55.7,Blanco,False
+batch_6/000094.JPG#3261,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,55.9,Blanco,False
+batch_9/000036.jpg#4572,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,65.7,Blanco,True
+batch_15/000075.jpg#2172,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,97.3,Blanco,True
+batch_6/000015.JPG#3557,Clear plastic bottle,Plastico,No identificado,No identificado,47.0,Negro,False
+batch_9/000080.jpg#4694,Aluminium foil,Metal,Metal,Metal,99.0,Blanco,True
+batch_2/000093.JPG#2382,Plastic bottle cap,Plastico,No aprovechable,No aprovechable,89.6,Negro,True
+batch_2/000074.JPG#2339,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,64.4,Blanco,True
+batch_6/000102.JPG#3238,Clear plastic bottle,Plastico,Metal,Metal,88.7,Blanco,True
+batch_11/000003.jpg#694,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_14/000097.jpg#1851,Broken glass,Vidrio,Metal,Metal,93.6,Blanco,True
+batch_15/000011.jpg#1920,Plastic film,No aprovechable,PET,Plástico,98.8,Blanco,True
+batch_7/000042.JPG#3723,Drink carton,Papel/Carton,Papel/Cartón,Papel/Cartón,86.1,Blanco,True
+batch_1/000099.JPG#194,Six pack rings,No aprovechable,Papel/Cartón,Papel/Cartón,76.4,Blanco,True
+batch_8/000044.jpg#4286,Other carton,Papel/Carton,Metal,Metal,64.3,Blanco,True
+batch_12/000025.jpg#1002,Metal bottle cap,Metal,PEAD,Plástico,97.4,Blanco,True
+batch_8/000016.jpg#4107,Clear plastic bottle,Plastico,PET,Plástico,80.1,Blanco,True
+batch_11/000002.jpg#692,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,85.7,Blanco,True
+batch_4/000096.JPG#2887,Pop tab,Metal,Metal,Metal,81.8,Blanco,True
+batch_13/000028.jpg#1549,Clear plastic bottle,Plastico,PET,Plástico,88.3,Blanco,True
+batch_9/000040.jpg#4581,Cigarette,No aprovechable,No identificado,No identificado,38.8,Negro,False
+batch_4/000085.JPG#2869,Drink can,Metal,PEAD,Plástico,83.1,Blanco,True
+batch_5/000008.JPG#3048,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,76.4,Blanco,True
+batch_14/000035.jpg#1754,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_3/IMG_4996.JPG#2497,Plastic bottle cap,Plastico,Metal,Metal,92.1,Blanco,True
+batch_11/000083.jpg#876,Plastic film,No aprovechable,PET,Plástico,85.0,Blanco,True
+batch_15/000074.jpg#2170,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_9/000029.jpg#4555,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,72.7,Blanco,True
+batch_5/000024.JPG#3100,Paper bag,Papel/Carton,Papel/Cartón,Papel/Cartón,93.6,Blanco,True
+batch_5/000041.JPG#3136,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_12/000022.jpg#972,Disposable plastic cup,Plastico,PET,Plástico,99.9,Blanco,True
+batch_2/000080.JPG#2349,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_12/000034.jpg#1102,Other plastic wrapper,No aprovechable,No identificado,No identificado,49.1,Negro,False
+batch_14/000098.jpg#1877,Foam cup,No aprovechable,Papel/Cartón,Papel/Cartón,90.2,Blanco,True
+batch_6/000045.JPG#3467,Clear plastic bottle,Plastico,PET,Plástico,100.0,Blanco,True
+batch_10/000033.jpg#448,Unlabeled litter,,Papel/Cartón,Papel/Cartón,85.1,Blanco,True
+batch_9/000030.jpg#4562,Plastic film,No aprovechable,No aprovechable,No aprovechable,94.6,Negro,True
+batch_4/000079.JPG#2862,Plastic film,No aprovechable,No aprovechable,No aprovechable,69.4,Negro,True
+batch_13/000014.jpg#1468,Unlabeled litter,,Papel/Cartón,Papel/Cartón,77.1,Blanco,True
+batch_12/000004.jpg#932,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,98.9,Blanco,True
+batch_5/000084.JPG#2944,Clear plastic bottle,Plastico,PET,Plástico,99.0,Blanco,True
+batch_10/000014.jpg#393,Glass bottle,Vidrio,Metal,Metal,92.4,Blanco,True
+batch_7/000097.JPG#3921,Plastic film,No aprovechable,No aprovechable,No aprovechable,53.6,Negro,False
+batch_9/000073.jpg#4676,Plastic film,No aprovechable,PET,Plástico,99.5,Blanco,True
+batch_2/000033.JPG#2265,Drink can,Metal,No aprovechable,No aprovechable,82.5,Negro,True
+batch_8/000074.jpg#4422,Drink can,Metal,Metal,Metal,100.0,Blanco,True
+batch_8/000057.jpg#4349,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,62.9,Blanco,True
+batch_10/000052.jpg#555,Unlabeled litter,,Metal,Metal,97.7,Blanco,True
+batch_15/000027.jpg#2005,Plastic lid,Plastico,Metal,Metal,88.2,Blanco,True
+batch_6/000060.JPG#3416,Clear plastic bottle,Plastico,PET,Plástico,100.0,Blanco,True
+batch_10/000039.jpg#511,Plastic bottle cap,Plastico,PET,Plástico,99.0,Blanco,True
+batch_10/000034.jpg#467,Unlabeled litter,,Papel/Cartón,Papel/Cartón,86.4,Blanco,True
+batch_9/000057.jpg#4631,Plastic film,No aprovechable,No identificado,No identificado,46.6,Negro,False
+batch_6/000043.JPG#3470,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,90.4,Blanco,True
+batch_9/000026.jpg#4540,Plastic bottle cap,Plastico,No aprovechable,No aprovechable,99.9,Negro,True
+batch_2/000034.JPG#2400,Cigarette,No aprovechable,No aprovechable,No aprovechable,70.2,Negro,True
+batch_4/000080.JPG#2863,Plastic bottle cap,Plastico,Metal,Metal,89.5,Blanco,True
+batch_3/IMG_5040.JPG#2511,Crisp packet,No aprovechable,No aprovechable,No aprovechable,57.8,Negro,False
+batch_13/000019.jpg#1488,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,85.3,Blanco,True
+batch_6/000001.JPG#3578,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_1/000106.JPG#218,Other plastic bottle,Plastico,PET,Plástico,94.2,Blanco,True
+batch_3/IMG_4878.JPG#2571,Plastic film,No aprovechable,PET,Plástico,96.7,Blanco,True
+batch_14/000097.jpg#1870,Broken glass,Vidrio,Papel/Cartón,Papel/Cartón,97.3,Blanco,True
+batch_9/000056.jpg#4627,Tissues,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_1/000015.jpg#99,Plastic film,No aprovechable,PET,Plástico,71.5,Blanco,True
+batch_2/000000.JPG#2198,Other plastic bottle,Plastico,PET,Plástico,99.0,Blanco,True
+batch_13/000015.jpg#1474,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,85.2,Blanco,True
+batch_3/IMG_4913.JPG#2599,Single-use carrier bag,No aprovechable,PEAD,Plástico,99.0,Blanco,True
+batch_4/000032.JPG#2762,Plastic bottle cap,Plastico,No identificado,No identificado,49.9,Negro,False
+batch_15/000019.jpg#1956,Clear plastic bottle,Plastico,Metal,Metal,99.0,Blanco,True
+batch_8/000007.jpg#4053,Clear plastic bottle,Plastico,Metal,Metal,99.0,Blanco,True
+batch_7/000023.JPG#3687,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.6,Blanco,True
+batch_10/000015.jpg#400,Unlabeled litter,,Papel/Cartón,Papel/Cartón,98.0,Blanco,True
+batch_12/000015.jpg#951,Cigarette,No aprovechable,PEAD,Plástico,90.5,Blanco,True
+batch_14/000096.jpg#1850,Glass bottle,Vidrio,Metal,Metal,80.0,Blanco,True
+batch_10/000070.jpg#579,Unlabeled litter,,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_1/000011.jpg#53,Drink can,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_5/000111.JPG#3014,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,79.8,Blanco,True
+batch_8/000036.jpg#4266,Glass bottle,Vidrio,Metal,Metal,68.0,Blanco,True
+batch_11/000008.jpg#709,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.1,Blanco,True
+batch_12/000070.jpg#1311,Plastic film,No aprovechable,PET,Plástico,99.0,Blanco,True
+batch_2/000047.JPG#2290,Drink can,Metal,Metal,Metal,59.4,Blanco,False
+batch_6/000097.JPG#3252,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,54.9,Blanco,False
+batch_8/000003.jpg#4046,Other plastic wrapper,No aprovechable,PEAD,Plástico,99.0,Blanco,True
+batch_12/000097.jpg#1423,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,87.1,Blanco,True
+batch_7/000051.JPG#3775,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_8/000071.jpg#4404,Unlabeled litter,,Papel/Cartón,Papel/Cartón,81.3,Blanco,True
+batch_7/000129.JPG#3974,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,53.7,Blanco,False
+batch_7/000112.JPG#3938,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_11/000028.jpg#755,Styrofoam piece,No aprovechable,No aprovechable,No aprovechable,79.2,Negro,True
+batch_5/000106.JPG#3001,Plastic film,No aprovechable,No identificado,No identificado,42.7,Negro,False
+batch_6/000057.JPG#3447,Single-use carrier bag,No aprovechable,No aprovechable,No aprovechable,88.1,Negro,True
+batch_3/IMG_4878.JPG#2570,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_11/000049.jpg#796,Unlabeled litter,,Metal,Metal,100.0,Blanco,True
+batch_9/000027.jpg#4545,Plastic film,No aprovechable,Vidrio,Vidrio,67.1,Blanco,True
+batch_14/000046.jpg#1772,Unlabeled litter,,Papel/Cartón,Papel/Cartón,79.0,Blanco,True
+batch_11/000058.jpg#808,Unlabeled litter,,Papel/Cartón,Papel/Cartón,97.4,Blanco,True
+batch_5/000015.JPG#3073,Other plastic,Plastico,PET,Plástico,99.0,Blanco,True
+batch_7/000044.JPG#3733,Foam cup,No aprovechable,Papel/Cartón,Papel/Cartón,80.3,Blanco,True
+batch_1/000111.JPG#230,Disposable food container,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_7/000049.JPG#3765,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,96.1,Blanco,True
+batch_9/000028.jpg#4549,Plastic film,No aprovechable,No aprovechable,No aprovechable,57.1,Negro,False
+batch_7/000048.JPG#3740,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,86.4,Blanco,True
+batch_13/000008.jpg#1444,Disposable plastic cup,Plastico,PET,Plástico,61.4,Blanco,True
+batch_8/000080.jpg#4438,Other plastic cup,Plastico,Papel/Cartón,Papel/Cartón,92.9,Blanco,True
+batch_9/000087.jpg#4740,Tissues,No aprovechable,No aprovechable,No aprovechable,69.3,Negro,True
+batch_12/000091.jpg#1396,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,99.8,Blanco,True
+batch_8/000036.jpg#4264,Glass bottle,Vidrio,Metal,Metal,87.7,Blanco,True
+batch_12/000027.jpg#1054,Other plastic,Plastico,Metal,Metal,60.2,Blanco,True
+batch_3/IMG_4911.JPG#2597,Disposable food container,Plastico,PET,Plástico,99.0,Blanco,True
+batch_5/000047.JPG#3150,Unlabeled litter,,Metal,Metal,56.1,Blanco,False
+batch_14/000021.jpg#1731,Other plastic bottle,Plastico,Metal,Metal,99.0,Blanco,True
+batch_15/000072.jpg#2164,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_6/000100.JPG#3244,Clear plastic bottle,Plastico,Metal,Metal,50.8,Blanco,False
+batch_10/000043.jpg#527,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,78.4,Blanco,True
+batch_12/000000.jpg#925,Unlabeled litter,,PEAD,Plástico,93.3,Blanco,True
+batch_12/000017.jpg#955,Paper cup,No aprovechable,PET,Plástico,99.0,Blanco,True
+batch_3/IMG_4961.JPG#2654,Plastic utensils,No aprovechable,Papel/Cartón,Papel/Cartón,65.0,Blanco,True
+batch_5/000076.JPG#2936,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_3/IMG_4911.JPG#2598,Plastic film,No aprovechable,PET,Plástico,99.0,Blanco,True
+batch_5/000099.JPG#2968,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,67.9,Blanco,True
+batch_2/000001.JPG#2202,Other plastic wrapper,No aprovechable,No aprovechable,No aprovechable,69.6,Negro,True
+batch_15/000028.jpg#2008,Unlabeled litter,,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_8/000025.jpg#4195,Disposable plastic cup,Plastico,Metal,Metal,95.9,Blanco,True
+batch_15/000041.jpg#2086,Tissues,No aprovechable,Papel/Cartón,Papel/Cartón,89.6,Blanco,True
+batch_12/000091.jpg#1398,Disposable plastic cup,Plastico,PET,Plástico,99.0,Blanco,True
+batch_3/IMG_5050.JPG#2525,Plastic lid,Plastico,PET,Plástico,97.7,Blanco,True
+batch_5/000035.JPG#3119,Plastic lid,Plastico,PET,Plástico,98.5,Blanco,True
+batch_8/000048.jpg#4298,Clear plastic bottle,Plastico,PET,Plástico,99.0,Blanco,True
+batch_12/000099.jpg#1425,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_2/000099.JPG#2389,Single-use carrier bag,No aprovechable,PET,Plástico,99.5,Blanco,True
+batch_9/000064.jpg#4651,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_1/000129.JPG#276,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_12/000028.jpg#1057,Other plastic wrapper,No aprovechable,No identificado,No identificado,47.7,Negro,False
+batch_8/000047.jpg#4296,Egg carton,Papel/Carton,Metal,Metal,94.1,Blanco,True
+batch_11/000074.jpg#845,Styrofoam piece,No aprovechable,PET,Plástico,86.1,Blanco,True
+batch_7/000014.JPG#3658,Aluminium foil,Metal,Papel/Cartón,Papel/Cartón,90.5,Blanco,True
+batch_2/000071.JPG#2333,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,97.7,Blanco,True
+batch_13/000065.jpg#1643,Plastic film,No aprovechable,PEAD,Plástico,99.0,Blanco,True
+batch_2/000048.JPG#2291,Drink can,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_5/000055.JPG#3171,Plastic lid,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_7/000115.JPG#3946,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,74.4,Blanco,True
+batch_12/000087.jpg#1362,Disposable plastic cup,Plastico,PET,Plástico,99.9,Blanco,True
+batch_13/000080.jpg#1659,Single-use carrier bag,No aprovechable,PET,Plástico,99.0,Blanco,True
+batch_10/000003.jpg#337,Single-use carrier bag,No aprovechable,No identificado,No identificado,39.6,Negro,False
+batch_8/000025.jpg#4193,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,98.1,Blanco,True
+batch_1/000040.jpg#59,Pop tab,Metal,Metal,Metal,99.0,Blanco,True
+batch_3/IMG_4936.JPG#2630,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,70.5,Blanco,True
+batch_12/000050.jpg#1166,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,88.9,Blanco,True
+batch_1/000095.JPG#174,Shoe,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_3/IMG_5045.JPG#2516,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_9/000081.jpg#4710,Other plastic wrapper,No aprovechable,PET,Plástico,83.7,Blanco,True
+batch_9/000094.jpg#4763,Clear plastic bottle,Plastico,No identificado,No identificado,33.8,Negro,False
+batch_2/000069.JPG#2331,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,61.1,Blanco,True
+batch_13/000039.jpg#1567,Plastic bottle cap,Plastico,Metal,Metal,76.2,Blanco,True
+batch_14/000083.jpg#1829,Unlabeled litter,,Papel/Cartón,Papel/Cartón,95.8,Blanco,True
+batch_4/000053.JPG#2834,Plastic film,No aprovechable,No aprovechable,No aprovechable,80.4,Negro,True
+batch_1/000061.jpg#68,Aerosol,Metal,Metal,Metal,53.2,Blanco,False
+batch_1/000094.JPG#171,Food waste,,Metal,Metal,99.0,Blanco,True
+batch_3/IMG_5067.JPG#2718,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,66.0,Blanco,True
+batch_12/000033.jpg#1091,Drink carton,Papel/Carton,Papel/Cartón,Papel/Cartón,75.6,Blanco,True
+batch_6/000058.JPG#3421,Clear plastic bottle,Plastico,Vidrio,Vidrio,77.7,Blanco,True
+batch_12/000044.jpg#1135,Drink can,Metal,No aprovechable,No aprovechable,73.4,Negro,True
+batch_7/000127.JPG#3972,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_12/000040.jpg#1123,Plastic film,No aprovechable,PEAD,Plástico,60.7,Blanco,True
+batch_11/000003.jpg#695,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.4,Blanco,True
+batch_14/000037.jpg#1759,Aluminium foil,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_15/000052.jpg#2112,Plastic film,No aprovechable,Vidrio,Vidrio,89.2,Blanco,True
+batch_9/000061.jpg#4644,Tissues,No aprovechable,Papel/Cartón,Papel/Cartón,97.4,Blanco,True
+batch_3/IMG_5046.JPG#2521,Metal lid,Metal,Metal,Metal,99.0,Blanco,True
+batch_12/000097.jpg#1422,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,99.7,Blanco,True
+batch_11/000072.jpg#839,Other plastic wrapper,No aprovechable,PET,Plástico,93.4,Blanco,True
+batch_11/000018.jpg#736,Scrap metal,Metal,Papel/Cartón,Papel/Cartón,99.9,Blanco,True
+batch_5/000023.JPG#3099,Plastic film,No aprovechable,No identificado,No identificado,48.6,Negro,False
+batch_4/000054.JPG#2836,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_3/IMG_4881.JPG#2681,Plastic film,No aprovechable,No identificado,No identificado,36.1,Negro,False
+batch_13/000007.jpg#1442,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,57.6,Blanco,False
+batch_8/000065.jpg#4364,Broken glass,Vidrio,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_12/000005.jpg#933,Plastic film,No aprovechable,No aprovechable,No aprovechable,99.9,Negro,True
+batch_13/000084.jpg#1675,Metal bottle cap,Metal,Metal,Metal,56.9,Blanco,False
+batch_15/000004.jpg#1894,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,76.1,Blanco,True
+batch_13/000045.jpg#1577,Drink can,Metal,Metal,Metal,92.2,Blanco,True
+batch_1/000038.jpg#121,Food Can,Metal,Metal,Metal,99.0,Blanco,True
+batch_1/000127.JPG#260,Disposable food container,Plastico,PET,Plástico,64.2,Blanco,True
+batch_11/000038.jpg#776,Paper cup,No aprovechable,PET,Plástico,100.0,Blanco,True
+batch_4/000066.JPG#2767,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,98.9,Blanco,True
+batch_10/000027.jpg#436,Other plastic,Plastico,No identificado,No identificado,49.2,Negro,False
+batch_11/000001.jpg#689,Styrofoam piece,No aprovechable,PET,Plástico,65.7,Blanco,True
+batch_7/000071.JPG#3824,Single-use carrier bag,No aprovechable,No aprovechable,No aprovechable,62.7,Negro,True
+batch_14/000040.jpg#1762,Metal bottle cap,Metal,Metal,Metal,100.0,Blanco,True
+batch_3/IMG_4948.JPG#2697,Normal paper,Papel/Carton,PET,Plástico,63.6,Blanco,True
+batch_9/000008.jpg#4493,Other plastic bottle,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_5/000116.JPG#3026,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,84.9,Blanco,True
+batch_3/IMG_4998.JPG#2502,Drink can,Metal,PET,Plástico,51.2,Blanco,False
+batch_11/000099.jpg#919,Clear plastic bottle,Plastico,PET,Plástico,100.0,Blanco,True
+batch_8/000027.jpg#4200,Clear plastic bottle,Plastico,PET,Plástico,99.0,Blanco,True
+batch_12/000010.jpg#943,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_13/000003.jpg#1430,Unlabeled litter,,Papel/Cartón,Papel/Cartón,64.4,Blanco,True
+batch_9/000075.jpg#4685,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_5/000051.JPG#3167,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_1/000050.jpg#92,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,68.1,Blanco,True
+batch_4/000014.JPG#2794,Plastic bottle cap,Plastico,No aprovechable,No aprovechable,99.5,Negro,True
+batch_11/000039.jpg#779,Unlabeled litter,,Papel/Cartón,Papel/Cartón,98.1,Blanco,True
+batch_15/000002.jpg#1889,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,64.0,Blanco,True
+batch_1/000022.jpg#71,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_5/000064.JPG#2973,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,89.3,Blanco,True
+batch_7/000066.JPG#3816,Plastic film,No aprovechable,No aprovechable,No aprovechable,100.0,Negro,True
+batch_4/000097.JPG#2888,Other plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,60.0,Blanco,False
+batch_3/IMG_5055.JPG#2538,Drink can,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_9/000065.jpg#4654,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_9/000036.jpg#4571,Plastic film,No aprovechable,No aprovechable,No aprovechable,56.2,Negro,False
+batch_14/000028.jpg#1746,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_2/000007.JPG#2213,Drink can,Metal,Papel/Cartón,Papel/Cartón,84.4,Blanco,True
+batch_5/000067.JPG#2978,Unlabeled litter,,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_6/000087.JPG#3272,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,52.5,Blanco,False
+batch_10/000008.jpg#370,Plastic film,No aprovechable,PET,Plástico,61.5,Blanco,True
+batch_8/000032.jpg#4238,Egg carton,Papel/Carton,PET,Plástico,55.5,Blanco,False
+batch_15/000021.jpg#1971,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,62.8,Blanco,True
+batch_9/000075.jpg#4684,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,94.3,Blanco,True
+batch_15/000063.jpg#2134,Metal bottle cap,Metal,Metal,Metal,90.7,Blanco,True
+batch_12/000048.jpg#1158,Rope & strings,No aprovechable,Papel/Cartón,Papel/Cartón,95.1,Blanco,True
+batch_2/000054.JPG#2304,Six pack rings,No aprovechable,Papel/Cartón,Papel/Cartón,59.1,Blanco,False
+batch_6/000058.JPG#3420,Clear plastic bottle,Plastico,No identificado,No identificado,48.2,Negro,False
+batch_14/000099.jpg#1879,Unlabeled litter,,No identificado,No identificado,37.0,Negro,False
+batch_8/000016.jpg#4109,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,99.7,Blanco,True
+batch_7/000066.JPG#3814,Foam cup,No aprovechable,Papel/Cartón,Papel/Cartón,95.9,Blanco,True
+batch_6/000056.JPG#3424,Drink carton,Papel/Carton,Papel/Cartón,Papel/Cartón,59.9,Blanco,False
+batch_8/000066.jpg#4394,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,89.1,Blanco,True
+batch_14/000003.jpg#1704,Plastic film,No aprovechable,No identificado,No identificado,49.0,Negro,False
+batch_6/000074.JPG#3294,Other plastic bottle,Plastico,PET,Plástico,92.7,Blanco,True
+batch_2/000079.JPG#2346,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,65.3,Blanco,True
+batch_7/000035.JPG#3705,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,97.0,Blanco,True
+batch_9/000071.jpg#4671,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,83.1,Blanco,True
+batch_6/000037.JPG#3484,Clear plastic bottle,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_9/000060.jpg#4637,Other plastic wrapper,No aprovechable,No identificado,No identificado,49.8,Negro,False
+batch_9/000094.jpg#4765,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,53.0,Blanco,False
+batch_9/000043.jpg#4584,Plastic film,No aprovechable,Metal,Metal,100.0,Blanco,True
+batch_13/000032.jpg#1555,Plastic lid,Plastico,PET,Plástico,100.0,Blanco,True
+batch_7/000113.JPG#3940,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_8/000085.jpg#4447,Plastic bottle cap,Plastico,Metal,Metal,99.0,Blanco,True
+batch_2/000076.JPG#2343,Metal bottle cap,Metal,Metal,Metal,97.2,Blanco,True
+batch_2/000073.JPG#2335,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,96.4,Blanco,True
+batch_1/000024.jpg#80,Drink can,Metal,Papel/Cartón,Papel/Cartón,82.8,Blanco,True
+batch_15/000065.jpg#2147,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,57.3,Blanco,False
+batch_1/000058.jpg#47,Other plastic bottle,Plastico,PET,Plástico,99.4,Blanco,True
+batch_15/000049.jpg#2100,Plastic bottle cap,Plastico,Papel/Cartón,Papel/Cartón,91.4,Blanco,True
+batch_15/000081.jpg#2191,Other plastic wrapper,No aprovechable,PET,Plástico,87.9,Blanco,True
+batch_10/000013.jpg#392,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_5/000067.JPG#2977,Clear plastic bottle,Plastico,PET,Plástico,100.0,Blanco,True
+batch_2/000085.JPG#2360,Plastic straw,No aprovechable,Papel/Cartón,Papel/Cartón,72.4,Blanco,True
+batch_3/IMG_5066.JPG#2714,Other plastic wrapper,No aprovechable,PET,Plástico,87.1,Blanco,True
+batch_9/000007.jpg#4492,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,83.9,Blanco,True
+batch_3/IMG_4950.JPG#2684,Tissues,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_4/000060.JPG#2845,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,98.0,Blanco,True
+batch_3/IMG_5046.JPG#2518,Food Can,Metal,Metal,Metal,99.9,Blanco,True
+batch_1/000045.jpg#116,Food Can,Metal,Metal,Metal,93.5,Blanco,True
+batch_12/000094.jpg#1414,Clear plastic bottle,Plastico,PET,Plástico,100.0,Blanco,True
+batch_6/000002.JPG#3574,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_11/000099.jpg#920,Plastic bottle cap,Plastico,Papel/Cartón,Papel/Cartón,86.3,Blanco,True
+batch_7/000033.JPG#3700,Paper cup,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_2/000041.JPG#2281,Drink can,Metal,Metal,Metal,81.9,Blanco,True
+batch_11/000010.jpg#716,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_7/000083.JPG#3870,Plastic film,No aprovechable,PEAD,Plástico,99.0,Blanco,True
+batch_12/000061.jpg#1240,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_2/000026.JPG#2254,Crisp packet,No aprovechable,Papel/Cartón,Papel/Cartón,69.9,Blanco,True
+batch_10/000035.jpg#486,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_6/000103.JPG#3232,Clear plastic bottle,Plastico,PET,Plástico,57.4,Blanco,False
+batch_13/000054.jpg#1611,Drink can,Metal,Vidrio,Vidrio,95.8,Blanco,True
+batch_3/IMG_5060.JPG#2543,Disposable food container,Plastico,Metal,Metal,99.0,Blanco,True
+batch_15/000036.jpg#2064,Plastic lid,Plastico,Metal,Metal,100.0,Blanco,True
+batch_11/000039.jpg#777,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_12/000007.jpg#935,Crisp packet,No aprovechable,Metal,Metal,99.2,Blanco,True
+batch_5/000118.JPG#3028,Foam cup,No aprovechable,Papel/Cartón,Papel/Cartón,98.7,Blanco,True
+batch_5/000022.JPG#3095,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,97.8,Blanco,True
+batch_2/000029.JPG#2260,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_15/000015.jpg#1940,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_7/000056.JPG#3788,Spread tub,Plastico,Papel/Cartón,Papel/Cartón,99.8,Blanco,True
+batch_12/000029.jpg#1066,Clear plastic bottle,Plastico,PET,Plástico,59.0,Blanco,False
+batch_13/000033.jpg#1556,Aluminium foil,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_11/000008.jpg#707,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,97.1,Blanco,True
+batch_7/000062.JPG#3798,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,78.6,Blanco,True
+batch_15/000006.jpg#1898,Plastic lid,Plastico,PET,Plástico,91.3,Blanco,True
+batch_15/000079.jpg#2187,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,98.7,Blanco,True
+batch_5/000114.JPG#3020,Disposable food container,Plastico,Metal,Metal,89.5,Blanco,True
+batch_9/000074.jpg#4679,Glass bottle,Vidrio,Papel/Cartón,Papel/Cartón,80.1,Blanco,True
+batch_8/000092.jpg#4459,Plastic lid,Plastico,PET,Plástico,99.7,Blanco,True
+batch_13/000090.jpg#1685,Metal bottle cap,Metal,Metal,Metal,100.0,Blanco,True
+batch_4/000046.JPG#2827,Rope & strings,No aprovechable,Papel/Cartón,Papel/Cartón,98.1,Blanco,True
+batch_4/000093.JPG#2883,Plastic film,No aprovechable,No aprovechable,No aprovechable,97.5,Negro,True
+batch_11/000055.jpg#805,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_10/000026.jpg#431,Egg carton,Papel/Carton,Papel/Cartón,Papel/Cartón,89.8,Blanco,True
+batch_12/000084.jpg#1338,Single-use carrier bag,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_11/000006.jpg#702,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_5/000056.JPG#3173,Plastic lid,Plastico,Metal,Metal,80.7,Blanco,True
+batch_2/000061.JPG#2322,Other plastic,Plastico,PET,Plástico,98.6,Blanco,True
+batch_9/000000.jpg#4475,Plastic film,No aprovechable,No aprovechable,No aprovechable,96.7,Negro,True
+batch_1/000110.JPG#227,Drink can,Metal,Papel/Cartón,Papel/Cartón,74.7,Blanco,True
+batch_13/000087.jpg#1679,Cigarette,No aprovechable,Papel/Cartón,Papel/Cartón,73.3,Blanco,True
+batch_12/000089.jpg#1383,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_3/IMG_4997.JPG#2500,Drink can,Metal,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_4/000082.JPG#2866,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,58.7,Blanco,False
+batch_1/000104.JPG#211,Squeezable tube,No aprovechable,PET,Plástico,99.0,Blanco,True
+batch_13/000020.jpg#1492,Plastic straw,No aprovechable,Metal,Metal,99.0,Blanco,True
+batch_3/IMG_4961.JPG#2655,Plastic utensils,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_7/000033.JPG#3701,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,100.0,Blanco,True
+batch_5/000037.JPG#3128,Plastic glooves,No aprovechable,Papel/Cartón,Papel/Cartón,80.6,Blanco,True
+batch_10/000093.jpg#653,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_5/000004.JPG#3037,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_5/000007.JPG#3047,Drink can,Metal,Papel/Cartón,Papel/Cartón,99.8,Blanco,True
+batch_2/000097.JPG#2387,Meal carton,Papel/Carton,Papel/Cartón,Papel/Cartón,92.2,Blanco,True
+batch_12/000013.jpg#949,Plastic bottle cap,Plastico,PET,Plástico,99.0,Blanco,True
+batch_13/000063.jpg#1641,Styrofoam piece,No aprovechable,No aprovechable,No aprovechable,99.1,Negro,True
+batch_15/000071.jpg#2160,Clear plastic bottle,Plastico,No aprovechable,No aprovechable,85.8,Negro,True
+batch_15/000063.jpg#2135,Other plastic,Plastico,No aprovechable,No aprovechable,88.8,Negro,True
+batch_4/000095.JPG#2885,Plastic bottle cap,Plastico,PET,Plástico,68.8,Blanco,True
+batch_7/000018.JPG#3663,Styrofoam piece,No aprovechable,PET,Plástico,70.5,Blanco,True
+batch_6/000069.JPG#3392,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,76.3,Blanco,True
+batch_10/000015.jpg#399,Clear plastic bottle,Plastico,Metal,Metal,99.1,Blanco,True
+batch_1/000129.JPG#282,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,98.8,Blanco,True
+batch_6/000093.JPG#3263,Plastic bottle cap,Plastico,Papel/Cartón,Papel/Cartón,68.9,Blanco,True
+batch_10/000096.jpg#674,Disposable plastic cup,Plastico,Papel/Cartón,Papel/Cartón,98.4,Blanco,True
+batch_10/000008.jpg#369,Plastic film,No aprovechable,PET,Plástico,95.7,Blanco,True
+batch_2/000088.JPG#2376,Clear plastic bottle,Plastico,Metal,Metal,68.4,Blanco,True
+batch_7/000141.JPG#4001,Other plastic wrapper,No aprovechable,Metal,Metal,97.8,Blanco,True
+batch_7/000085.JPG#3874,Clear plastic bottle,Plastico,Metal,Metal,99.0,Blanco,True
+batch_1/000014.jpg#30,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_7/000131.JPG#3979,Other plastic,Plastico,No aprovechable,No aprovechable,94.7,Negro,True
+batch_9/000016.jpg#4523,Single-use carrier bag,No aprovechable,No aprovechable,No aprovechable,100.0,Negro,True
+batch_6/000048.JPG#3463,Disposable food container,Plastico,Papel/Cartón,Papel/Cartón,69.8,Blanco,True
+batch_13/000018.jpg#1483,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,90.9,Blanco,True
+batch_5/000011.JPG#3054,Drink can,Metal,Metal,Metal,72.7,Blanco,True
+batch_1/000068.JPG#284,Cigarette,No aprovechable,Metal,Metal,68.2,Blanco,True
+batch_3/IMG_4860.JPG#2550,Plastic film,No aprovechable,Metal,Metal,83.5,Blanco,True
+batch_12/000087.jpg#1366,Single-use carrier bag,No aprovechable,PET,Plástico,97.4,Blanco,True
+batch_14/000084.jpg#1830,Other plastic wrapper,No aprovechable,Papel/Cartón,Papel/Cartón,97.8,Blanco,True
+batch_12/000093.jpg#1408,Clear plastic bottle,Plastico,Metal,Metal,63.6,Blanco,True
+batch_12/000079.jpg#1330,Clear plastic bottle,Plastico,PEAD,Plástico,99.0,Blanco,True
+batch_15/000051.jpg#2105,Tissues,No aprovechable,No aprovechable,No aprovechable,86.2,Negro,True
+batch_8/000018.jpg#4113,Drink can,Metal,Metal,Metal,99.0,Blanco,True
+batch_5/000057.JPG#3177,Single-use carrier bag,No aprovechable,PET,Plástico,73.5,Blanco,True
+batch_11/000011.jpg#719,Corrugated carton,Papel/Carton,Papel/Cartón,Papel/Cartón,89.1,Blanco,True
+batch_14/000052.jpg#1782,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,53.0,Blanco,False
+batch_13/000025.jpg#1542,Unlabeled litter,,Papel/Cartón,Papel/Cartón,59.8,Blanco,False
+batch_8/000024.jpg#4191,Plastic straw,No aprovechable,No aprovechable,No aprovechable,81.0,Negro,True
+batch_7/000122.JPG#3956,Other plastic,Plastico,Papel/Cartón,Papel/Cartón,74.2,Blanco,True
+batch_12/000038.jpg#1117,Clear plastic bottle,Plastico,Vidrio,Vidrio,78.4,Blanco,True
+batch_3/IMG_4916.JPG#2610,Disposable food container,Plastico,PET,Plástico,100.0,Blanco,True
+batch_8/000060.jpg#4355,Plastic film,No aprovechable,Papel/Cartón,Papel/Cartón,97.8,Blanco,True
+batch_12/000074.jpg#1322,Unlabeled litter,,Papel/Cartón,Papel/Cartón,50.1,Blanco,False
+batch_12/000091.jpg#1395,Plastic lid,Plastico,Papel/Cartón,Papel/Cartón,66.0,Blanco,True
+batch_9/000029.jpg#4560,Unlabeled litter,,No aprovechable,No aprovechable,98.0,Negro,True
+batch_9/000001.jpg#4477,Drink can,Metal,PET,Plástico,88.2,Blanco,True
+batch_2/000089.JPG#2378,Plastic film,No aprovechable,Metal,Metal,99.0,Blanco,True
+batch_1/000098.JPG#189,Clear plastic bottle,Plastico,Papel/Cartón,Papel/Cartón,64.7,Blanco,True
+batch_3/IMG_4855.JPG#2546,Other carton,Papel/Carton,No aprovechable,No aprovechable,99.0,Negro,True
+batch_4/000065.JPG#2850,Other plastic,Plastico,PET,Plástico,83.9,Blanco,True
+batch_1/000045.jpg#119,Food Can,Metal,Metal,Metal,68.7,Blanco,True
+batch_7/000086.JPG#3893,Paper cup,No aprovechable,No identificado,No identificado,49.9,Negro,False
+batch_8/000093.jpg#4461,Other carton,Papel/Carton,Papel/Cartón,Papel/Cartón,99.0,Blanco,True
+batch_15/000045.jpg#2091,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,82.6,Blanco,True
+batch_2/000067.JPG#2327,Other plastic wrapper,No aprovechable,No aprovechable,No aprovechable,57.1,Negro,False
+batch_7/000043.JPG#3725,Other plastic,Plastico,Metal,Metal,73.1,Blanco,True
+batch_15/000034.jpg#2060,Plastic lid,Plastico,PEAD,Plástico,87.3,Blanco,True
+batch_2/000030.JPG#2366,Normal paper,Papel/Carton,Papel/Cartón,Papel/Cartón,76.3,Blanco,True
+batch_11/000016.jpg#732,Styrofoam piece,No aprovechable,Papel/Cartón,Papel/Cartón,95.4,Blanco,True

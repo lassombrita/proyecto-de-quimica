@@ -879,6 +879,55 @@ def main(argv: list[str] | None = None) -> int:
     args = p.parse_args(argv)
 
 
+    def generar_variantes(img_bgr, n_variedades, semilla):
+        """
+        Genera variantes de una imagen usando albumentations v2.0.8 sin ColorJitter.
+        
+        Args:
+            img_bgr: Imagen en formato BGR (OpenCV), shape (h,w,3)
+            n_variedades: Número total de imagenes a generar (incluyendo la original)
+            semilla: Semilla para reproducibilidad
+        
+        Returns:
+            Lista con la original primero, seguidas de las aumentadas.
+        
+        Notas:
+            - Usa HorizontalFlip (deterministico con seed)
+            - Usa RandomBrightnessContrast con clamp (no afecta contenido visual)
+            - La original siempre es la primera (indice 0)
+        """
+        from albumentations import Compose, HorizontalFlip, RandomBrightnessContrast
+        
+        # Crear transformaciones deterministicas
+        transform_horizontal_flip = Compose([
+            HorizontalFlip(p=1.0),  # Siempre flip horizontal
+        ])
+        
+        transform_bright_contrast = Compose([
+            RandomBrightnessContrast(brightness_limit=0.1, contrast_limit=0.1, p=1.0),
+        ])
+        
+        img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+        
+        # Generar variantes
+        variantes = [img_bgr]  # Original primero
+        
+        random.seed(semilla)
+        np.random.seed(semilla)
+        
+        for i in range(1, n_variedades):
+            if i % 2 == 0:
+                result = transform_horizontal_flip(image=img_rgb)
+            else:
+                result = transform_bright_contrast(image=img_rgb)
+            
+            variante_rgb = result['image']
+            variante_bgr = cv2.cvtColor(variante_rgb, cv2.COLOR_RGB2BGR)
+            variantes.append(variante_bgr)
+        
+        return variantes
+
+
 
     if args.borrar_origen:
 
