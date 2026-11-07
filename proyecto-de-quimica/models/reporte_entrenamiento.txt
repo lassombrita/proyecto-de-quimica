@@ -1,0 +1,26 @@
+Red neuronal sola (MobileNetV2 + capa TrashNet) — exactitud en 380 fotos de prueba: 0.892
+
+              precision    recall  f1-score   support
+
+   cardboard      0.965     0.917     0.940        60
+       glass      0.882     0.882     0.882        76
+       metal      0.862     0.903     0.882        62
+       paper      0.890     0.910     0.900        89
+     plastic      0.899     0.849     0.873        73
+       trash      0.818     0.900     0.857        20
+
+    accuracy                          0.892       380
+   macro avg      0.886     0.893     0.889       380
+weighted avg      0.893     0.892     0.892       380
+
+======================================================================
+Desempeño del SISTEMA COMPLETO (forma + red + fallback) en 380 fotos de
+prueba (entrenamiento/evaluar_sistema.py, umbral de la red sola = 0.85):
+
+  Identificados:                 68.7 %
+  Exactitud sobre identificados: 92.3 %
+  Errores (sobre el total):       5.3 %
+  No identificado (fallback):    31.3 %
+
+El sistema prefiere decir "No identificado" (contenedor negro) antes que
+arriesgar un error que contamine el contenedor blanco.

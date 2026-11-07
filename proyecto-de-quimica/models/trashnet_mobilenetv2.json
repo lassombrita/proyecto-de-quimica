@@ -1,0 +1,66 @@
+{
+  "exactitud_prueba": 0.8921,
+  "exactitud_validacion": 0.8971,
+  "C": 0.3,
+  "n_entrenamiento": 1768,
+  "n_validacion": 379,
+  "n_prueba": 380,
+  "clases": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "matriz_confusion": [
+    [
+      55,
+      0,
+      0,
+      5,
+      0,
+      0
+    ],
+    [
+      0,
+      67,
+      4,
+      2,
+      3,
+      0
+    ],
+    [
+      0,
+      3,
+      56,
+      1,
+      2,
+      0
+    ],
+    [
+      2,
+      0,
+      2,
+      81,
+      1,
+      3
+    ],
+    [
+      0,
+      6,
+      3,
+      1,
+      62,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      1,
+      18
+    ]
+  ]
+}

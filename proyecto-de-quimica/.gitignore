@@ -1,0 +1,11 @@
+# Entorno virtual y caché de Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Base de datos local (se genera al ejecutar la app)
+data/
+
+# Dataset descargado para entrenamiento (no se sube al repositorio)
+entrenamiento/dataset-resized/

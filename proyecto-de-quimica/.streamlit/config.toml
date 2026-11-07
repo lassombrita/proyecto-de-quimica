@@ -1,0 +1,13 @@
+# Configuración de Streamlit para el proyecto
+[theme]
+base = "light"
+primaryColor = "#1B7F5A"
+backgroundColor = "#F4F6F8"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1F2937"
+
+[client]
+toolbarMode = "minimal"   # Oculta opciones de desarrollador en la barra superior
+
+[browser]
+gatherUsageStats = false

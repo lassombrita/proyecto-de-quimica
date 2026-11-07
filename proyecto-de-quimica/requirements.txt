@@ -1,0 +1,24 @@
+# Dependencias del Sistema de Reciclaje Inteligente
+# Instalar con:  pip install -r requirements.txt
+# Combinación probada (nov. 2026, Python 3.13 / 3.14, Windows y Linux):
+#   streamlit 1.67.0 · streamlit-webrtc 0.79.1 · aiortc 1.16.0 · av 19.0.2 · plotly 6.5.2
+
+# --- Interfaz -------------------------------------------------------------
+streamlit>=1.67,<2.0             # st.fragment(run_every), width="stretch", delta_arrow
+
+# --- Video en tiempo real (WebRTC) ----------------------------------------
+streamlit-webrtc>=0.79.1,<0.80   # Requiere streamlit>=1.51, aiortc>=1.14, av>=15.1
+aiortc>=1.14,<1.17               # Pila WebRTC en Python (aiortc 1.16 exige av<20)
+av>=15.1,<20                     # PyAV/FFmpeg: decodifica los frames (wheels con FFmpeg incluido)
+
+# --- Analítica -----------------------------------------------------------
+plotly>=6.1,<7                   # Gráficos interactivos (barcornerradius, px.imshow)
+pandas>=2.0                      # DataFrames del tablero
+
+# --- Visión por computador ------------------------------------------------
+numpy>=1.26
+opencv-python-headless>=4.9      # cv2.dnn (MobileNetV2 ONNX) + MOG2 (detector de presencia)
+Pillow>=10.0                     # Lectura de imágenes con orientación EXIF (ingesta TACO)
+
+# sqlite3 viene incluido con Python: no requiere instalación.
+# Opcional, solo para `ingesta_publica.py --solo-prueba`:  pip install scikit-learn

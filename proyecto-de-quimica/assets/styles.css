@@ -1,0 +1,168 @@
+/* =====================================================================
+   styles.css — Hoja de estilos del Sistema de Reciclaje Inteligente
+   ---------------------------------------------------------------------
+   Este archivo se inyecta en Streamlit desde app.py (función cargar_css)
+   usando st.markdown(..., unsafe_allow_html=True).
+   IMPORTANTE: no escribir nunca la etiqueta de cierre del bloque de
+   estilos (barra + "style") dentro de este archivo, ni siquiera en un
+   comentario: el navegador la interpreta como el fin del CSS y el resto
+   del archivo se imprimiría como texto plano en la página.
+   Objetivo: dar un aspecto de "Dashboard Profesional" y ocultar el
+   branding por defecto de Streamlit.
+   Autor: Johan Lasso
+   ===================================================================== */
+
+/* ---------- 1. Paleta de colores (variables reutilizables) ---------- */
+:root {
+    --color-primario: #1B7F5A;      /* Verde reciclaje (marca del proyecto) */
+    --color-primario-claro: #E8F5EE;
+    --color-texto: #1F2937;
+    --color-texto-suave: #6B7280;
+    --color-fondo: #F4F6F8;
+    --color-tarjeta: #FFFFFF;
+    --radio-borde: 16px;
+    --sombra-suave: 0 4px 18px rgba(15, 23, 42, 0.08);
+    --sombra-hover: 0 8px 28px rgba(15, 23, 42, 0.14);
+}
+
+/* ---------- 2. Ocultar branding de Streamlit ---------- */
+#MainMenu {visibility: hidden;}                 /* Menú de hamburguesa */
+footer {visibility: hidden;}                    /* Pie "Made with Streamlit" */
+header [data-testid="stToolbar"] {visibility: hidden;}  /* Botón Deploy */
+[data-testid="stDecoration"] {display: none;}   /* Franja de color superior */
+
+/* ---------- 3. Fondo general y márgenes del contenido ---------- */
+.stApp {
+    background-color: var(--color-fondo);
+}
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* ---------- 4. Barra lateral ---------- */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0F3D2E 0%, #1B7F5A 100%);
+}
+[data-testid="stSidebar"] * {
+    color: #FFFFFF !important;
+}
+/* Botones de la barra lateral: fondo translúcido para que el texto blanco
+   sea legible (antes: texto blanco sobre botón blanco = invisible). */
+[data-testid="stSidebar"] .stButton button {
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+}
+[data-testid="stSidebar"] [data-testid="stPopover"] button {
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+}
+[data-testid="stSidebar"] .stButton button:hover {
+    background-color: rgba(255, 255, 255, 0.22);
+    border-color: #FFFFFF;
+}
+
+/* ---------- 5. Clase .card: tarjeta blanca con sombra ---------- */
+.card {
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra-suave);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.25rem;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.card:hover {
+    box-shadow: var(--sombra-hover);
+    transform: translateY(-2px);
+}
+
+/* Título pequeño dentro de una tarjeta (ej. "Material detectado") */
+.card-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
+    margin-bottom: 0.35rem;
+}
+
+/* Valor grande dentro de una tarjeta (ej. "PET") */
+.card-value {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--color-texto);
+    line-height: 1.1;
+}
+
+/* Texto secundario dentro de una tarjeta */
+.card-sub {
+    font-size: 0.95rem;
+    color: var(--color-texto-suave);
+    margin-top: 0.5rem;
+}
+
+/* ---------- 6. Indicador de contenedor (círculo de color) ---------- */
+.contenedor-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+.contenedor-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 3px solid #D1D5DB;
+    display: inline-block;
+}
+
+/* ---------- 7. Barra de confianza del modelo ---------- */
+.barra-fondo {
+    width: 100%;
+    height: 10px;
+    background-color: #E5E7EB;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 0.6rem;
+}
+.barra-relleno {
+    height: 100%;
+    background: linear-gradient(90deg, #34D399, var(--color-primario));
+    border-radius: 999px;
+}
+
+/* ---------- 8. Encabezado principal ---------- */
+/* Se aplica a un <div> (no a un <p>): Streamlit fija el tamaño de los
+   párrafos con una regla más específica que anulaba este estilo. */
+.titulo-app {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-texto);
+    margin-bottom: 0;
+}
+.subtitulo-app {
+    color: var(--color-texto-suave);
+    margin-top: 0.2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ---------- 9. Métricas nativas (st.metric) como tarjetas ---------- */
+[data-testid="stMetric"] {
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra-suave);
+    padding: 1.1rem 1.4rem;
+}
+[data-testid="stMetricValue"] {
+    color: var(--color-primario);
+    font-weight: 800;
+}
+
+/* ---------- 10. Contenedores con borde (gráficos y tablas) ---------- */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio-borde) !important;
+    box-shadow: var(--sombra-suave);
+    border: none !important;
+}
