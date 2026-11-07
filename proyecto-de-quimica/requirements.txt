@@ -1,24 +1,39 @@
 # Dependencias del Sistema de Reciclaje Inteligente
 # Instalar con:  pip install -r requirements.txt
-# Combinación probada (nov. 2026, Python 3.13 / 3.14, Windows y Linux):
-#   streamlit 1.67.0 · streamlit-webrtc 0.79.1 · aiortc 1.16.0 · av 19.0.2 · plotly 6.5.2
+#
+# Combinación verificada (nov. 2026, Python 3.13):
+#   streamlit 1.67.0 · streamlit-webrtc 0.79.1 · aiortc 1.16.0 · av 19.0.2
+#   plotly 6.9.0 · pandas 3.1 · opencv-python-headless 5.0 · albumentations 2.0.8
+#
+# Puntos de entrada:
+#   streamlit run app_main.py   -> Pipeline Edge (escáner WebRTC + Central Analítica)
+#   streamlit run app.py        -> Aplicación clásica (motores MobileNetV2 / geometría / color)
 
 # --- Interfaz -------------------------------------------------------------
-streamlit>=1.67,<2.0             # st.fragment(run_every), width="stretch", delta_arrow
+streamlit>=1.67,<2.0             # st.fragment(run_every), st.container(key=), width="stretch"
 
 # --- Video en tiempo real (WebRTC) ----------------------------------------
-streamlit-webrtc>=0.79.1,<0.80   # Requiere streamlit>=1.51, aiortc>=1.14, av>=15.1
+streamlit-webrtc>=0.79.1,<0.80   # VideoProcessorBase + async_processing
 aiortc>=1.14,<1.17               # Pila WebRTC en Python (aiortc 1.16 exige av<20)
-av>=15.1,<20                     # PyAV/FFmpeg: decodifica los frames (wheels con FFmpeg incluido)
+av>=15.1,<20                     # PyAV/FFmpeg: frame <-> ndarray (wheels con FFmpeg incluido)
 
-# --- Analítica -----------------------------------------------------------
-plotly>=6.1,<7                   # Gráficos interactivos (barcornerradius, px.imshow)
-pandas>=2.0                      # DataFrames del tablero
+# --- Analítica ------------------------------------------------------------
+plotly>=6.1,<7                   # plotly.express (barcornerradius requiere >=5.19)
+pandas>=2.0                      # DataFrames del tablero (pd.read_sql_query)
 
 # --- Visión por computador ------------------------------------------------
 numpy>=1.26
-opencv-python-headless>=4.9      # cv2.dnn (MobileNetV2 ONNX) + MOG2 (detector de presencia)
+opencv-python-headless>=4.9      # Sin GUI: adecuado para servidores y la Jetson
 Pillow>=10.0                     # Lectura de imágenes con orientación EXIF (ingesta TACO)
+
+# --- Escalabilidad del entrenamiento --------------------------------------
+albumentations>=2.0,<3           # Aumentación de datos para el futuro reentrenamiento
+                                 # (arrastra scipy, pydantic y albucore)
 
 # sqlite3 viene incluido con Python: no requiere instalación.
 # Opcional, solo para `ingesta_publica.py --solo-prueba`:  pip install scikit-learn
+#
+# NVIDIA Jetson (JetPack): el wheel de pip opencv-python-headless NO usa CUDA y
+# tapa al OpenCV con GPU que trae JetPack (albumentations también lo arrastra).
+# Si necesitas el OpenCV de JetPack: crea el venv con --system-site-packages,
+# instala este archivo y luego ejecuta  pip uninstall -y opencv-python-headless
