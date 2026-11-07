@@ -769,7 +769,9 @@ def seccion_validacion(df_val: pd.DataFrame) -> None:
     """Exactitud del modelo frente a la etiqueta real de TrashNet/TACO."""
     df = df_val.copy()
     df["predicho"] = df["material"].map(db.grupo_material)
-    df["acierto"] = df["predicho"] == df["etiqueta_real"]
+    # La etiqueta real puede ser una clase fina («No aprovechable (Multicapa)»): se compara
+    # por grupo, pero la matriz conserva la clase fina para exponer la brecha de dominio.
+    df["acierto"] = df["predicho"] == df["etiqueta_real"].map(db.grupo_material)
 
     resumen = (df.assign(aciertos=df["cantidad"] * df["acierto"])
                  .groupby(["origen", "motor"], as_index=False)[["cantidad", "aciertos"]].sum())

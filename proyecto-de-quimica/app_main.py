@@ -1,21 +1,21 @@
 """
 app_main.py — Interfaz central del Sistema de Reciclaje Inteligente (Pipeline Edge)
 ==================================================================================
-Ejecución:   streamlit run app_main.py
+Ejecucion:   streamlit run app_main.py
 
-Pantallas (navegación lateral):
-    1. "📡 Escáner en Vivo"                 Video WebRTC asíncrono + bounding boxes.
-    2. "📊 Central Analítica (Dashboard)"    KPIs y gráficos Plotly por color de la
-                                             Resolución 2184 de 2019 (Blanco/Negro/Verde).
+Pantallas (navegacion lateral):
+    1. " Escaner en Vivo"                 Video WebRTC asincrono + bounding boxes.
+    2. " Central Analitica (Dashboard)"    KPIs y graficos Plotly por color de la
+                                             Resolucion 2184 de 2019 (Blanco/Negro/Verde).
 
 Modelo de concurrencia de la interfaz:
-    * El script de Streamlit se re-ejecuta en el hilo de la sesión. Lo pesado y
-      compartido (modelo de visión, hilo escritor de SQLite) se crea UNA vez por
+    * El script de Streamlit se re-ejecuta en el hilo de la sesion. Lo pesado y
+      compartido (modelo de vision, hilo escritor de SQLite) se crea UNA vez por
       proceso con @st.cache_resource y se reutiliza en todas las sesiones/reruns.
     * El video NO provoca reruns: los frames viven en el hilo de streamlit-webrtc.
-      La UI consulta métricas con `st.fragment(run_every=...)`, que re-renderiza
-      SOLO el panel afectado (no el componente de video ni el resto de la página).
-    * El tablero lee con `database.get_stats()`: una transacción de lectura WAL que
+      La UI consulta metricas con `st.fragment(run_every=...)`, que re-renderiza
+      SOLO el panel afectado (no el componente de video ni el resto de la pagina).
+    * El tablero lee con `database.get_stats()`: una transaccion de lectura WAL que
       nunca bloquea al hilo escritor alimentado por la IA.
 
 Autor: Johan Lasso
@@ -42,7 +42,7 @@ from vision_edge import (
 )
 
 # ===========================================================================
-# 1. CONFIGURACIÓN GENERAL
+# 1. CONFIGURACION GENERAL
 # ===========================================================================
 st.set_page_config(
     page_title="Reciclaje Inteligente · Edge",
@@ -51,23 +51,23 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-PANTALLA_ESCANER = "📡 Escáner en Vivo"
-PANTALLA_DASHBOARD = "📊 Central Analítica (Dashboard)"
+PANTALLA_ESCANER = " Escaner en Vivo"
+PANTALLA_DASHBOARD = " Central Analitica (Dashboard)"
 
-# Colores de la Resolución 2184 de 2019 para los gráficos. El "blanco" se pinta
-# gris muy claro con borde oscuro: un blanco puro desaparecería sobre el fondo.
+# Colores de la Resolucion 2184 de 2019 para los graficos. El "blanco" se pinta
+# gris muy claro con borde oscuro: un blanco puro desapareceria sobre el fondo.
 COLOR_HEX = {"BLANCO": "#E9EDF2", "NEGRO": "#1F2937", "VERDE": "#16A34A"}
 ETIQUETA_COLOR = {
     "BLANCO": "Blanco · Aprovechable",
     "NEGRO": "Negro · No aprovechable",
-    "VERDE": "Verde · Orgánico",
+    "VERDE": "Verde · Organico",
 }
 COLOR_POR_ETIQUETA = {ETIQUETA_COLOR[k]: v for k, v in COLOR_HEX.items()}
 ORDEN_ETIQUETAS = list(ETIQUETA_COLOR.values())
 BORDE_MARCAS = "#475569"
 
-# STUN público: necesario si el navegador no corre en la misma máquina (Jetson en
-# la red local). Detrás de NAT simétrico (4G, redes universitarias) hace falta TURN.
+# STUN publico: necesario si el navegador no corre en la misma maquina (Jetson en
+# la red local). Detras de NAT simetrico (4G, redes universitarias) hace falta TURN.
 RTC_CONFIGURACION = {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
 # 640x480 basta: la IA reduce a 320 px y aiortc codifica VP8 por software en la CPU.
 RESTRICCIONES_MEDIA = {
@@ -82,17 +82,17 @@ RESTRICCIONES_MEDIA = {
 CSS = """
 <style>
 /* --- Ocultar el cromo predeterminado de Streamlit -------------------------
-   Se ocultan menú, barra de herramientas, decoración, botón Deploy y footer.
+   Se ocultan menu, barra de herramientas, decoracion, boton Deploy y footer.
    El <header> se deja TRANSPARENTE en lugar de display:none porque en las
-   versiones recientes contiene el botón para re-expandir la barra lateral; si
-   se ocultara, un usuario que cierre el sidebar no podría volver a abrirlo. */
+   versiones recientes contiene el boton para re-expandir la barra lateral; si
+   se ocultara, un usuario que cierre el sidebar no podria volver a abrirlo. */
 #MainMenu, footer, .stDeployButton,
 [data-testid="stToolbar"], [data-testid="stDecoration"],
 [data-testid="stStatusWidget"], [data-testid="stAppDeployButton"] { display: none !important; }
 header[data-testid="stHeader"] { background: transparent !important; height: 2.5rem; }
 .block-container { padding-top: 1.6rem; padding-bottom: 2rem; max-width: 1500px; }
 
-/* --- Tipografía ----------------------------------------------------------- */
+/* --- Tipografia ----------------------------------------------------------- */
 .titulo-app  { font-size: 1.75rem; font-weight: 750; color: #0F172A; letter-spacing: -0.02em; margin: 0; }
 .subtitulo-app { color: #64748B; margin: 0.15rem 0 1.1rem 0; font-size: 0.95rem; }
 
@@ -107,7 +107,7 @@ header[data-testid="stHeader"] { background: transparent !important; height: 2.5
 .tarjeta-valor { font-size: 1.55rem; font-weight: 750; color: #0F172A; line-height: 1.2; }
 .tarjeta-sub   { font-size: .82rem; color: #64748B; margin-top: .35rem; }
 
-/* Contenedores con key="tarjeta_*": envuelven gráficos/tablas como tarjetas. */
+/* Contenedores con key="tarjeta_*": envuelven graficos/tablas como tarjetas. */
 [class*="st-key-tarjeta"] {
     background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px;
     padding: .9rem 1rem .4rem 1rem;
@@ -132,7 +132,7 @@ section[data-testid="stSidebar"] { background: #FFFFFF; border-right: 1px solid 
 # ===========================================================================
 # 3. RECURSOS COMPARTIDOS (@st.cache_resource: una vez por proceso)
 # ===========================================================================
-@st.cache_resource(show_spinner="🧠 Cargando modelo de visión...")
+@st.cache_resource(show_spinner=" Cargando modelo de vision...")
 def cargar_modelo() -> ModeloVisionSimulado:
     """
     El modelo se instancia una sola vez y se comparte entre sesiones. Con un
@@ -144,14 +144,14 @@ def cargar_modelo() -> ModeloVisionSimulado:
 
 @st.cache_resource(show_spinner=False)
 def cargar_registrador() -> db.RegistradorAsincrono:
-    """Inicializa la BD (WAL) y arranca el hilo escritor único del proceso."""
+    """Inicializa la BD (WAL) y arranca el hilo escritor unico del proceso."""
     db.init_db()
     return db.obtener_registrador()
 
 
 @st.cache_resource(show_spinner=False)
 def registrar_plantilla_plotly() -> str:
-    """Registra una sola vez la plantilla visual común a todos los gráficos."""
+    """Registra una sola vez la plantilla visual comun a todos los graficos."""
     base = pio.templates["plotly_white"]
     plantilla = base.to_plotly_json()
     plantilla["layout"].update(
@@ -193,14 +193,14 @@ def encabezado(titulo: str, subtitulo: str) -> None:
 
 
 # ===========================================================================
-# 5. PANTALLA 1 — ESCÁNER EN VIVO
+# 5. PANTALLA 1 — ESCANER EN VIVO
 # ===========================================================================
 def _panel_en_vivo(ctx, registrador: db.RegistradorAsincrono) -> None:
     """Fragmento que se refresca solo (1 s) sin re-ejecutar el componente de video."""
     proc: ProcesadorResiduosEdge | None = ctx.video_processor
     if not ctx.state.playing or proc is None:
-        tarjeta("Cámara detenida", "Pulsa <b>START</b>",
-                "El análisis corre en un hilo asíncrono: la interfaz no se recarga por fotograma.")
+        tarjeta("Camara detenida", "Pulsa <b>START</b>",
+                "El analisis corre en un hilo asincrono: la interfaz no se recarga por fotograma.")
         return
 
     m = proc.metricas()
@@ -208,7 +208,7 @@ def _panel_en_vivo(ctx, registrador: db.RegistradorAsincrono) -> None:
         st.error(m.error)
     d = m.ultima
     if d is None:
-        tarjeta("Buscando objeto", "Acerca un residuo a la cámara",
+        tarjeta("Buscando objeto", "Acerca un residuo a la camara",
                 "Se necesita un contorno que ocupe al menos el 2 % del encuadre.")
     else:
         tarjeta("Objeto detectado", html.escape(d.material))
@@ -220,15 +220,15 @@ def _panel_en_vivo(ctx, registrador: db.RegistradorAsincrono) -> None:
     c2.metric("Inferencia", f"{m.fps_inferencia:.1f} inf/s")
     c3.metric("Latencia IA", f"{m.latencia_ms:.0f} ms")
     r = registrador.metricas()
-    st.caption(f"🎞️ Frames descartados por el búfer (anti buffer-bloat): **{m.frames_descartados}** de "
-               f"{m.frames_recibidos} · 💾 Eventos encolados en esta sesión: **{m.eventos_encolados}** · "
+    st.caption(f"️ Frames descartados por el bufer (anti buffer-bloat): **{m.frames_descartados}** de "
+               f"{m.frames_recibidos} ·  Eventos encolados en esta sesion: **{m.eventos_encolados}** · "
                f"Escritos (proceso): **{r['escritos']}** · Pendientes: **{r['pendientes']}**")
 
 
 def pantalla_escaner(modelo: ModeloVisionSimulado, registrador: db.RegistradorAsincrono,
                      eventos_por_s: float, umbral: float, hud: bool) -> None:
-    encabezado("📡 Escáner en Vivo",
-               "Flujo WebRTC asíncrono con inferencia en hilo dedicado y registro no bloqueante en SQLite (WAL).")
+    encabezado(" Escaner en Vivo",
+               "Flujo WebRTC asincrono con inferencia en hilo dedicado y registro no bloqueante en SQLite (WAL).")
     col_video, col_panel = st.columns([1.35, 1], gap="large")
     intervalo = 1.0 / eventos_por_s
 
@@ -243,10 +243,10 @@ def pantalla_escaner(modelo: ModeloVisionSimulado, registrador: db.RegistradorAs
                     modelo, registrador, intervalo_registro_s=intervalo,
                     umbral_registro=umbral, mostrar_hud=hud),
                 # recv() corre fuera del event loop de aiortc; si se atrasa, streamlit-webrtc
-                # entrega solo el frame más reciente (segunda capa anti-latencia).
+                # entrega solo el frame mas reciente (segunda capa anti-latencia).
                 async_processing=True,
             )
-            # Parámetros en caliente: asignaciones atómicas leídas por los otros hilos.
+            # Parametros en caliente: asignaciones atomicas leidas por los otros hilos.
             proc = ctx.video_processor
             if proc is not None:
                 proc.intervalo_registro_s = intervalo
@@ -254,14 +254,14 @@ def pantalla_escaner(modelo: ModeloVisionSimulado, registrador: db.RegistradorAs
                 proc.mostrar_hud = hud
                 proc.pausado = st.toggle("⏸️ Pausar inferencia", value=False,
                                          help="El video sigue, pero la IA deja de analizar y registrar.")
-            st.caption("🔒 El video no se almacena: solo se registra el material, el contenedor y la certidumbre.")
+            st.caption(" El video no se almacena: solo se registra el material, el contenedor y la certidumbre.")
 
     with col_panel:
         st.fragment(_panel_en_vivo, run_every=1.0 if ctx.state.playing else None)(ctx, registrador)
 
 
 # ===========================================================================
-# 6. PANTALLA 2 — CENTRAL ANALÍTICA (DASHBOARD)
+# 6. PANTALLA 2 — CENTRAL ANALITICA (DASHBOARD)
 # ===========================================================================
 def _aplicar_etiquetas(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
@@ -276,9 +276,9 @@ def _estilo(fig, titulo: str, alto: int = 360):
 
 
 def _tablero(granularidad: str, ventana: str) -> None:
-    """Fragmento del tablero: se re-ejecuta solo si el auto-refresco está activo."""
-    desde = {"Todo": None, "Última hora": timedelta(hours=1),
-             "Últimas 24 h": timedelta(days=1), "Últimos 7 días": timedelta(days=7)}[ventana]
+    """Fragmento del tablero: se re-ejecuta solo si el auto-refresco esta activo."""
+    desde = {"Todo": None, "Ultima hora": timedelta(hours=1),
+             "Ultimas 24 h": timedelta(days=1), "Ultimos 7 dias": timedelta(days=7)}[ventana]
     try:
         stats = db.get_stats(granularidad, desde=datetime.now() - desde if desde else None)
     except Exception as exc:   # p. ej. disco lleno: se informa sin tumbar la app
@@ -287,8 +287,8 @@ def _tablero(granularidad: str, ventana: str) -> None:
 
     total = int(stats["total"] or 0)
     if total == 0:
-        tarjeta("Sin datos", "Aún no hay clasificaciones",
-                "Inicia el Escáner en Vivo para que el hilo de IA empiece a registrar eventos.")
+        tarjeta("Sin datos", "Aun no hay clasificaciones",
+                "Inicia el Escaner en Vivo para que el hilo de IA empiece a registrar eventos.")
         return
 
     por_cont = _aplicar_etiquetas(stats["por_contenedor"])
@@ -300,15 +300,15 @@ def _tablero(granularidad: str, ventana: str) -> None:
     with k1:
         tarjeta("Eventos registrados", f"{total:,}".replace(",", "."))
     with k2:
-        tarjeta("Tasa de aprovechamiento", barra(100 * blancos / total), "Fracción al contenedor blanco")
+        tarjeta("Tasa de aprovechamiento", barra(100 * blancos / total), "Fraccion al contenedor blanco")
     with k3:
         tarjeta("Certidumbre media", f"{stats['certidumbre_media']:.1f}%",
                 f"Rango del modelo: {CERTIDUMBRE_MIN:.0f}–{CERTIDUMBRE_MAX:.0f}%")
     with k4:
-        tarjeta("Último evento", html.escape(str(stats["ultima"])[11:19] or "—"),
+        tarjeta("Ultimo evento", html.escape(str(stats["ultima"])[11:19] or "—"),
                 html.escape(str(stats["ultima"])[:10]))
 
-    # --- Fila 1: proporción por color + volumen por material ------------------
+    # --- Fila 1: proporcion por color + volumen por material ------------------
     c1, c2 = st.columns([1, 1.6], gap="medium")
     with c1, st.container(key="tarjeta_dona"):
         fig = px.pie(por_color, names="Contenedor", values="cantidad", hole=0.6,
@@ -319,7 +319,7 @@ def _tablero(granularidad: str, ventana: str) -> None:
                           hovertemplate="%{label}<br>%{value} eventos (%{percent})<extra></extra>")
         fig.update_layout(annotations=[{"text": f"<b>{total}</b><br>eventos", "showarrow": False,
                                         "font": {"size": 16}}])
-        st.plotly_chart(_estilo(fig, "Distribución por contenedor (Res. 2184)"), width="stretch")
+        st.plotly_chart(_estilo(fig, "Distribucion por contenedor (Res. 2184)"), width="stretch")
 
     with c2, st.container(key="tarjeta_material"):
         por_mat = _aplicar_etiquetas(stats["por_material"]).sort_values("cantidad")
@@ -334,7 +334,7 @@ def _tablero(granularidad: str, ventana: str) -> None:
         fig.update_layout(barcornerradius=4, yaxis={"categoryorder": "total ascending"})
         st.plotly_chart(_estilo(fig, "Volumen por clase de residuo"), width="stretch")
 
-    # --- Fila 2: serie temporal + distribución de certidumbre -----------------
+    # --- Fila 2: serie temporal + distribucion de certidumbre -----------------
     c3, c4 = st.columns([1.6, 1], gap="medium")
     with c3, st.container(key="tarjeta_serie"):
         serie = _aplicar_etiquetas(stats["serie"])
@@ -358,7 +358,7 @@ def _tablero(granularidad: str, ventana: str) -> None:
 
     # --- Tabla de eventos recientes ------------------------------------------
     with st.container(key="tarjeta_tabla"):
-        st.markdown("**🕘 Últimos eventos registrados**")
+        st.markdown("** Ultimos eventos registrados**")
         st.dataframe(
             db.get_events(100), hide_index=True, width="stretch", height=300,
             column_config={
@@ -373,15 +373,15 @@ def _tablero(granularidad: str, ventana: str) -> None:
 
 
 def pantalla_dashboard() -> None:
-    encabezado("📊 Central Analítica",
-               "Métricas agrupadas por el código de colores de la Resolución 2184 de 2019 "
+    encabezado(" Central Analitica",
+               "Metricas agrupadas por el codigo de colores de la Resolucion 2184 de 2019 "
                "(MinAmbiente). Lecturas WAL concurrentes con la escritura del hilo de IA.")
     f1, f2, f3, f4 = st.columns([1, 1, 1, 1])
     granularidad = f1.selectbox("Agrupar serie por", ["segundo", "minuto", "hora", "dia"], index=1)
-    ventana = f2.selectbox("Ventana de tiempo", ["Todo", "Última hora", "Últimas 24 h", "Últimos 7 días"])
+    ventana = f2.selectbox("Ventana de tiempo", ["Todo", "Ultima hora", "Ultimas 24 h", "Ultimos 7 dias"])
     auto = f3.toggle("Auto-refresco (3 s)", value=True)
-    with f4.popover("🗑️ Reiniciar datos", width="stretch"):
-        st.warning("Se borrarán todos los eventos del escáner Edge. Esta acción no se puede deshacer.")
+    with f4.popover("️ Reiniciar datos", width="stretch"):
+        st.warning("Se borraran todos los eventos del escaner Edge. Esta accion no se puede deshacer.")
         if st.button("Confirmar borrado", type="primary"):
             n = db.reset_eventos()
             st.toast(f"Se eliminaron {n} eventos.")
@@ -390,34 +390,34 @@ def pantalla_dashboard() -> None:
 
 
 # ===========================================================================
-# 7. ORQUESTACIÓN
+# 7. ORQUESTACION
 # ===========================================================================
 def barra_lateral(registrador: db.RegistradorAsincrono) -> tuple[str, float, float, bool]:
     with st.sidebar:
         st.markdown("## ♻️ Reciclaje Inteligente")
         st.caption("Pipeline Edge · NVIDIA Jetson")
-        pantalla = st.radio("Navegación", [PANTALLA_ESCANER, PANTALLA_DASHBOARD],
+        pantalla = st.radio("Navegacion", [PANTALLA_ESCANER, PANTALLA_DASHBOARD],
                             label_visibility="collapsed")
         st.divider()
-        st.markdown("**⚙️ Parámetros del escáner**")
+        st.markdown("**⚙️ Parametros del escaner**")
         eventos_por_s = st.slider("Eventos registrados por segundo", 0.5, 10.0, 2.0, 0.5,
-                                  help="Tasa máxima a la que el hilo de IA encola eventos para SQLite.")
-        umbral = st.slider("Certidumbre mínima para registrar (%)", CERTIDUMBRE_MIN, CERTIDUMBRE_MAX,
+                                  help="Tasa maxima a la que el hilo de IA encola eventos para SQLite.")
+        umbral = st.slider("Certidumbre minima para registrar (%)", CERTIDUMBRE_MIN, CERTIDUMBRE_MAX,
                            CERTIDUMBRE_MIN, 1.0)
-        hud = st.toggle("Mostrar métricas sobre el video", value=True)
+        hud = st.toggle("Mostrar metricas sobre el video", value=True)
         st.divider()
-        st.markdown("**🗂️ Taxonomía activa**")
+        st.markdown("**️ Taxonomia activa**")
         for clase in TAXONOMIA:
             st.markdown(f"<small><span class='chip-dot' style='display:inline-block;vertical-align:middle;"
                         f"background:{COLOR_HEX[clase.color]}'></span>&nbsp;{html.escape(clase.nombre)}</small>",
                         unsafe_allow_html=True)
         st.divider()
         r = registrador.metricas()
-        estado = "🟢 activo" if r["hilo_vivo"] else "🔴 detenido"
+        estado = " activo" if r["hilo_vivo"] else " detenido"
         st.caption(f"Hilo escritor SQLite: {estado} · escritos {r['escritos']} · "
                    f"descartados {r['descartados']} · BD: `{db.RUTA_BD.name}` (WAL)")
         if r["ultimo_error"]:
-            st.caption(f"⚠️ Último error de escritura: {r['ultimo_error']}")
+            st.caption(f"⚠️ Ultimo error de escritura: {r['ultimo_error']}")
     return pantalla, eventos_por_s, umbral, hud
 
 
@@ -425,7 +425,7 @@ def main() -> None:
     st.markdown(CSS, unsafe_allow_html=True)
     modelo = cargar_modelo()
     registrador = cargar_registrador()
-    if not registrador.vivo:          # Recupera el hilo escritor si murió
+    if not registrador.vivo:          # Recupera el hilo escritor si murio
         cargar_registrador.clear()
         registrador = cargar_registrador()
 
