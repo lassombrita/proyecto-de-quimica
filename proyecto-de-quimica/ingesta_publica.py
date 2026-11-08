@@ -383,6 +383,8 @@ def buscar_anotaciones(ruta: Path) -> list[Path]:
     Returns:
         Lista ordenada de archivos de anotaciones (vacía si no hay).
     """
+    if (ruta / "data" / "annotations.json").is_file() and not any(ruta.glob("batch_*")):
+        return [ruta / "data" / "annotations.json"]
     directos = [ruta / "annotations.json"] if (ruta / "annotations.json").is_file() else []
     return directos or sorted(ruta.rglob("*_annotations.coco.json")) or sorted(
         p for p in ruta.glob("*.json") if _parece_coco(p))
@@ -443,8 +445,11 @@ def muestras_coco(rutas_json: list[Path], raiz: Path, *, lado_minimo: int,
             meta = coco.imgs[id_img]
             ruta_img = base / meta["file_name"]
             if not ruta_img.is_file():
-                faltantes += 1
-                continue
+                if (base / "data" / meta["file_name"]).is_file():
+                    ruta_img = base / "data" / meta["file_name"]
+                else:
+                    faltantes += 1
+                    continue
             anns = [a for a in coco.loadAnns(coco.getAnnIds(imgIds=id_img, iscrowd=False))
                     if len(a.get("bbox") or ()) == 4 and min(a["bbox"][2:]) >= lado_minimo]
             anns.sort(key=lambda a: a.get("area") or a["bbox"][2] * a["bbox"][3], reverse=True)

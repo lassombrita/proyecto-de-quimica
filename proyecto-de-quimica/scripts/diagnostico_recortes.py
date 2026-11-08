@@ -99,6 +99,10 @@ def main(argv: list[str] | None = None) -> int:
     args = p.parse_args(argv)
 
     ruta = Path(args.ruta).resolve()
+    # Si pasaron la raíz de TACO pero las imágenes y el JSON real están en data/
+    if (ruta / "data" / "annotations.json").is_file() and not any(ruta.glob("batch_*")):
+        ruta = ruta / "data"
+
     rutas_json = ip.buscar_anotaciones(ruta)
     if not rutas_json:
         sys.exit(f"No se encontró annotations.json en {ruta}")
@@ -114,6 +118,10 @@ def main(argv: list[str] | None = None) -> int:
             _, aum = next(ip.generar_variantes(m, base, aumentos=1, incluir_original=False,
                                                semilla=args.semilla, calidad_jpeg=75))
             celdas.append(rotular(aum, "  (variante webcam)", args.lado))
+
+    if not celdas:
+        sys.exit(f"❌ No se pudo extraer ningún recorte válido de '{ruta}'. "
+                 "Verifique que la ruta apunte a la carpeta que contiene las imágenes en disco (ej. 'TACO/data').")
 
     columnas = 4
     vacia = np.full_like(celdas[0], 255)

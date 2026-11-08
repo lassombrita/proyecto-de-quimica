@@ -241,6 +241,19 @@ def cargar_trashnet(ruta: Path) -> list[Ejemplo]:
     Returns:
         Ejemplos etiquetados con su conjunto.
     """
+    ruta = Path(ruta).resolve()
+    candidatos = [
+        ruta,
+        ruta / "dataset-resized",
+        RAIZ / "entrenamiento" / "dataset-resized",
+        RAIZ / "entrenamiento" / "dataset-resized" / "dataset-resized",
+        RAIZ / ruta,
+    ]
+    for c in candidatos:
+        if c.is_dir() and any((c / clase).is_dir() for clase in CLASES):
+            ruta = c
+            break
+
     rutas, y = [], []
     for k, clase in enumerate(CLASES):
         archivos = sorted((ruta / clase).glob("*.jpg"))
@@ -288,6 +301,23 @@ def cargar_coco(ruta: Path, lotes_val: set[str], lotes_prueba: set[str],
     Returns:
         Ejemplos con clase TrashNet (se omiten orgánico, peligroso y sin etiqueta).
     """
+    ruta = Path(ruta).resolve()
+    candidatos = [
+        ruta / "data",
+        ruta,
+        RAIZ / ruta / "data",
+        RAIZ / ruta,
+        RAIZ / "TACO" / "data",
+        RAIZ / "TACO",
+    ]
+    for c in candidatos:
+        if c.is_dir() and ip.buscar_anotaciones(c):
+            ruta = c
+            break
+
+    if (ruta / "data" / "annotations.json").is_file() and not any(ruta.glob("batch_*")):
+        ruta = ruta / "data"
+
     rutas_json = ip.buscar_anotaciones(ruta)
     if not rutas_json:
         sys.exit(f"❌ No se encontró annotations.json ni *_annotations.coco.json en {ruta}")
@@ -298,7 +328,8 @@ def cargar_coco(ruta: Path, lotes_val: set[str], lotes_prueba: set[str],
         k = _clase_trashnet(m)
         if k is None:
             continue
-        lote = m.archivo.split("/", 1)[0]
+        partes = [p for p in m.archivo.split("/") if p and p != "data"]
+        lote = partes[0] if partes else "batch_unknown"
         lotes[lote] += 1
         conjunto = "prueba" if lote in lotes_prueba else "validacion" if lote in lotes_val \
             else "entrenamiento"
