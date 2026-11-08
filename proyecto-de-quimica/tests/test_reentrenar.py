@@ -3,6 +3,10 @@
 import sys
 
 import numpy as np
+import pytest
+
+pytest.importorskip("onnx")
+pytest.importorskip("sklearn")
 
 from conftest import RAIZ
 

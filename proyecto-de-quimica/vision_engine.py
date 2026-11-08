@@ -19,6 +19,12 @@ Soporta 4 motores intercambiables:
        morfológica como factor de apoyo y refinamiento (PET vs PEAD), sin bloqueos
        destructivos ante fondos complejos.
 
+Motores de PRODUCCIÓN vs. DIDÁCTICOS (Fase 0, nov. 2026):
+    Solo "Motor Híbrido Estricto" y "Motor IA (MobileNetV2)" se usan para clasificar
+    residuos reales. Los motores Color y Geometría reproducen fallos conocidos para la
+    exposición y SOLO se habilitan con `ClasificadorResiduos(modo_didactico=True)`
+    (en la app: `streamlit run app.py -- --modo-didactico`).
+
 Política de Incertidumbre (Fallback):
     Si la confianza del motor cae por debajo del umbral del 50%, el residuo se
     clasifica automáticamente como "No identificado" y se asigna al contenedor NEGRO
@@ -49,6 +55,11 @@ CATEGORIAS: dict[str, dict[str, str]] = {
         "contenedor": "Blanco",
         "descripcion": "Polietileno de alta densidad (envases de detergente, galones). Código #2.",
     },
+    "Plástico": {
+        "contenedor": "Blanco",
+        "descripcion": "Plástico rígido aprovechable (envase, tapa, vaso). Sin evidencia de "
+                       "forma no se asume la resina (PET/PEAD).",
+    },
     "Vidrio": {
         "contenedor": "Blanco",
         "descripcion": "Botellas y frascos de vidrio limpios y secos.",
@@ -63,7 +74,8 @@ CATEGORIAS: dict[str, dict[str, str]] = {
     },
     "No aprovechable": {
         "contenedor": "Negro",
-        "descripcion": "Residuo no reciclable (servilletas usadas, empaques metalizados).",
+        "descripcion": "Residuo no aprovechable. El modelo actual agrupa aquí película "
+                       "plástica, icopor, multicapa y sanitarios: no los distingue entre sí.",
     },
     "No identificado": {
         "contenedor": "Negro",
@@ -88,13 +100,25 @@ MAPEO_TRASHNET: dict[str, str] = {
     "paper": "Papel/Cartón",
     "glass": "Vidrio",
     "metal": "Metal",
-    "plastic": "PET",  # Si hay morfología, se puede especializar a PEAD
+    # Antes "plastic" -> "PET" siempre: bolsas, vasos y tapas salían como PET.
+    # Ahora es plástico genérico; solo la evidencia de forma lo especializa a PET/PEAD.
+    "plastic": "Plástico",
     "trash": "No aprovechable",
 }
 
 # Parámetros generales y umbrales
 ANCHO_PROCESAMIENTO = 480
 UMBRAL_CONFIANZA_MINIMA = 50.0  # Umbral de fallback al contenedor negro
+# Si la 1.ª y la 2.ª clase están a menos de este margen (puntos %), la red está
+# dudando entre dos materiales: se trata como incertidumbre (contenedor negro).
+MARGEN_MINIMO_TOP2 = 15.0
+
+MOTOR_HIBRIDO = "Motor Híbrido Estricto"
+MOTOR_IA = "Motor IA (MobileNetV2)"
+MOTOR_GEOMETRICO = "Motor Geométrico (Forma/Contornos)"
+MOTOR_COLOR = "Motor Básico (Color)"
+MOTORES_PRODUCCION = (MOTOR_HIBRIDO, MOTOR_IA)
+MOTORES_DIDACTICOS = (MOTOR_GEOMETRICO, MOTOR_COLOR)
 RUTA_MODELO_DEFAULT = Path(__file__).parent / "models" / "trashnet_mobilenetv2.onnx"
 
 
@@ -111,7 +135,19 @@ class Morfologia:
     vertices: int = 0
     ratio_cuello: float = 1.0
     descentrado_cuello: float = 0.0
+    ratio_base: float = 1.0          # Ancho del extremo MÁS ancho / ancho del cuerpo
     forma: str = "No aislada / Fondo complejo"
+
+    @property
+    def tiene_cuello(self) -> bool:
+        """
+        Evidencia de botella/galón: un extremo angosto, el otro ancho y figura alargada.
+
+        Un óvalo (bolsa arrugada, mancha) tiene AMBOS extremos angostos: antes eso
+        bastaba para declarar "botella PET".
+        """
+        return (self.ratio_cuello < 0.65 and self.ratio_base >= 0.75
+                and self.relacion_aspecto >= 1.5)
 
 
 @dataclass
@@ -141,8 +177,9 @@ class ClasificadorResiduos:
 
     NOMBRE_MODELO = "EcoVision Multi-Engine v2.5"
 
-    def __init__(self, ruta_modelo: Path = RUTA_MODELO_DEFAULT) -> None:
+    def __init__(self, ruta_modelo: Path = RUTA_MODELO_DEFAULT, *, modo_didactico: bool = False) -> None:
         self.ruta_modelo = Path(ruta_modelo)
+        self.modo_didactico = modo_didactico
         self.red_onnx: cv2.dnn.Net | None = None
         self.error_carga_dnn: str | None = None
 
@@ -207,9 +244,12 @@ class ClasificadorResiduos:
 
         # Heurística cromática original (con sus sesgos conocidos)
         if sat < 40 and val > 160:
-            material = "PET"
-            conf = 78.0
-            motivo = "Tono claro/transparente de baja saturación detectado en el centro."
+            # Antes: "PET" al 78 %. Un fondo claro, una bolsa, una servilleta o el icopor
+            # tienen el mismo color: el color NO es evidencia de PET.
+            material = "No identificado"
+            conf = 0.0
+            motivo = ("Tono claro sin saturación: el color no distingue PET, bolsa, papel, "
+                      "servilleta ni icopor.")
         elif sat < 45 and 80 < val <= 160:
             material = "Metal"
             conf = 74.0
@@ -333,6 +373,7 @@ class ClasificadorResiduos:
             extremo2 = float(np.median(perfil[-max(2, n_filas // 6):]))
             min_extremo = min(extremo1, extremo2)
             ratio_cuello = min_extremo / max(1.0, ancho_cuerpo)
+            ratio_base = max(extremo1, extremo2) / max(1.0, ancho_cuerpo)
 
             # Posición del centroide del extremo más angosto para ver si está desplazado
             es_arriba = extremo1 < extremo2
@@ -346,10 +387,12 @@ class ClasificadorResiduos:
                 descentrado = 0.0
         else:
             ratio_cuello = 1.0
+            ratio_base = 1.0
             descentrado = 0.0
 
         # Etiqueta geométrica descriptiva
-        if ratio_cuello < 0.65:
+        con_cuello = ratio_cuello < 0.65 and ratio_base >= 0.75 and relacion_aspecto >= 1.5
+        if con_cuello:
             forma = "Envase con pico lateral" if descentrado > 0.15 else "Botella con cuello"
         elif 1.2 <= relacion_aspecto <= 2.8 and solidez > 0.78 and rectangularidad < 0.92:
             forma = "Cilindro (Lata)"
@@ -366,6 +409,7 @@ class ClasificadorResiduos:
             vertices=vertices,
             ratio_cuello=ratio_cuello,
             descentrado_cuello=descentrado,
+            ratio_base=ratio_base,
             forma=forma,
         )
         return morf, mejor_contorno, gris
@@ -408,7 +452,7 @@ class ClasificadorResiduos:
         )
 
         # Reglas morfológicas deterministas
-        if morf.ratio_cuello < 0.65:
+        if morf.tiene_cuello:
             if morf.descentrado_cuello > 0.15:
                 material = "PEAD"
                 conf = 75.0
@@ -523,6 +567,7 @@ class ClasificadorResiduos:
 
         prob_dict, top3 = self._inferir_red(recorte)
         top_clase, top_prob_pct = top3[0]
+        margen = top_prob_pct - (top3[1][1] if len(top3) > 1 else 0.0)
 
         # Anotación en imagen
         anotada = bgr.copy()
@@ -536,6 +581,11 @@ class ClasificadorResiduos:
         if top_prob_pct < UMBRAL_CONFIANZA_MINIMA:
             material = "No identificado"
             motivo = f"Certeza IA insuficiente ({top_prob_pct:.1f}% < {UMBRAL_CONFIANZA_MINIMA:.0f}%)."
+            conf = top_prob_pct
+        elif margen < MARGEN_MINIMO_TOP2:
+            material = "No identificado"
+            motivo = (f"La red duda entre '{top_clase}' y '{top3[1][0]}' "
+                      f"(margen {margen:.1f} < {MARGEN_MINIMO_TOP2:.0f} puntos).")
             conf = top_prob_pct
         else:
             material = MAPEO_TRASHNET.get(top_clase, "No aprovechable")
@@ -563,14 +613,15 @@ class ClasificadorResiduos:
         """
         Lógica corregida de fusión:
         - La red neuronal tiene el peso prioritario para clasificar el material.
-        - La geometría apoya la decisión (por ejemplo, distinguiendo PEAD vs PET por pico/cuello)
-          y refuerza la confianza (+8%) si hay coincidencia estructural.
+        - La geometría solo especializa "plastic" a PET/PEAD cuando hay cuello visible.
+          Ya NO suma confianza: la confianza mostrada es la de la red.
         - NUNCA descarta ni bloquea la predicción por contradicción con el contorno,
           evitando los falsos rechazos ante fondos de habitación complejos.
         """
         if self.red_onnx is None:
-            # Fallback suave hacia el motor geométrico si no está el ONNX
-            return self._clasificar_por_geometria(bgr)
+            # Sin red no hay clasificación de producción: antes se caía al motor
+            # geométrico (didáctico). Ahora responde "No identificado" con el motivo.
+            return self._clasificar_por_ia(bgr)
 
         morf, contorno, _ = self._segmentar_y_extraer_morfologia(bgr)
 
@@ -586,6 +637,7 @@ class ClasificadorResiduos:
 
         prob_dict, top3 = self._inferir_red(recorte)
         top_clase, top_prob_pct = top3[0]
+        margen = top_prob_pct - (top3[1][1] if len(top3) > 1 else 0.0)
 
         # Anotación visual
         anotada = bgr.copy()
@@ -600,44 +652,41 @@ class ClasificadorResiduos:
         )
 
         # Fusión no destructiva:
-        # 1. Base del material viene del mapeo de la red neuronal
+        # 1. El material base viene de la red neuronal.
+        # 2. La forma SOLO especializa "plastic" a PET/PEAD cuando hay cuello visible;
+        #    ya no suma +8 % de confianza (inflaba errores por encima del umbral).
         material_base = MAPEO_TRASHNET.get(top_clase, "No aprovechable")
         conf_final = top_prob_pct
-        soporte_motivo = ""
 
-        # 2. Refinamiento geométrico según la clase
-        if top_clase == "plastic":
-            if morf.ratio_cuello < 0.65:
-                if morf.descentrado_cuello > 0.15:
-                    material_base = "PEAD"
-                    soporte_motivo = "Forma con pico lateral apoya envase de polietileno (PEAD)."
-                    conf_final = min(99.0, conf_final + 8.0)
-                else:
-                    material_base = "PET"
-                    soporte_motivo = "Forma con cuello simétrico confirma botella PET."
-                    conf_final = min(99.0, conf_final + 8.0)
+        if top_clase == "plastic" and morf.tiene_cuello:
+            if morf.descentrado_cuello > 0.15:
+                material_base = "PEAD"
+                soporte_motivo = "Pico lateral visible: envase tipo galón/detergente (PEAD)."
             else:
                 material_base = "PET"
-                soporte_motivo = "Clasificado como plástico por la red neuronal."
+                soporte_motivo = "Cuello simétrico visible: botella (PET)."
+        elif top_clase == "plastic":
+            soporte_motivo = "Plástico sin cuello visible: no se asume la resina."
         elif top_clase == "metal" and ("Cilindro" in morf.forma or morf.relacion_aspecto >= 1.2):
-            soporte_motivo = "Morfología cilíndrica confirma lata metálica."
-            conf_final = min(99.0, conf_final + 8.0)
+            soporte_motivo = "La forma cilíndrica es coherente con una lata."
         elif top_clase in ("cardboard", "paper") and ("Rectangular" in morf.forma or morf.rectangularidad >= 0.80):
-            soporte_motivo = "Morfología rectangular corrobora caja o empaque de papel/cartón."
-            conf_final = min(99.0, conf_final + 8.0)
+            soporte_motivo = "La forma rectangular es coherente con papel/cartón."
         else:
-            soporte_motivo = f"Inferencia liderada por red neuronal ('{top_clase}')."
+            soporte_motivo = f"Inferencia liderada por la red neuronal ('{top_clase}')."
 
-        # 3. Lógica de Fallback ante incertidumbre (<50%)
+        # 3. Incertidumbre: confianza baja o dos clases empatadas -> contenedor negro.
+        conf_final = round(conf_final, 1)
         if conf_final < UMBRAL_CONFIANZA_MINIMA:
             material = "No identificado"
             motivo = (f"Certeza baja ({conf_final:.1f}% < {UMBRAL_CONFIANZA_MINIMA:.0f}%). "
                       f"Se remite a contenedor Negro por precaución.")
-            conf_final = round(conf_final, 1)
+        elif margen < MARGEN_MINIMO_TOP2:
+            material = "No identificado"
+            motivo = (f"La red duda entre '{top_clase}' y '{top3[1][0]}' (margen {margen:.1f} < "
+                      f"{MARGEN_MINIMO_TOP2:.0f} puntos). Contenedor Negro por precaución.")
         else:
             material = material_base
             motivo = f"IA: {top_clase} ({top_prob_pct:.1f}%). {soporte_motivo}"
-            conf_final = round(conf_final, 1)
 
         cv2.putText(anotada, f"{material} ({conf_final:.1f}%)", (15, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
@@ -660,7 +709,7 @@ class ClasificadorResiduos:
     # -----------------------------------------------------------------------
     # API Pública Principal
     # -----------------------------------------------------------------------
-    def predecir(self, imagen, motor: str = "Motor Híbrido Estricto") -> ResultadoClasificacion:
+    def predecir(self, imagen, motor: str = MOTOR_HIBRIDO) -> ResultadoClasificacion:
         """
         Ejecuta la clasificación según el motor solicitado.
 
@@ -669,6 +718,14 @@ class ClasificadorResiduos:
             motor: Uno de ["Motor Híbrido Estricto", "Motor IA (MobileNetV2)",
                            "Motor Geométrico (Forma/Contornos)", "Motor Básico (Color)"]
         """
+        if motor in MOTORES_DIDACTICOS and not self.modo_didactico:
+            raise ValueError(
+                f"'{motor}' es un motor didáctico (reproduce fallos conocidos) y no debe "
+                "clasificar residuos reales. Cree el clasificador con modo_didactico=True "
+                "o ejecute la app con '-- --modo-didactico'.")
+        if motor not in MOTORES_PRODUCCION + MOTORES_DIDACTICOS:
+            raise ValueError(f"Motor desconocido: {motor!r}")
+
         bgr = self._cargar_imagen(imagen)
 
         if motor == "Motor Básico (Color)":

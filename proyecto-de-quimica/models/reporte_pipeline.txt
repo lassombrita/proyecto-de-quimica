@@ -1,0 +1,30 @@
+Evaluación en PRUEBA · 578 recortes
+  Exactitud:              67.8%
+  Exactitud balanceada:   50.3%
+  Caneca correcta:        65.2%
+  Contaminación Blanca:   2.4%
+  Recall por clase:
+    carton                      45.5%
+    fondo_sin_objeto            97.8%
+    icopor                      55.6%
+    metal_lata                  66.7%
+    metal_otro                  66.7%
+    multicapa_flexible           0.0%
+    papel                       35.0%
+    pead_pp_envase              12.5%
+    pet_botella                 60.9%
+    plastico_flexible_bolsa     44.3%
+    plastico_rigido_otro        67.3%
+    sanitario_y_rechazo         72.5%
+    vidrio                      29.4%
+  Por fuente:
+    taco        54.5%
+    fondo       97.8%
+
+❌ plastico_flexible_bolsa: recall 44.3% < 80%
+❌ sanitario_y_rechazo: recall 72.5% < 80%
+❌ icopor: recall 55.6% < 80%
+❌ multicapa_flexible: recall 0.0% < 80%
+❌ pet_botella: recall 60.9% < 80%
+❌ exactitud balanceada 50.3% < 70%
+=> MODELO NO ACEPTADO

@@ -438,3 +438,156 @@ def get_estadisticas() -> pd.DataFrame:
 
 def reset_db() -> None:
     reiniciar()
+
+
+# ===========================================================================
+# API del escáner Edge (vision_edge.py / app_main.py)
+# ===========================================================================
+# `app_main.py` y `vision_edge.py` se escribieron contra una versión de este módulo
+# que exponía un registrador asíncrono. Se restaura aquí sobre la MISMA tabla
+# `clasificaciones`, con origen = ORIGEN_EDGE para poder filtrar y borrar sus eventos.
+import queue as _queue  # noqa: E402
+import unicodedata as _unicodedata  # noqa: E402
+
+ORIGEN_EDGE = "camara_edge"
+_COLOR_A_CONTENEDOR = {"BLANCO": "Blanco", "NEGRO": "Negro", "VERDE": "Verde"}
+_FORMATO_PERIODO = {"segundo": "%Y-%m-%d %H:%M:%S", "minuto": "%Y-%m-%d %H:%M",
+                    "hora": "%Y-%m-%d %H:00", "dia": "%Y-%m-%d"}
+
+
+def color_de_contenedor(destino: str) -> str:
+    """
+    Color canónico en MAYÚSCULAS a partir de cualquier rótulo de contenedor.
+
+    >>> color_de_contenedor("BLANCO (Aprovechable)")
+    'BLANCO'
+    >>> color_de_contenedor("Verde")
+    'VERDE'
+    """
+    ascii_ = _unicodedata.normalize("NFKD", str(destino)).encode("ascii", "ignore").decode()
+    primera = (ascii_.strip().split() or [""])[0].upper()
+    if primera not in _COLOR_A_CONTENEDOR:
+        raise ValueError(f"Contenedor desconocido: {destino!r}")
+    return primera
+
+
+def contenedor_canonico(destino: str) -> str:
+    """'NEGRO (No Aprovechable ...)' -> 'Negro' (valor válido para la tabla)."""
+    return _COLOR_A_CONTENEDOR[color_de_contenedor(destino)]
+
+
+class RegistradorAsincrono:
+    """
+    Hilo escritor único: el hilo de inferencia encola sin bloquear y este hilo
+    inserta por lotes en SQLite (WAL). Si la cola se llena, el evento se descarta
+    (nunca se frena el video por el disco).
+    """
+
+    def __init__(self, capacidad: int = 2000, lote: int = 50, origen: str = ORIGEN_EDGE,
+                 motor: str | None = None) -> None:
+        self._cola: _queue.Queue[dict[str, Any]] = _queue.Queue(maxsize=capacidad)
+        self._lote = lote
+        self.origen = origen
+        self.motor = motor
+        self._escritos = 0
+        self._descartados = 0
+        self._ultimo_error: str | None = None
+        self._detener = threading.Event()
+        self._hilo = threading.Thread(target=self._bucle, name="sqlite-escritor", daemon=True)
+        self._hilo.start()
+
+    @property
+    def vivo(self) -> bool:
+        return self._hilo.is_alive()
+
+    def encolar_deteccion(self, material: str, contenedor: str, certidumbre: float) -> bool:
+        """No bloqueante. Devuelve False si el evento se descartó (cola llena o datos inválidos)."""
+        try:
+            registro = {"material": material, "contenedor": contenedor_canonico(contenedor),
+                        "confianza": max(0.0, min(100.0, float(certidumbre))),
+                        "fecha_hora": _normalizar_fecha(None), "origen": self.origen,
+                        "motor": self.motor}
+            self._cola.put_nowait(registro)
+            return True
+        except (_queue.Full, ValueError, KeyError):
+            self._descartados += 1
+            return False
+
+    def metricas(self) -> dict[str, Any]:
+        return {"escritos": self._escritos, "pendientes": self._cola.qsize(),
+                "descartados": self._descartados, "hilo_vivo": self.vivo,
+                "ultimo_error": self._ultimo_error}
+
+    def detener(self, timeout: float = 2.0) -> None:
+        self._detener.set()
+        self._hilo.join(timeout)
+
+    def _bucle(self) -> None:
+        while not (self._detener.is_set() and self._cola.empty()):
+            try:
+                lote = [self._cola.get(timeout=0.5)]
+            except _queue.Empty:
+                continue
+            while len(lote) < self._lote:
+                try:
+                    lote.append(self._cola.get_nowait())
+                except _queue.Empty:
+                    break
+            try:
+                self._escritos += crear_lote(lote)
+                self._ultimo_error = None
+            except Exception as exc:  # El hilo nunca debe morir en silencio
+                self._ultimo_error = f"{type(exc).__name__}: {exc}"
+
+
+_registrador: RegistradorAsincrono | None = None
+_registrador_lock = threading.Lock()
+
+
+def obtener_registrador(motor: str | None = None) -> RegistradorAsincrono:
+    """Un registrador por proceso (se recrea si su hilo murió)."""
+    global _registrador
+    with _registrador_lock:
+        if _registrador is None or not _registrador.vivo:
+            _registrador = RegistradorAsincrono(motor=motor)
+        elif motor:
+            _registrador.motor = motor
+        return _registrador
+
+
+def get_stats(granularidad: str = "minuto", desde: datetime | str | None = None) -> dict[str, Any]:
+    """Agregados del tablero Edge (solo eventos con origen ORIGEN_EDGE)."""
+    formato = _FORMATO_PERIODO.get(granularidad, _FORMATO_PERIODO["minuto"])
+    where, params = _filtros([ORIGEN_EDGE], desde=desde)
+    color = ("CASE contenedor WHEN 'Blanco' THEN 'BLANCO' WHEN 'Negro' THEN 'NEGRO' "
+             "ELSE 'VERDE' END")
+    with conectar() as con:
+        kpi = con.execute(f"SELECT COUNT(*), AVG(confianza), MAX(fecha_hora) FROM {TABLA}{where}",
+                          params).fetchone()
+        leer = lambda sql: pd.read_sql_query(sql, con, params=params)  # noqa: E731
+        por_contenedor = leer(f"SELECT {color} AS color, COUNT(*) AS cantidad FROM {TABLA}{where} "
+                              "GROUP BY color")
+        por_material = leer(f"SELECT material, {color} AS color, COUNT(*) AS cantidad, "
+                            f"AVG(confianza) AS certidumbre_media FROM {TABLA}{where} "
+                            "GROUP BY material, color")
+        serie = leer(f"SELECT strftime('{formato}', fecha_hora) AS periodo, {color} AS color, "
+                     f"COUNT(*) AS cantidad FROM {TABLA}{where} GROUP BY periodo, color "
+                     "ORDER BY periodo")
+        certidumbres = leer(f"SELECT {color} AS color, confianza AS certidumbre FROM {TABLA}{where} "
+                            "ORDER BY id DESC LIMIT 5000")
+    return {"total": kpi[0] or 0, "certidumbre_media": float(kpi[1] or 0.0), "ultima": kpi[2] or "",
+            "por_contenedor": por_contenedor, "por_material": por_material, "serie": serie,
+            "certidumbres": certidumbres}
+
+
+def get_events(limite: int = 100) -> pd.DataFrame:
+    """Últimos eventos del escáner Edge."""
+    with conectar() as con:
+        return pd.read_sql_query(
+            f"SELECT id, fecha_hora, material, contenedor, confianza AS certidumbre FROM {TABLA} "
+            "WHERE origen = ? ORDER BY id DESC LIMIT ?", con, params=[ORIGEN_EDGE, int(limite)])
+
+
+def reset_eventos() -> int:
+    """Borra solo los eventos del escáner Edge."""
+    return eliminar_por_origen(ORIGEN_EDGE)

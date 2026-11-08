@@ -5,7 +5,9 @@ Sistema de Reciclaje Inteligente · Pipeline Edge (pensado para NVIDIA Jetson)
 
 Contiene:
     * TAXONOMIA               Clases del mercado colombiano -> contenedor (Res. 2184 de 2019).
-    * ModeloVisionSimulado    Mock de inferencia (misma interfaz que tendrá el modelo real).
+    * ModeloVisionReal        Adaptador del motor real (vision_engine.ClasificadorResiduos, ONNX).
+    * ModeloVisionSimulado    Mock SOLO PARA PRUEBAS (clase pseudoaleatoria por hash de color).
+                              La app ya no lo usa.
     * ProcesadorResiduosEdge  Clase heredada de `VideoProcessorBase` (streamlit-webrtc).
 
 Arquitectura de hilos (por qué el video no acumula retraso):
@@ -43,6 +45,7 @@ import unicodedata
 import zlib
 from dataclasses import dataclass, field
 from queue import Empty, Full, Queue
+from typing import Protocol
 
 import av
 import cv2
@@ -50,6 +53,7 @@ import numpy as np
 from streamlit_webrtc import VideoProcessorBase
 
 from database import RegistradorAsincrono, color_de_contenedor
+from vision_engine import MOTOR_HIBRIDO, MOTORES_PRODUCCION, ClasificadorResiduos
 
 # ===========================================================================
 # 1. TAXONOMÍA (mercado colombiano · Resolución 2184 de 2019)
@@ -195,8 +199,68 @@ def proponer_region(mascara: np.ndarray) -> tuple[int, int, int, int] | None:
 # ===========================================================================
 # 4. MODELO DE VISIÓN SIMULADO (Vision Model Mockup)
 # ===========================================================================
+class ModeloVision(Protocol):
+    """Contrato que consume `ProcesadorResiduosEdge` (real, simulado o el futuro detector+clasificador)."""
+
+    nombre: str
+
+    def inferir(self, bgr: np.ndarray, rng: np.random.Generator | None = None) -> list[Deteccion]: ...
+
+
+_DESTINO_POR_CONTENEDOR = {"Blanco": DESTINO_BLANCO, "Negro": DESTINO_NEGRO, "Verde": DESTINO_VERDE}
+MARGEN_RECORTE = 0.10   # Margen alrededor de la región propuesta antes de clasificar
+
+
+class ModeloVisionReal:
+    """
+    Motor REAL para el escáner Edge: región por contornos (igual que antes) +
+    `ClasificadorResiduos` (MobileNetV2 ONNX) sobre el recorte.
+
+    `cv2.dnn.Net` no es thread-safe: una sola instancia (cacheada con
+    @st.cache_resource) puede atender varias sesiones porque la inferencia va bajo
+    `self._lock`.
+
+    Los resultados "No identificado" se devuelven igual (caja + contenedor negro):
+    el usuario ve que el sistema duda en lugar de ver una clase inventada.
+    """
+
+    def __init__(self, motor: str = MOTOR_HIBRIDO, clasificador: ClasificadorResiduos | None = None) -> None:
+        if motor not in MOTORES_PRODUCCION:
+            raise ValueError(f"El escáner Edge solo acepta motores de producción {MOTORES_PRODUCCION}.")
+        self.motor = motor
+        self.clasificador = clasificador or ClasificadorResiduos()
+        self._lock = threading.Lock()
+        self.nombre = f"{self.clasificador.NOMBRE_MODELO} · {motor}"
+
+    @property
+    def disponible(self) -> bool:
+        return self.clasificador.red_onnx is not None
+
+    @property
+    def error_carga(self) -> str | None:
+        return self.clasificador.error_carga_dnn
+
+    def inferir(self, bgr: np.ndarray, rng: np.random.Generator | None = None) -> list[Deteccion]:
+        _, mascara = preprocesar(bgr)
+        region = proponer_region(mascara)
+        if region is None:
+            return []
+        x, y, w, h = region
+        alto, ancho = bgr.shape[:2]
+        px, py = int(w * MARGEN_RECORTE), int(h * MARGEN_RECORTE)
+        x1, y1 = max(0, x - px), max(0, y - py)
+        x2, y2 = min(ancho, x + w + px), min(alto, y + h + py)
+        with self._lock:
+            r = self.clasificador.predecir(bgr[y1:y2, x1:x2], motor=self.motor)
+        destino = _DESTINO_POR_CONTENEDOR.get(r.contenedor, DESTINO_NEGRO)
+        caja = (x1 / ancho, y1 / alto, x2 / ancho, y2 / alto)
+        return [Deteccion(r.material, destino, round(float(r.confianza), 2), caja, time.monotonic())]
+
+
 class ModeloVisionSimulado:
     """
+    ⚠️ SOLO PARA PRUEBAS. La clase es pseudoaleatoria (hash del color): no usar en la app.
+
     Sustituto del modelo real con su MISMA interfaz: `inferir(bgr) -> list[Deteccion]`.
 
     Estrategia de simulación:
@@ -312,7 +376,7 @@ class ProcesadorResiduosEdge(VideoProcessorBase):
     referencia) y ningún hilo puede ver un estado a medio actualizar.
     """
 
-    def __init__(self, modelo: ModeloVisionSimulado, registrador: RegistradorAsincrono, *,
+    def __init__(self, modelo: ModeloVision, registrador: RegistradorAsincrono, *,
                  intervalo_registro_s: float = 0.5, umbral_registro: float = CERTIDUMBRE_MIN,
                  mostrar_hud: bool = True) -> None:
         self._modelo = modelo

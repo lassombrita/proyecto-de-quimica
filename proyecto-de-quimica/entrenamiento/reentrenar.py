@@ -71,7 +71,9 @@ try:
     from sklearn.metrics import balanced_accuracy_score
     from sklearn.model_selection import train_test_split
 except ImportError as _exc:  # pragma: no cover - depende del entorno
-    sys.exit(f"❌ Falta {_exc.name}. Ejecute: pip install -r entrenamiento/requirements-entrenamiento.txt")
+    if __name__ == "__main__":
+        sys.exit(f"❌ Falta {_exc.name}. Ejecute: pip install -r entrenamiento/requirements-entrenamiento.txt")
+    raise
 
 CLASES = ["cardboard", "glass", "metal", "paper", "plastic", "trash"]   # Orden del modelo
 GRUPO_CLASE = {"cardboard": "Papel/Cartón", "paper": "Papel/Cartón", "glass": "Vidrio",

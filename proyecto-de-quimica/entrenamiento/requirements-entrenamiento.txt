@@ -9,3 +9,11 @@ numpy>=1.26
 # reentrenar.py reutiliza ingesta_publica.py: instale también ../requirements.txt
 # (albumentations, pycocotools, pandas). onnxruntime no es necesario para reentrenar.py.
 pytest>=8.0             # Pruebas automáticas: python -m pytest -q
+
+# --- Pipeline de 2 etapas (entrenamiento/train_pipeline.py) -------------------
+# Con GPU NVIDIA instale torch con CUDA desde https://pytorch.org (elige tu versión).
+torch>=2.3
+torchvision>=0.18          # MobileNetV3-Large + transforms.v2 (CutMix/MixUp, ElasticTransform)
+ultralytics>=8.3.0         # YOLO11n / YOLO26n  (AGPL-3.0: el repositorio debe ser público)
+pyarrow>=15                # Manifiesto en Parquet (sin pyarrow se guarda en CSV)
+pyyaml>=6.0

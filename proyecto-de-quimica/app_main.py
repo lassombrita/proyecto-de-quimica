@@ -34,12 +34,15 @@ from streamlit_webrtc import WebRtcMode, webrtc_streamer
 
 import database as db
 from vision_edge import (
-    CERTIDUMBRE_MAX,
-    CERTIDUMBRE_MIN,
-    TAXONOMIA,
-    ModeloVisionSimulado,
+    ModeloVisionReal,
     ProcesadorResiduosEdge,
 )
+from vision_engine import CATEGORIAS, MOTOR_HIBRIDO, UMBRAL_CONFIANZA_MINIMA
+
+# Rango de certidumbre del modelo REAL (antes 75-99 % del mock). Por debajo de
+# UMBRAL_CONFIANZA_MINIMA el motor ya responde "No identificado" (contenedor negro).
+CERTIDUMBRE_MIN, CERTIDUMBRE_MAX = 0.0, 100.0
+UMBRAL_REGISTRO_DEFECTO = max(UMBRAL_CONFIANZA_MINIMA, db.UMBRAL_REGISTRO)
 
 # ===========================================================================
 # 1. CONFIGURACION GENERAL
@@ -133,20 +136,20 @@ section[data-testid="stSidebar"] { background: #FFFFFF; border-right: 1px solid 
 # 3. RECURSOS COMPARTIDOS (@st.cache_resource: una vez por proceso)
 # ===========================================================================
 @st.cache_resource(show_spinner=" Cargando modelo de vision...")
-def cargar_modelo() -> ModeloVisionSimulado:
+def cargar_modelo() -> ModeloVisionReal:
     """
-    El modelo se instancia una sola vez y se comparte entre sesiones. Con un
-    modelo real (TensorRT/ONNX) esto evita recargar pesos en cada rerun, que en
-    una Jetson puede costar varios segundos y cientos de MB de memoria unificada.
+    Modelo REAL (MobileNetV2 ONNX vía `vision_engine`), una sola vez por proceso.
+    Antes se usaba `ModeloVisionSimulado`, que asignaba la clase con un hash del
+    color (pseudoaleatoria). Ese mock queda solo para las pruebas.
     """
-    return ModeloVisionSimulado()
+    return ModeloVisionReal(motor=MOTOR_HIBRIDO)
 
 
 @st.cache_resource(show_spinner=False)
 def cargar_registrador() -> db.RegistradorAsincrono:
     """Inicializa la BD (WAL) y arranca el hilo escritor unico del proceso."""
     db.init_db()
-    return db.obtener_registrador()
+    return db.obtener_registrador(motor=MOTOR_HIBRIDO)
 
 
 @st.cache_resource(show_spinner=False)
@@ -225,7 +228,7 @@ def _panel_en_vivo(ctx, registrador: db.RegistradorAsincrono) -> None:
                f"Escritos (proceso): **{r['escritos']}** · Pendientes: **{r['pendientes']}**")
 
 
-def pantalla_escaner(modelo: ModeloVisionSimulado, registrador: db.RegistradorAsincrono,
+def pantalla_escaner(modelo: ModeloVisionReal, registrador: db.RegistradorAsincrono,
                      eventos_por_s: float, umbral: float, hud: bool) -> None:
     encabezado(" Escaner en Vivo",
                "Flujo WebRTC asincrono con inferencia en hilo dedicado y registro no bloqueante en SQLite (WAL).")
@@ -403,13 +406,14 @@ def barra_lateral(registrador: db.RegistradorAsincrono) -> tuple[str, float, flo
         eventos_por_s = st.slider("Eventos registrados por segundo", 0.5, 10.0, 2.0, 0.5,
                                   help="Tasa maxima a la que el hilo de IA encola eventos para SQLite.")
         umbral = st.slider("Certidumbre minima para registrar (%)", CERTIDUMBRE_MIN, CERTIDUMBRE_MAX,
-                           CERTIDUMBRE_MIN, 1.0)
+                           UMBRAL_REGISTRO_DEFECTO, 1.0)
         hud = st.toggle("Mostrar metricas sobre el video", value=True)
         st.divider()
-        st.markdown("**️ Taxonomia activa**")
-        for clase in TAXONOMIA:
+        st.markdown("**️ Clases del modelo activo**")
+        for nombre, info in CATEGORIAS.items():
+            color = db.color_de_contenedor(info["contenedor"])
             st.markdown(f"<small><span class='chip-dot' style='display:inline-block;vertical-align:middle;"
-                        f"background:{COLOR_HEX[clase.color]}'></span>&nbsp;{html.escape(clase.nombre)}</small>",
+                        f"background:{COLOR_HEX[color]}'></span>&nbsp;{html.escape(nombre)}</small>",
                         unsafe_allow_html=True)
         st.divider()
         r = registrador.metricas()
@@ -430,6 +434,9 @@ def main() -> None:
         registrador = cargar_registrador()
 
     pantalla, eventos_por_s, umbral, hud = barra_lateral(registrador)
+    if not modelo.disponible:
+        st.warning(f"Red neuronal no disponible: {modelo.error_carga}. "
+                   "El escáner responderá 'No identificado' (contenedor negro).")
     if pantalla == PANTALLA_ESCANER:
         pantalla_escaner(modelo, registrador, eventos_por_s, umbral, hud)
     else:

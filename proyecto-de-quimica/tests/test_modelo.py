@@ -36,7 +36,7 @@ def test_clasificador_carga(requiere_modelo):
 
 @pytest.mark.parametrize("motor", MOTORES)
 def test_los_cuatro_motores(requiere_modelo, motor):
-    r = ClasificadorResiduos().predecir(_imagen(), motor=motor)
+    r = ClasificadorResiduos(modo_didactico=True).predecir(_imagen(), motor=motor)
     assert r.material in CATEGORIAS
     assert 0 <= r.confianza <= 100
     assert r.contenedor in ("Blanco", "Negro", "Verde")

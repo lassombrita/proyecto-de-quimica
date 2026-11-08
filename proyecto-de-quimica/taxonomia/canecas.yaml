@@ -1,0 +1,140 @@
+# =============================================================================
+# taxonomia/canecas.yaml — Mapeo determinista ETAPA B: clase -> caneca
+# =============================================================================
+# Resolución 2184 de 2019 (MinAmbiente / MinVivienda), art. 4:
+#   * VERDE  -> residuos orgánicos aprovechables.
+#   * BLANCA -> residuos aprovechables: plástico, vidrio, metales, multicapa,
+#               papel y cartón (limpios y secos).
+#   * NEGRA  -> residuos no aprovechables.
+#
+# La red NO decide la caneca: predice una clase de master.yaml y este archivo la
+# traduce. Así un cambio de política (municipio, operador de aseo, PGIRS) se hace
+# editando este YAML, sin re-entrenar.
+#
+# Campos por clase:
+#   caneca:              Blanca | Negra | Verde | Ninguna (posconsumo) | null (no hay residuo)
+#   si_sucio:            Caneca si el usuario indica que está sucio/contaminado.
+#   preguntar_limpieza:  La cámara NO ve "limpio y seco": la UI debe preguntar (o
+#                        aplicar `si_sucio` si el usuario no responde).
+#   nota:                Texto para la UI / la exposición.
+# =============================================================================
+version: 1
+norma: "Resolución 2184 de 2019"
+perfil: nacional
+
+reglas:
+  pet_botella:
+    caneca: Blanca
+    si_sucio: Blanca          # Basta enjuagar; con líquido adentro, vaciar primero
+    nota: "Vacía, sin líquido. La tapa puede ir puesta."
+
+  pead_pp_envase:
+    caneca: Blanca
+    si_sucio: Negra
+    preguntar_limpieza: true
+    nota: "Envases de aseo enjuagados. Con restos de comida grasosa -> Negra."
+
+  plastico_rigido_otro:
+    caneca: Blanca
+    si_sucio: Negra
+    preguntar_limpieza: true
+    # AMBIGÜEDAD: cubiertos y pitillos desechables suelen terminar en rechazo
+    # aunque sean plástico rígido. Si tu operador no los recibe, cámbialo a Negra.
+    nota: "Tapas y vasos limpios. Cubiertos y pitillos: según el operador."
+
+  plastico_flexible_bolsa:
+    caneca: Blanca
+    si_sucio: Negra
+    preguntar_limpieza: true
+    # AMBIGÜEDAD PRINCIPAL: la norma pone el plástico en la Blanca, y la bolsa
+    # limpia y seca es plástico aprovechable (polietileno). Una bolsa con restos de
+    # comida, húmeda o usada como bolsa de basura va a la Negra. El código anterior
+    # mandaba TODAS las bolsas a la Negra junto con las servilletas.
+    nota: "Bolsa limpia y seca -> Blanca. Con restos de comida o húmeda -> Negra."
+
+  multicapa_flexible:
+    caneca: Negra
+    si_sucio: Negra
+    # AMBIGÜEDAD: la Res. 2184 nombra "multicapa" dentro de la Blanca, pero muchas
+    # guías municipales y universitarias envían los "papeles metalizados" (paquetes
+    # de papas, galletas, café) a la Negra porque casi ningún gestor los recibe.
+    # Se deja Negra por defecto; cámbialo a Blanca si tu operador sí los recoge.
+    nota: "Empaques metalizados de snacks: Negra salvo que tu operador los reciba."
+
+  multicapa_rigido:
+    caneca: Blanca
+    si_sucio: Blanca          # Enjuagar y aplastar
+    nota: "Tetra Pak enjuagado y aplastado. Multicapa rígido sí se aprovecha."
+
+  icopor:
+    caneca: Negra
+    si_sucio: Negra
+    # AMBIGÜEDAD: técnicamente reciclable, pero en la práctica llega contaminado y
+    # pocos gestores lo reciben. Negra por defecto.
+    nota: "Icopor: Negra salvo programa específico de recolección."
+
+  vidrio:
+    caneca: Blanca
+    si_sucio: Blanca
+    nota: "Botellas y frascos vacíos. Vidrio roto: envolver antes de botarlo."
+
+  metal_lata:
+    caneca: Blanca
+    si_sucio: Blanca
+    nota: "Latas vacías; aplastarlas ahorra espacio."
+
+  metal_otro:
+    caneca: Blanca
+    si_sucio: Negra
+    preguntar_limpieza: true
+    # Aerosoles: solo si están VACÍOS. Papel aluminio con grasa -> Negra.
+    nota: "Aerosoles vacíos y papel aluminio limpio."
+
+  papel:
+    caneca: Blanca
+    si_sucio: Negra
+    preguntar_limpieza: true
+    # La norma: papeles contaminados con comida, grasa o líquidos -> Negra.
+    nota: "Papel limpio y seco. Con grasa o mojado -> Negra."
+
+  carton:
+    caneca: Blanca
+    si_sucio: Negra
+    preguntar_limpieza: true
+    # AMBIGÜEDAD: cajas de pizza o de comida con grasa -> Negra. Solo la parte
+    # limpia de la caja se puede separar para la Blanca.
+    nota: "Cartón limpio y seco. Caja de pizza con grasa -> Negra."
+
+  sanitario_y_rechazo:
+    caneca: Negra
+    si_sucio: Negra
+    nota: "Servilletas, papel higiénico, tapabocas, colillas: siempre Negra."
+
+  organico:
+    caneca: Verde
+    si_sucio: Verde
+    # Algunos municipios aún no recogen la Verde por separado: en ese caso, Negra.
+    nota: "Cáscaras y restos de comida cruda."
+
+  peligroso:
+    caneca: Ninguna
+    destino: "Punto de recolección posconsumo"
+    nota: "Pilas, baterías, bombillos y medicamentos NO van a ninguna caneca doméstica."
+
+  fondo_sin_objeto:
+    caneca: null
+    nota: "No se detecta residuo."
+
+# Política ante incertidumbre (se aplica ANTES de las reglas):
+incertidumbre:
+  umbral_confianza: 0.60      # Probabilidad mínima de la clase ganadora (tras calibrar)
+  margen_top2: 0.15           # Diferencia mínima entre la 1.ª y la 2.ª clase
+  caneca_por_defecto: Negra   # Ante la duda, no contaminar la Blanca
+
+# Sobreescrituras por perfil (municipio / operador). Se aplican encima de `reglas`.
+# Activa uno con: Taxonomia.cargar(perfil="operador_recibe_multicapa")
+perfiles:
+  operador_recibe_multicapa:
+    multicapa_flexible: {caneca: Blanca, si_sucio: Negra, preguntar_limpieza: true}
+  sin_ruta_organicos:
+    organico: {caneca: Negra}

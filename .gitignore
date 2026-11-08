@@ -27,3 +27,9 @@ temp_recortes/
 .lmstudio/
 .pytest_cache/
 *.zip
+
+# Pipeline de 2 etapas: datasets exportados, recortes, corridas y pesos base
+proyecto-de-quimica/entrenamiento/trabajo/
+proyecto-de-quimica/entrenamiento/pesos_base/
+proyecto-de-quimica/fotos_propias/
+*.pt

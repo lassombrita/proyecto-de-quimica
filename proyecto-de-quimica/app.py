@@ -25,13 +25,21 @@ Arquitectura del flujo de video (por qué ya no hay lag):
                       estado compartido (lock) ◄── st.fragment(run_every=1 s)
                                                   (solo se re-renderiza el panel)
 
-Ejecución:  streamlit run app.py
+Ejecución:
+    streamlit run app.py                       # solo motores de producción (IA / Híbrido)
+    streamlit run app.py -- --modo-didactico   # agrega Color y Geometría para la exposición
+    (equivalente: variable de entorno RECICLAJE_MODO_DIDACTICO=1)
+
+Los eventos producidos por motores didácticos se guardan con origen
+"camara_didactico", de modo que nunca se mezclan con las estadísticas reales.
 """
 
 from __future__ import annotations
 
 import hashlib
 import math
+import os
+import sys
 import re
 import threading
 import time
@@ -52,7 +60,13 @@ import streamlit as st
 from streamlit_webrtc import VideoProcessorBase, WebRtcMode, webrtc_streamer
 
 import database as db
-from vision_engine import CATEGORIAS, COLORES_CONTENEDOR, ClasificadorResiduos
+from vision_engine import (
+    CATEGORIAS,
+    COLORES_CONTENEDOR,
+    MOTORES_DIDACTICOS,
+    MOTORES_PRODUCCION,
+    ClasificadorResiduos,
+)
 
 # ===========================================================================
 # 1. CONFIGURACIÓN
@@ -70,12 +84,17 @@ PANTALLA_TABLERO = "📊 Tablero Estadístico"
 MODO_VIDEO = "🎥 Video en vivo (WebRTC)"
 MODO_FOTO = "📸 Foto única (respaldo)"
 
-MOTORES = [
-    "Motor Híbrido Estricto",
-    "Motor IA (MobileNetV2)",
-    "Motor Geométrico (Forma/Contornos)",
-    "Motor Básico (Color)",
-]
+# Modo didáctico: `streamlit run app.py -- --modo-didactico` o RECICLAJE_MODO_DIDACTICO=1.
+MODO_DIDACTICO = ("--modo-didactico" in sys.argv[1:]
+                  or os.environ.get("RECICLAJE_MODO_DIDACTICO", "").strip().lower() in ("1", "true", "si", "sí"))
+MOTORES = list(MOTORES_PRODUCCION) + (list(MOTORES_DIDACTICOS) if MODO_DIDACTICO else [])
+ORIGEN_CAMARA = "camara"
+ORIGEN_DIDACTICO = "camara_didactico"
+
+
+def origen_registro(motor: str) -> str:
+    """Los eventos de motores didácticos no se mezclan con los de producción."""
+    return ORIGEN_DIDACTICO if motor in MOTORES_DIDACTICOS else ORIGEN_CAMARA
 
 # --- Parámetros del pipeline de video ---------------------------------------
 UMBRAL_REGISTRO = db.UMBRAL_REGISTRO      # Se guarda solo si confianza > 60 %
@@ -129,7 +148,7 @@ class MotorCompartido:
     """
 
     def __init__(self) -> None:
-        self.clasificador = ClasificadorResiduos()
+        self.clasificador = ClasificadorResiduos(modo_didactico=MODO_DIDACTICO)
         self._lock = threading.Lock()
 
     @property
@@ -441,7 +460,7 @@ class ProcesadorReciclaje(VideoProcessorBase):
                 contenedor = CATEGORIAS[material]["contenedor"]
                 try:
                     id_reg = db.crear_clasificacion(material, confianza, contenedor,
-                                                    origen="camara", motor=motor)
+                                                    origen=origen_registro(motor), motor=motor)
                     registro = {"id": id_reg, "material": material, "confianza": confianza,
                                 "contenedor": contenedor, "hora": datetime.now().strftime("%H:%M:%S"),
                                 "t": time.monotonic()}
@@ -659,7 +678,7 @@ def modo_foto(motor_ia: MotorCompartido, motor: str, diagnostico: bool) -> None:
             if pred.confianza > UMBRAL_REGISTRO and pred.material != "No identificado" \
                     and st.session_state.get("foto_huella_guardada") != huella:
                 id_reg = db.crear_clasificacion(pred.material, pred.confianza, pred.contenedor,
-                                                origen="camara", motor=motor)
+                                                origen=origen_registro(motor), motor=motor)
                 st.session_state.foto_huella_guardada = huella
             st.session_state.foto_clave = clave
             st.session_state.foto_pred = (pred, id_reg)
@@ -869,6 +888,11 @@ def barra_lateral(motor_ia: MotorCompartido) -> tuple[str, str, bool]:
         st.markdown("### ⚙️ Motor de Clasificación")
         motor = st.radio("Seleccionar estrategia:", MOTORES, index=0,
                          help="Se puede cambiar en caliente mientras el video está activo.")
+        if MODO_DIDACTICO:
+            st.info("🎓 Modo didáctico activo: Color y Geometría reproducen fallos conocidos. "
+                    f"Sus eventos se guardan con origen '{ORIGEN_DIDACTICO}'.")
+            if motor in MOTORES_DIDACTICOS:
+                st.warning("Este motor NO es fiable para separar residuos reales.")
         diagnostico = st.checkbox("🛠️ Activar Modo Diagnóstico", value=False)
 
         st.divider()

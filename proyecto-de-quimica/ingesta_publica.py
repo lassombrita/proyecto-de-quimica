@@ -732,7 +732,8 @@ def ejecutar(args: argparse.Namespace) -> int:
     print(f"🧠 Motor: {args.motor}  |  umbral de registro: >{args.umbral:.0f}%"
           f"{'  |  guardando TODO' if args.guardar_todo else ''}")
 
-    clasificador = ClasificadorResiduos()
+    # Evaluar con un motor didáctico es una elección explícita del usuario (--motor).
+    clasificador = ClasificadorResiduos(modo_didactico=args.motor in MOTORES[2:])
     if clasificador.red_onnx is None and args.motor in MOTORES[:2]:
         print(f"⚠️  Red neuronal no disponible ({clasificador.error_carga_dnn}).")
 

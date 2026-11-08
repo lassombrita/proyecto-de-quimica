@@ -1,0 +1,177 @@
+# =============================================================================
+# taxonomia/master.yaml — Taxonomía Maestra (ETAPA A: lo que aprende la red)
+# =============================================================================
+# Una sola fuente de verdad para TODAS las clases del sistema. El clasificador
+# predice estas 16 clases; el destino (caneca) NO vive aquí sino en canecas.yaml.
+#
+# Reglas:
+#   * `id` es el índice de salida del clasificador: NO reordenar una vez entrenado
+#     (agregar clases nuevas al final y re-entrenar).
+#   * `alias` traduce las etiquetas de cada fuente. Las claves se normalizan a
+#     snake_case ASCII (igual que ingesta_publica.normalizar_nombre):
+#     "Clear plastic bottle" -> clear_plastic_bottle, "Cartón" -> carton.
+#   * Una etiqueta que no cabe en UNA sola clase va en `ambiguas` (más abajo):
+#     queda en el manifiesto con sus candidatas, pero el clasificador la ignora
+#     salvo que se active `usar_ambiguas` en el pipeline.
+#   * El detector (1 clase "residuo") usa TODAS las cajas con anotación, incluso
+#     las ambiguas o sin mapeo (p. ej. TACO "Unlabeled litter").
+# =============================================================================
+version: 1
+
+clases:
+  - id: 0
+    nombre: pet_botella
+    descripcion: "Botellas de PET (#1): gaseosa, agua, jugos."
+    alias:
+      taco: [clear_plastic_bottle]
+      off: []           # Ver reglas_off
+      propias: [pet, botella_pet, botella_plastica]
+
+  - id: 1
+    nombre: pead_pp_envase
+    descripcion: "Envases rígidos PEAD (#2) / PP (#5): detergente, cloro, yogur, tarrinas."
+    alias:
+      taco: [other_plastic_bottle, spread_tub, tupperware, other_plastic_container]
+      propias: [pead, pp, envase_aseo, galon, tarrina, detergente, cloro]
+
+  - id: 2
+    nombre: plastico_rigido_otro
+    descripcion: "Otro plástico rígido: tapas, vasos y cubiertos desechables, contenedores."
+    alias:
+      taco: [plastic_bottle_cap, plastic_lid, disposable_plastic_cup, other_plastic_cup,
+             disposable_food_container, plastic_utensils, plastic_straw, other_plastic]
+      propias: [tapa_plastica, vaso_plastico, cubiertos, pitillo]
+
+  - id: 3
+    nombre: plastico_flexible_bolsa
+    descripcion: "Plástico flexible / película: bolsas, envolturas transparentes, stretch."
+    alias:
+      taco: [plastic_film, garbage_bag, single_use_carrier_bag, polypropylene_bag,
+             other_plastic_wrapper, six_pack_rings]
+      zerowaste: [soft_plastic]
+      propias: [bolsa, bolsa_plastica, bolsa_blanca, pelicula, plastico_flexible]
+
+  - id: 4
+    nombre: multicapa_flexible
+    descripcion: "Empaques flexibles multicapa/metalizados: papas, galletas, café, blísters, tubos."
+    alias:
+      taco: [crisp_packet, aluminium_blister_pack, carded_blister_pack, squeezable_tube,
+             plastified_paper_bag]
+      propias: [paquete_papas, paquete_de_papas, empaque_snack, empaque_galletas, multicapa,
+                metalizado, crema_dental]
+
+  - id: 5
+    nombre: multicapa_rigido
+    descripcion: "Envases multicapa rígidos (Tetra Pak): leche, jugos."
+    alias:
+      taco: [drink_carton]
+      propias: [tetra_pak, tetrapak, caja_leche]
+
+  - id: 6
+    nombre: icopor
+    descripcion: "Poliestireno expandido: bandejas, vasos, cocas, piezas."
+    alias:
+      taco: [styrofoam_piece, foam_cup, foam_food_container]
+      propias: [icopor, poliestireno, bandeja_icopor, coca_icopor, vaso_icopor]
+
+  - id: 7
+    nombre: vidrio
+    descripcion: "Botellas, frascos y vasos de vidrio."
+    alias:
+      taco: [glass_bottle, broken_glass, glass_cup, glass_jar]
+      trashnet: [glass]
+      propias: [vidrio, botella_vidrio, frasco]
+
+  - id: 8
+    nombre: metal_lata
+    descripcion: "Latas de bebida y de conserva."
+    alias:
+      taco: [drink_can, food_can]
+      propias: [lata, lata_aluminio, lata_atun]
+
+  - id: 9
+    nombre: metal_otro
+    descripcion: "Otros metales: aerosoles vacíos, papel aluminio, tapas, chatarra."
+    alias:
+      taco: [aerosol, aluminium_foil, metal_bottle_cap, metal_lid, pop_tab, scrap_metal]
+      propias: [aerosol, desodorante_aerosol, papel_aluminio, tapa_metalica]
+
+  - id: 10
+    nombre: papel
+    descripcion: "Papel: hojas, periódico, revistas, bolsas de papel."
+    alias:
+      taco: [normal_paper, magazine_paper, wrapping_paper, paper_bag]
+      trashnet: [paper]
+      propias: [papel, hoja, periodico, revista]
+
+  - id: 11
+    nombre: carton
+    descripcion: "Cartón: cajas, corrugado, tubos, cubetas de huevos."
+    alias:
+      taco: [corrugated_carton, other_carton, egg_carton, toilet_tube, meal_carton, pizza_box]
+      trashnet: [cardboard]
+      zerowaste: [cardboard]
+      propias: [carton, caja, caja_carton]
+
+  - id: 12
+    nombre: sanitario_y_rechazo
+    descripcion: "No aprovechable: servilletas, papel higiénico, tapabocas, guantes, colillas,
+      vasos de papel encerados, pitillos de papel, textiles y calzado."
+    alias:
+      taco: [tissues, cigarette, plastic_glooves, paper_cup, paper_straw, rope_strings, shoe]
+      propias: [servilleta, papel_higienico, tapabocas, colilla, guante]
+
+  - id: 13
+    nombre: organico
+    descripcion: "Orgánico aprovechable: cáscaras, restos de fruta y verdura, poda."
+    alias:
+      taco: [food_waste]
+      propias: [organico, cascara, restos_comida]
+
+  - id: 14
+    nombre: peligroso
+    descripcion: "Peligroso / posconsumo: pilas, baterías, bombillos, medicamentos."
+    alias:
+      taco: [battery]
+      propias: [pila, bateria, bombillo, medicamento]
+
+  - id: 15
+    nombre: fondo_sin_objeto
+    descripcion: "Sin residuo: mesa, piso, mano vacía. Evita que la red invente un material."
+    alias:
+      propias: [fondo, vacio, sin_objeto]
+
+# -----------------------------------------------------------------------------
+# Etiquetas que NO caben en una sola clase. Se guardan con sus candidatas.
+# -----------------------------------------------------------------------------
+ambiguas:
+  trashnet:
+    plastic: [pet_botella, pead_pp_envase, plastico_rigido_otro]   # TrashNet mezcla resinas
+    metal: [metal_lata, metal_otro]
+    trash: []            # Bolsa de todo lo no aprovechable: inutilizable como etiqueta
+  zerowaste:
+    rigid_plastic: [pet_botella, pead_pp_envase, plastico_rigido_otro]
+    metal: [metal_lata, metal_otro]
+  taco:
+    unlabeled_litter: []  # Útil solo para el detector
+
+# -----------------------------------------------------------------------------
+# Open Food Facts: la etiqueta sale de `packaging_tags` + `categories_tags`.
+# Se evalúan en orden; gana la PRIMERA regla cuyas etiquetas estén TODAS presentes
+# (`todas`) y, si se indica, al menos una de `alguna`. Sin coincidencia -> se omite.
+# Las etiquetas se comparan sin el prefijo de idioma ("en:"), normalizadas.
+# -----------------------------------------------------------------------------
+reglas_off:
+  - {clase: multicapa_rigido, alguna: [tetra_pak, tetrapak, beverage_carton, brick, carton_brick]}
+  - {clase: metal_lata, alguna: [can, drink_can, aluminium_can, tin_can, steel_can, lata]}
+  - {clase: vidrio, alguna: [glass, glass_bottle, glass_jar, vidrio]}
+  - {clase: multicapa_flexible, alguna: [metallised_plastic, metallized_plastic, multilayer,
+                                          multilayer_packaging, laminated, chips_bag, snack_bag]}
+  - {clase: multicapa_flexible, todas: [bag], alguna: [snacks, chips, crisps, salty_snacks,
+                                                       biscuits, cookies, coffees]}
+  - {clase: pet_botella, todas: [bottle], alguna: [pet, pet_1_polyethylene_terephthalate,
+                                                   1_pet, polyethylene_terephthalate]}
+  - {clase: pead_pp_envase, alguna: [hdpe, hdpe_2_high_density_polyethylene, 2_hdpe,
+                                     pp, pp_5_polypropylene, 5_pp]}
+  - {clase: plastico_flexible_bolsa, alguna: [plastic_bag, film, plastic_film, sachet]}
+  - {clase: carton, alguna: [cardboard, cardboard_box, box, carton]}

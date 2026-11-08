@@ -29,3 +29,9 @@ temp_recortes/
 temp_pruebas.db
 *.zip
 .lmstudio/
+
+# Pipeline de 2 etapas: datasets exportados, recortes, corridas y pesos base
+entrenamiento/trabajo/
+entrenamiento/pesos_base/
+fotos_propias/
+*.pt

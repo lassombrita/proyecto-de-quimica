@@ -24,5 +24,8 @@ Pillow>=10.0                     # Lectura de imágenes con orientación EXIF (i
 pycocotools>=2.0.10              # API oficial MS COCO (TACO, Roboflow). Wheels abi3 para Py 3.12-3.14
 albumentations==2.0.8            # Última versión MIT (RandomSunFlare v2: num_flare_circles_range)
 
+# --- Taxonomía maestra y reglas de canecas (taxonomia/*.yaml) ----------------
+pyyaml>=6.0
+
 # sqlite3 viene incluido con Python: no requiere instalación.
 # Opcional, solo para `ingesta_publica.py --solo-prueba`:  pip install scikit-learn

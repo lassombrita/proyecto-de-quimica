@@ -1,0 +1,127 @@
+# =============================================================================
+# entrenamiento/pipeline.yaml — Configuración del pipeline de 2 etapas
+# =============================================================================
+#   Etapa 1  Detector de 1 clase "residuo"   (Ultralytics YOLO11n, AGPL-3.0)
+#   Etapa 2  Clasificador de 16 materiales   (MobileNetV3-Large, fine-tuning COMPLETO)
+#   Etapa B  Clase -> caneca                 (taxonomia/canecas.yaml, sin re-entrenar)
+#
+# Uso:  python entrenamiento/train_pipeline.py --config entrenamiento/pipeline.yaml
+# Rutas relativas = relativas a la carpeta del proyecto.
+# =============================================================================
+version: 1
+semilla: 42
+
+rutas:
+  manifiesto: data/manifiesto.parquet     # Lo genera datos/construir_manifiesto.py
+  trabajo: entrenamiento/trabajo          # Datasets exportados, recortes y corridas (no se sube)
+  pesos_base: entrenamiento/pesos_base    # Pesos preentrenados descargados UNA vez (no se sube)
+  modelos: models                         # Salida final: ONNX + metadatos (sí se sube)
+
+# Etapa "preparar-pesos" es la ÚNICA que necesita internet. Después todo es offline.
+offline: true
+
+# -----------------------------------------------------------------------------
+# ETAPA 1 — DETECTOR "residuo" (1 clase)
+# -----------------------------------------------------------------------------
+detector:
+  # yolo11n.pt (estable, recomendado) · yolo26n.pt (más nuevo, sin NMS, misma API)
+  modelo: yolo11n.pt
+  fuentes: [taco, zerowaste]      # Solo fuentes con cajas
+  incluir_sin_mapeo: true         # Una caja sin clase sigue siendo un "residuo"
+  enlazar_imagenes: true          # Symlink en vez de copiar (en Windows cae a copia si no hay permiso)
+  entrenamiento:
+    imgsz: 640
+    epochs: 100
+    patience: 20
+    batch: 16                     # -1 = automático según la VRAM
+    workers: 4
+    device: auto                  # auto | cpu | 0
+    optimizer: auto
+    cos_lr: true
+    close_mosaic: 10
+    mosaic: 1.0
+    mixup: 0.1
+    degrees: 10.0
+    hsv_h: 0.01                   # Poco cambio de tono: el color sí informa del material
+    hsv_s: 0.5
+    hsv_v: 0.4
+    fliplr: 0.5
+    flipud: 0.1
+    cache: false                 # Usar solo RAM para entrenamiento
+    plots: false                  # true requiere descargar fuentes tipográficas
+  exportar:
+    formato: onnx
+    imgsz: 416                    # Menor resolución en inferencia = menos latencia en CPU
+    simplify: true
+    dynamic: false
+    half: false
+    salida: detector_residuo.onnx
+  inferencia:
+    conf: 0.30
+    iou: 0.50
+
+# -----------------------------------------------------------------------------
+# ETAPA 2 — CLASIFICADOR DE MATERIAL (16 clases de taxonomia/master.yaml)
+# -----------------------------------------------------------------------------
+clasificador:
+  arquitectura: mobilenet_v3_large   # torchvision
+  preentrenado: true                 # Pesos ImageNet (IMAGENET1K_V2) como punto de partida
+  congelar_backbone: false           # Fine-tuning COMPLETO: todas las capas se entrenan
+  usar_ambiguas: false               # TrashNet "plastic", ZeroWaste "rigid_plastic"... fuera
+
+  recortes:
+    lado: 256                        # Se guardan en disco a 256 px (JPEG q90): ~40 KB c/u
+    margen: 0.15                     # Margen alrededor de la caja
+    lado_minimo_caja: 32             # Cajas más pequeñas no sirven para clasificar material
+    calidad_jpeg: 90
+  fondo:                             # Clase 15 (fondo_sin_objeto) desde fotos con cajas
+    recortes_por_imagen: 1
+    max_total: 3000
+    fuentes: [taco]
+
+  balanceo:
+    tope_por_clase: 3000             # Máx. recortes de ENTRENAMIENTO por clase
+    tope_fraccion_fuente:            # Ninguna fuente puede dominar una clase
+      off: 0.30                      # Foto de producto nuevo != residuo
+      trashnet: 0.30                 # Fondo blanco de estudio
+    sampler: raiz_inversa            # peso ∝ 1/sqrt(n_clase) · uniforme | inversa | raiz_inversa
+
+  entrenamiento:
+    imgsz: 224
+    epochs: 30
+    batch: 64                        # CPU: baja a 32
+    workers: 4
+    lr: 0.001
+    lr_backbone_factor: 0.3          # El backbone aprende a 0.3x la tasa de la cabeza
+    weight_decay: 0.05
+    warmup_epochs: 2
+    label_smoothing: 0.1
+    amp: true                        # Solo con GPU
+    cutmix_mixup_p: 0.3
+    paciencia: 6                     # Épocas sin mejorar la exactitud balanceada de validación
+  aumentos:
+    escala_recorte: [0.55, 1.0]
+    jitter: {brillo: 0.35, contraste: 0.35, saturacion: 0.25, tono: 0.02}
+    elastico_p: 0.25                 # Arrugas / deformación de empaques
+    perspectiva_p: 0.3
+    desenfoque_p: 0.2
+    rotacion: 20
+    borrado_p: 0.25                  # RandomErasing: oclusión por la mano
+
+  exportar:
+    salida: clasificador_material.onnx
+    opset: 17
+
+calibracion:
+  metodo: temperatura                # Ajusta T en validación: la confianza pasa a significar algo
+
+# -----------------------------------------------------------------------------
+# EVALUACIÓN Y ACEPTACIÓN (sobre el conjunto de PRUEBA)
+# -----------------------------------------------------------------------------
+evaluacion:
+  clases_criticas: [plastico_flexible_bolsa, sanitario_y_rechazo, icopor, multicapa_flexible,
+                    pet_botella]
+  aceptar_si:
+    recall_minimo_criticas: 0.80
+    contaminacion_blanca_maxima: 0.10   # Fracción de lo enviado a la Blanca que NO era de la Blanca
+    exactitud_balanceada_minima: 0.70

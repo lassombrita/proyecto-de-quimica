@@ -20,7 +20,7 @@ import vision_mock as vm  # noqa: E402
 
 CLASES = ["cardboard", "glass", "metal", "paper", "plastic", "trash"]
 ESPERADO = {"cardboard": ("Papel/Cartón",), "paper": ("Papel/Cartón",), "glass": ("Vidrio",),
-            "metal": ("Metal",), "plastic": ("PET", "PEAD"), "trash": ("No aprovechable",)}
+            "metal": ("Metal",), "plastic": ("Plástico", "PET", "PEAD"), "trash": ("No aprovechable",)}
 
 
 def main(carpeta):

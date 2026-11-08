@@ -29,12 +29,17 @@ A partir de una imagen capturada por cámara, el sistema identifica el tipo de r
 
 | Categoría | Ejemplos | Contenedor |
 |---|---|---|
-| PET (resina #1) | Botellas de bebidas | ⚪ Blanco |
-| PEAD (resina #2) | Envases de detergente y lácteos | ⚪ Blanco |
+| PET (resina #1) | Botellas de bebidas (solo con cuello visible) | ⚪ Blanco |
+| PEAD (resina #2) | Envases de detergente y lácteos (pico lateral visible) | ⚪ Blanco |
+| Plástico | Plástico sin evidencia de resina: tapas, vasos, envases | ⚪ Blanco |
 | Vidrio | Botellas y frascos | ⚪ Blanco |
 | Metal | Latas de aluminio y acero | ⚪ Blanco |
 | Papel/Cartón | Cajas, hojas, periódico | ⚪ Blanco |
-| No aprovechable | Servilletas, empaques metalizados, residuos contaminados | ⚫ Negro |
+| No aprovechable | El modelo actual agrupa aquí película plástica, icopor, multicapa y sanitarios | ⚫ Negro |
+
+> Estas son las clases del modelo actual (v1). La migración a la **Taxonomía Maestra de 16 clases**
+> (`taxonomia/master.yaml`) y a las reglas de canecas configurables (`taxonomia/canecas.yaml`)
+> está descrita en la sección *Pipeline de 2 etapas*.
 
 > El contenedor ⚪ blanco recibe los residuos aprovechables, el ⚫ negro los no aprovechables y el 🟢 verde los orgánicos aprovechables.
 
@@ -93,12 +98,19 @@ La aplicación sigue una **arquitectura en capas**: cada módulo tiene una sola 
 
 ### Motor de clasificación (Multi-Engine)
 
-El sistema integra **4 estrategias de clasificación intercambiables en tiempo real** desde la barra lateral:
+El sistema integra **2 motores de producción** (IA e Híbrido) y **2 motores didácticos** (Color y
+Geometría) que reproducen fallos conocidos para la exposición. Los didácticos solo aparecen con:
 
-1. **Motor Básico (Color):** Heurística cromática clásica en espacio HSV central. Demuestra el problema de sesgo cromático (ej. botella PET con jugo café clasificada como cartón).
-2. **Motor Geométrico (Forma/Contornos):** Clasificación basada puramente en OpenCV (Canny, descriptores de aspecto, solidez, rectangularidad y análisis de cuello). No depende de color.
+```bash
+streamlit run app.py -- --modo-didactico      # o RECICLAJE_MODO_DIDACTICO=1
+```
+
+Sus eventos se guardan con origen `camara_didactico` y no se mezclan con las estadísticas reales.
+
+1. **Motor Básico (Color)** *(didáctico)*: Heurística cromática en HSV. Demuestra el sesgo cromático (ej. botella PET con jugo café clasificada como cartón). Ya **no** convierte lo blanco en PET: un tono claro sin saturación da «No identificado».
+2. **Motor Geométrico (Forma/Contornos)** *(didáctico)*: Clasificación basada puramente en OpenCV (Canny, descriptores de aspecto, solidez, rectangularidad y análisis de cuello). No depende de color.
 3. **Motor IA (MobileNetV2):** Inferencia directa con la red neuronal convolucional entrenada en TrashNet y ejecutada con `cv2.dnn` sobre canales RGB. Sin bloqueos geométricos.
-4. **Motor Híbrido Estricto:** Fusión no destructiva donde la red neuronal lidera la decisión del material y la morfología aporta confirmación estructural (+8% confianza) y especialización fina (PET vs PEAD según el centrado del pico).
+4. **Motor Híbrido Estricto:** La red neuronal decide el material; la forma solo especializa «plástico» a PET/PEAD cuando hay un cuello real (un extremo angosto, el otro ancho y figura alargada: un óvalo como una bolsa arrugada ya no cuenta). No suma confianza. Si la 1.ª y la 2.ª clase están a menos de 15 puntos, responde «No identificado».
 
 > Para el análisis detallado de la auditoría y causas raíz de fallos previos, consulta el [Informe de Auditoría y Corrección de Visión](docs/AUDITORIA_Y_CORRECCION_VISION.md).
 
@@ -331,6 +343,47 @@ python -m pytest -q
 ```
 Usan bases de datos temporales: no tocan `data/reciclaje.db`. Detalle en [docs/VERIFICACION.md](docs/VERIFICACION.md).
 Guía para presentar el proyecto: [docs/GUIA_EXPOSICION.md](docs/GUIA_EXPOSICION.md).
+
+### 8. Escáner Edge (`app_main.py`)
+```bash
+streamlit run app_main.py
+```
+Usa el modelo real (`vision_edge.ModeloVisionReal`). Sus eventos se guardan con origen `camara_edge`.
+
+---
+
+## Pipeline de 2 etapas (en construcción)
+
+```
+cámara ─► Detector "residuo" (YOLO11n, 1 clase) ─► recorte ─► Clasificador (MobileNetV3-Large, 16 clases)
+                                                                        │
+                                       taxonomia/canecas.yaml (Res. 2184) ◄─┘ ─► Blanca / Negra / Verde
+```
+
+| Archivo | Rol |
+|---|---|
+| `taxonomia/master.yaml` | 16 clases (Etapa A) + alias de TACO, TrashNet, ZeroWaste, Open Food Facts y fotos propias |
+| `taxonomia/canecas.yaml` | Clase → caneca (Etapa B), con ambigüedades comentadas y perfiles por operador |
+| `taxonomia/__init__.py` | Carga y valida ambos YAML (`python -m taxonomia`) |
+| `datos/construir_manifiesto.py` | Une todas las fuentes en un solo manifiesto (una fila por objeto), sin fugas entre conjuntos |
+| `entrenamiento/pipeline.yaml` | Configuración del entrenamiento |
+| `entrenamiento/train_pipeline.py` | Exporta datasets, entrena detector y clasificador, calibra, exporta ONNX y evalúa |
+
+```bash
+# 1. Una sola vez, con internet: pesos preentrenados
+python entrenamiento/train_pipeline.py --etapas preparar-pesos
+# 2. Manifiesto (offline)
+python datos/construir_manifiesto.py --taco ../TACO/data --trashnet entrenamiento/dataset-resized \
+    --propias fotos_propias --salida data/manifiesto.parquet
+# 3. Plan y conteos sin entrenar
+python entrenamiento/train_pipeline.py --dry-run
+# 4. Todo el entrenamiento (offline)
+python entrenamiento/train_pipeline.py
+```
+
+**Fotos propias:** `fotos_propias/<sesion>/<clase>/*.jpg`. Las sesiones cuyo nombre empieza por
+`prueba` se reservan para la evaluación. Los nombres de clase aceptados están en los `alias: propias`
+de `taxonomia/master.yaml` (p. ej. `bolsa_blanca`, `servilleta`, `icopor`, `paquete_papas`, `fondo`).
 
 ---
 

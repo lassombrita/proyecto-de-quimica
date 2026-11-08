@@ -1,0 +1,11 @@
+{
+  "arquitectura": "yolo11n.pt",
+  "clases": [
+    "residuo"
+  ],
+  "imgsz": 416,
+  "conf": 0.3,
+  "iou": 0.5,
+  "entrenado": "2026-11-08 02:22",
+  "licencia": "AGPL-3.0 (Ultralytics)"
+}

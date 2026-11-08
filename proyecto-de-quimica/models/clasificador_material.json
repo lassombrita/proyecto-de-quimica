@@ -1,0 +1,37 @@
+{
+  "arquitectura": "mobilenet_v3_large",
+  "clases": [
+    "pet_botella",
+    "pead_pp_envase",
+    "plastico_rigido_otro",
+    "plastico_flexible_bolsa",
+    "multicapa_flexible",
+    "multicapa_rigido",
+    "icopor",
+    "vidrio",
+    "metal_lata",
+    "metal_otro",
+    "papel",
+    "carton",
+    "sanitario_y_rechazo",
+    "organico",
+    "peligroso",
+    "fondo_sin_objeto"
+  ],
+  "temperatura": 0.8557920455932617,
+  "imgsz": 224,
+  "media": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "desv": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "entrada": "RGB NCHW float32 normalizado",
+  "taxonomia": "taxonomia/master.yaml v1",
+  "val_exactitud_balanceada": 0.4374781973998516,
+  "entrenado": "2026-11-08 02:37"
+}
