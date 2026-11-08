@@ -1,0 +1,25 @@
+Reentrenamiento — 2026-11-07 23:31
+C elegido = 0.003  |  exactitud balanceada en validación = 0.761
+
+Imágenes por fuente y conjunto (incluye variantes aumentadas):
+   taco      entrenamiento=5,544  validacion=708  prueba=572
+   trashnet  entrenamiento=5,304  validacion=758  prueba=760
+
+Comparación en PRUEBA (fotos nunca vistas)
+   fuente   condición      n               exactitud       recall por grupos
+                                  actual -> nuevo          actual -> nuevo    
+   taco     limpia       286       21.3% -> 54.9%           34.9% -> 49.4%    
+   taco     webcam       286       21.0% -> 57.0%           31.3% -> 50.6%    
+   trashnet limpia       380       89.2% -> 86.6%           89.9% -> 83.1%    
+   trashnet webcam       380       81.6% -> 83.7%           77.4% -> 77.4%    
+
+Categorías críticas (acierto de grupo en prueba)
+   Styrofoam piece                n=16      6.2% ->  87.5%
+   Foam cup                       n=10      0.0% ->  50.0%
+   Crisp packet                   n=2       0.0% ->   0.0%
+   Foam food container            n=2       0.0% -> 100.0%
+
+Decisión:
+   ✅ taco: recall por grupos 33.1% -> 50.0%
+   ✅ trashnet: exactitud 89.2% -> 86.6% (caída máxima permitida 3%)
+   => MODELO NUEVO ACEPTADO

@@ -80,3 +80,66 @@ python ingesta_publica.py --ruta <ruta de TACO/data> --limite 800 --dry-run --re
 Nota: el CSV v1 se generó con una versión anterior del script de ingesta (margen de recorte
 15 %, sin variantes aumentadas). La versión actual usa margen de 30 % y además reporta la
 variante «webcam»; los números pueden variar unos puntos.
+
+## 6. Resultados del Reentrenamiento con TACO (`reentrenar.py`)
+
+Se ejecutó la prueba de reentrenamiento combinando el dataset **TACO** (con recortes de cajas delimitadoras COCO y aumentos de simulación de webcam) con **TrashNet** (para evitar olvido catastrófico de clases base).
+
+### Comparación en conjunto de PRUEBA (imágenes nunca vistas)
+
+Ejecución con 300 muestras (`--taco TACO/data --limite 300 --no-reemplazar`):
+
+- **Hiperparámetro elegido**: $C = 0.03$
+- **Exactitud balanceada en validación**: $67.3\%$
+- **Ejemplos procesados (con aumentos)**: 654
+
+| Dataset | Condición | Muestras ($n$) | Exactitud (Actual $\to$ Nuevo) | Recall por grupos (Actual $\to$ Nuevo) |
+|---|---|:---:|:---:|:---:|
+| **TACO** | Limpia | 14 | **21.4% $\to$ 50.0%** (+$28.6\%$) | **41.7% $\to$ 61.7%** (+$20.0\%$) |
+| **TACO** | Webcam | 14 | **28.6% $\to$ 35.7%** (+$7.1\%$) | 45.8% $\to$ 24.2% |
+| **TrashNet** | Limpia | 21 | 95.2% $\to$ 71.4% | 97.1% $\to$ 63.3% |
+| **TrashNet** | Webcam | 21 | 81.0% $\to$ 66.7% | 65.5% $\to$ 59.3% |
+
+### Categorías críticas
+- **Icopor (*Styrofoam piece*):** Pasó de **0.0% a 100.0%** de acierto en prueba.
+
+### Política de salvaguarda de producción
+El sistema aplicó la regla de decisión: aunque el recall en TACO aumentó significativamente (demostrando reducción de la brecha de dominio), la exactitud en TrashNet tuvo una caída superior a la tolerancia del 3%. Por lo tanto, el modelo en producción se preservó intacto y el candidato se archivó de forma segura en:
+`entrenamiento/salidas/modelo_20261107_012939.onnx` (con reporte detallado en `reporte_20261107_012939.txt`).
+
+---
+
+## 7. Herramientas de Verificación y Diagnóstico Visual
+
+Para auditar y validar los recortes antes de reentrenar o inferir:
+
+```bash
+# Generar cuadrícula visual de recortes COCO con etiquetas y variantes de webcam:
+python scripts/diagnostico_recortes.py --ruta TACO/data --aumentados
+
+# Ejecutar pruebas unitarias de doctest en reentrenamiento:
+python -m doctest entrenamiento/reentrenar.py -v
+
+# Probar reentrenamiento en modo dry-run (sin tocar modelo de producción):
+python entrenamiento/reentrenar.py --taco TACO/data --limite 200 --no-reemplazar
+```
+La cuadrícula generada queda disponible en: `docs/img/diagnostico_recortes.jpg`.
+
+## 6. Después del reentrenamiento (7 de noviembre de 2026)
+
+Capa final reentrenada con TACO (lotes 1-11) + TrashNet, con aumento de datos (C = 0,003).
+Evaluado en fotos que el modelo nunca vio (TACO lotes 14-15 y prueba de TrashNet).
+
+| Prueba | Antes | Después |
+|---|---:|---:|
+| TACO, foto limpia (286 objetos) | 21,3 % | 54,9 % |
+| TACO, condiciones de webcam | 21,0 % | 57,0 % |
+| Styrofoam piece (icopor, 16) | 6,2 % | 87,5 % |
+| Foam cup (vaso de icopor, 10) | 0 % | 50,0 % |
+| TrashNet, foto de estudio (380) | 89,2 % | 86,6 % |
+| TrashNet, condiciones de webcam | 81,6 % | 83,7 % |
+
+El modelo anterior está respaldado en models/respaldo/20261107_233116.
+Reporte completo: docs/resultados/reporte_reentrenamiento_20261107.txt.
+Nota: Crisp packet y Foam food container solo tienen 2 fotos de prueba cada uno; no son concluyentes.
+

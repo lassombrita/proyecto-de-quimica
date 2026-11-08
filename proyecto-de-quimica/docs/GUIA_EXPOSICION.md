@@ -87,7 +87,8 @@ sección «Validación con bancos públicos» (exactitud y matriz de confusión)
 | No aprovechables enviados al contenedor correcto | 17,8 % |
 | Contenido del contenedor blanco que es basura | 40,5 % |
 | Pruebas automáticas | 53 de 53 OK |
-| Después de reentrenar | *(completa con `models/reporte_reentrenamiento.txt`)* |
+| Exactitud en fotos reales tras reentrenar (webcam) | 57,0 % (antes 21,0 %) |
+| Icopor reconocido tras reentrenar | 87,5 % (antes 6,2 %) |
 
 ## 5. Plan B
 1. Si la cámara falla: reproduce el video grabado.
