@@ -21,7 +21,12 @@ proyecto-de-quimica/entrenamiento/salidas/
 proyecto-de-quimica/models/respaldo/
 
 # Datasets y temporales (en cualquier nivel del repositorio)
+datasets/*
+!datasets/LICENCIAS.csv
 TACO/
+trashnet/
+zerowaste-f/
+off/
 para_revision/
 temp_recortes/
 .lmstudio/

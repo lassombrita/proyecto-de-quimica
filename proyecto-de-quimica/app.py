@@ -60,6 +60,7 @@ import streamlit as st
 from streamlit_webrtc import VideoProcessorBase, WebRtcMode, webrtc_streamer
 
 import database as db
+from motor_dos_etapas import contenedor_de_material_ui
 from vision_engine import (
     CATEGORIAS,
     COLORES_CONTENEDOR,
@@ -457,7 +458,8 @@ class ProcesadorReciclaje(VideoProcessorBase):
             registro, error = None, None
             if evento is not None:
                 material, confianza = evento
-                contenedor = CATEGORIAS[material]["contenedor"]
+                contenedor = (CATEGORIAS.get(material, {}).get("contenedor")
+                              or contenedor_de_material_ui(material) or "Negro")
                 try:
                     id_reg = db.crear_clasificacion(material, confianza, contenedor,
                                                     origen=origen_registro(motor), motor=motor)

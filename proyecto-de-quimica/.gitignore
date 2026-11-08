@@ -16,8 +16,13 @@ entrenamiento/salidas/
 temp_pruebas.db
 models/respaldo/
 
-# Dataset TACO (no se sube - >100MB)
+# Datasets y temporales
+datasets/*
+!datasets/LICENCIAS.csv
 TACO/
+trashnet/
+zerowaste-f/
+off/
 
 # Windows null device file (Windows special file)
 nul

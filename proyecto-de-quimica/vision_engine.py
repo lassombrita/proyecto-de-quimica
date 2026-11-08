@@ -113,11 +113,14 @@ UMBRAL_CONFIANZA_MINIMA = 50.0  # Umbral de fallback al contenedor negro
 # dudando entre dos materiales: se trata como incertidumbre (contenedor negro).
 MARGEN_MINIMO_TOP2 = 15.0
 
+MOTOR_DOS_ETAPAS = "Motor 2 Etapas (YOLO11n + MobileNetV3)"
 MOTOR_HIBRIDO = "Motor Híbrido Estricto"
 MOTOR_IA = "Motor IA (MobileNetV2)"
 MOTOR_GEOMETRICO = "Motor Geométrico (Forma/Contornos)"
 MOTOR_COLOR = "Motor Básico (Color)"
-MOTORES_PRODUCCION = (MOTOR_HIBRIDO, MOTOR_IA)
+# El motor de 2 etapas va primero: es el que usa los pesos de entrenamiento/train_pipeline.py.
+# Si faltan models/detector_residuo.onnx o clasificador_material.onnx, cae al Híbrido.
+MOTORES_PRODUCCION = (MOTOR_DOS_ETAPAS, MOTOR_HIBRIDO, MOTOR_IA)
 MOTORES_DIDACTICOS = (MOTOR_GEOMETRICO, MOTOR_COLOR)
 RUTA_MODELO_DEFAULT = Path(__file__).parent / "models" / "trashnet_mobilenetv2.onnx"
 
@@ -192,6 +195,14 @@ class ClasificadorResiduos:
                 self.error_carga_dnn = f"Error al inicializar ONNX: {e}"
         else:
             self.error_carga_dnn = f"Archivo ONNX no encontrado en {self.ruta_modelo}"
+        self._motor_dos_etapas = None   # Carga perezosa (motor_dos_etapas.MotorDosEtapas)
+
+    def motor_dos_etapas(self):
+        """Detector YOLO11n + clasificador MobileNetV3 (16 clases). None si no hay pesos."""
+        if self._motor_dos_etapas is None:
+            from motor_dos_etapas import MotorDosEtapas
+            self._motor_dos_etapas = MotorDosEtapas()
+        return self._motor_dos_etapas if self._motor_dos_etapas.disponible else None
 
     # -----------------------------------------------------------------------
     # Carga y Normalización de Entrada
@@ -728,6 +739,14 @@ class ClasificadorResiduos:
 
         bgr = self._cargar_imagen(imagen)
 
+        if motor == MOTOR_DOS_ETAPAS:
+            m2 = self.motor_dos_etapas()
+            if m2 is not None:
+                return m2.predecir(bgr)
+            r = self._clasificar_hibrido(bgr)
+            r.motivo = (f"⚠️ Motor 2 Etapas no disponible ({self._motor_dos_etapas.error_carga}); "
+                        f"se usó el Híbrido. " + r.motivo)
+            return r
         if motor == "Motor Básico (Color)":
             return self._clasificar_por_color(bgr)
         elif motor == "Motor Geométrico (Forma/Contornos)":

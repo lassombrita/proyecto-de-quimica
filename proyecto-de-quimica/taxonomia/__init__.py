@@ -170,6 +170,10 @@ class Taxonomia:
                 return Resolucion("mapeada", self._alias[clave])
             if clave in self._ambiguas:
                 return Resolucion("ambigua", None, self._ambiguas[clave])
+            # Fotos propias: una carpeta con el nombre oficial de la clase (pet_botella/,
+            # metal_lata/...) siempre vale, además de los alias amigables (bolsa_blanca/, pet/...).
+            if fuente == "propias" and normalizar(e) in self.nombres:
+                return Resolucion("mapeada", normalizar(e))
         return Resolucion("sin_mapeo")
 
     def resolver_off(self, packaging_tags: list[str] | None,

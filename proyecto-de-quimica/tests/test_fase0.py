@@ -84,7 +84,7 @@ def test_hibrido_no_suma_confianza(requiere_modelo):
 # --- Escáner Edge: modelo real + registrador asíncrono -----------------------
 def test_modelo_real_edge(requiere_modelo):
     import vision_edge as ve
-    m = ve.ModeloVisionReal()
+    m = ve.ModeloVisionReal(motor="Motor Híbrido Estricto")   # Ruta por contornos
     img = _fondo(60)
     cv2.rectangle(img, (200, 100), (420, 380), (230, 230, 230), -1)
     dets = m.inferir(img)
@@ -93,6 +93,15 @@ def test_modelo_real_edge(requiere_modelo):
     assert d.material in CATEGORIAS
     assert db.color_de_contenedor(d.contenedor) in ("BLANCO", "NEGRO", "VERDE")
     assert all(0.0 <= v <= 1.0 for v in d.caja)
+
+
+def test_modelo_real_edge_dos_etapas(requiere_modelo):
+    import vision_edge as ve
+    m = ve.ModeloVisionReal()          # Por defecto: detector YOLO + MobileNetV3
+    for d in m.inferir(_fondo(235)) + m.inferir(_mancha_blanca()):
+        assert db.color_de_contenedor(d.contenedor) in ("BLANCO", "NEGRO", "VERDE")
+        assert all(0.0 <= v <= 1.0 for v in d.caja)
+    assert m.inferir(_fondo(235)) == []   # Pared blanca: no hay residuo
 
 
 def test_edge_rechaza_motor_didactico():

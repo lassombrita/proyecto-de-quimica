@@ -402,16 +402,27 @@ def seleccionar_entrenamiento(indice: pd.DataFrame, cfg_bal: dict, semilla: int)
     return ent.reset_index(drop=True)
 
 
-def pesos_muestreo(clases: np.ndarray, modo: str) -> np.ndarray:
+def pesos_muestreo(clases: np.ndarray, modo: str, fuentes=None,
+                   peso_fuente: dict | None = None) -> np.ndarray:
     """
+    Peso por clase (1/n, 1/sqrt(n) o uniforme) multiplicado por un peso por FUENTE:
+    con `peso_fuente: {propias: 3.0}` una foto propia (tu cámara, tu luz) sale 3 veces
+    más que una de TACO/OFF de la misma clase.
+
     >>> pesos_muestreo(np.array([0, 0, 0, 0, 1]), "raiz_inversa").round(2).tolist()
     [0.5, 0.5, 0.5, 0.5, 1.0]
+    >>> pesos_muestreo(np.array([0, 0]), "uniforme", ["taco", "propias"], {"propias": 3}).tolist()
+    [1.0, 3.0]
     """
     conteo = Counter(clases.tolist())
     if modo == "uniforme":
-        return np.ones(len(clases))
-    exp = 1.0 if modo == "inversa" else 0.5
-    return np.array([1.0 / conteo[c] ** exp for c in clases])
+        w = np.ones(len(clases))
+    else:
+        exp = 1.0 if modo == "inversa" else 0.5
+        w = np.array([1.0 / conteo[c] ** exp for c in clases])
+    if fuentes is not None and peso_fuente:
+        w = w * np.array([float(peso_fuente.get(f, 1.0)) for f in fuentes])
+    return w
 
 
 class DatasetRecortes:
@@ -518,7 +529,9 @@ def etapa_entrenar_clasificador(ctx: Contexto) -> Path | None:
     dispositivo = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     ds_ent = DatasetRecortes(ctx.dir_recortes, ent, transformaciones(cfg, True))
     ds_val = DatasetRecortes(ctx.dir_recortes, val, transformaciones(cfg, False))
-    pesos = torch.as_tensor(pesos_muestreo(ds_ent.y, cfg["balanceo"]["sampler"]), dtype=torch.double)
+    pesos = torch.as_tensor(pesos_muestreo(ds_ent.y, cfg["balanceo"]["sampler"],
+                                           ent["fuente"].tolist() if "fuente" in ent else None,
+                                           cfg["balanceo"].get("peso_fuente")), dtype=torch.double)
     comun = dict(batch_size=ce["batch"], num_workers=ce["workers"], pin_memory=dispositivo.type == "cuda",
                  persistent_workers=ce["workers"] > 0)
     cargador_ent = DataLoader(ds_ent, sampler=WeightedRandomSampler(pesos, len(ds_ent), replacement=True),

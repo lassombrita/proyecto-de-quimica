@@ -37,7 +37,7 @@ from vision_edge import (
     ModeloVisionReal,
     ProcesadorResiduosEdge,
 )
-from vision_engine import CATEGORIAS, MOTOR_HIBRIDO, UMBRAL_CONFIANZA_MINIMA
+from vision_engine import CATEGORIAS, MOTOR_DOS_ETAPAS, UMBRAL_CONFIANZA_MINIMA
 
 # Rango de certidumbre del modelo REAL (antes 75-99 % del mock). Por debajo de
 # UMBRAL_CONFIANZA_MINIMA el motor ya responde "No identificado" (contenedor negro).
@@ -142,14 +142,14 @@ def cargar_modelo() -> ModeloVisionReal:
     Antes se usaba `ModeloVisionSimulado`, que asignaba la clase con un hash del
     color (pseudoaleatoria). Ese mock queda solo para las pruebas.
     """
-    return ModeloVisionReal(motor=MOTOR_HIBRIDO)
+    return ModeloVisionReal(motor=MOTOR_DOS_ETAPAS)
 
 
 @st.cache_resource(show_spinner=False)
 def cargar_registrador() -> db.RegistradorAsincrono:
     """Inicializa la BD (WAL) y arranca el hilo escritor unico del proceso."""
     db.init_db()
-    return db.obtener_registrador(motor=MOTOR_HIBRIDO)
+    return db.obtener_registrador(motor=MOTOR_DOS_ETAPAS)
 
 
 @st.cache_resource(show_spinner=False)

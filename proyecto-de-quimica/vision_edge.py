@@ -53,7 +53,7 @@ import numpy as np
 from streamlit_webrtc import VideoProcessorBase
 
 from database import RegistradorAsincrono, color_de_contenedor
-from vision_engine import MOTOR_HIBRIDO, MOTORES_PRODUCCION, ClasificadorResiduos
+from vision_engine import MOTOR_DOS_ETAPAS, MOTOR_HIBRIDO, MOTORES_PRODUCCION, ClasificadorResiduos
 
 # ===========================================================================
 # 1. TAXONOMÍA (mercado colombiano · Resolución 2184 de 2019)
@@ -224,7 +224,7 @@ class ModeloVisionReal:
     el usuario ve que el sistema duda en lugar de ver una clase inventada.
     """
 
-    def __init__(self, motor: str = MOTOR_HIBRIDO, clasificador: ClasificadorResiduos | None = None) -> None:
+    def __init__(self, motor: str = MOTOR_DOS_ETAPAS, clasificador: ClasificadorResiduos | None = None) -> None:
         if motor not in MOTORES_PRODUCCION:
             raise ValueError(f"El escáner Edge solo acepta motores de producción {MOTORES_PRODUCCION}.")
         self.motor = motor
@@ -241,6 +241,15 @@ class ModeloVisionReal:
         return self.clasificador.error_carga_dnn
 
     def inferir(self, bgr: np.ndarray, rng: np.random.Generator | None = None) -> list[Deteccion]:
+        m2 = self.clasificador.motor_dos_etapas() if self.motor == MOTOR_DOS_ETAPAS else None
+        if m2 is not None:   # Detector real: varias cajas aprendidas, sin contornos Canny
+            alto, ancho = bgr.shape[:2]
+            ahora = time.monotonic()
+            return [Deteccion(d.material_ui, _DESTINO_POR_CONTENEDOR.get(d.contenedor, DESTINO_NEGRO),
+                              round(d.probabilidad * 100, 2),
+                              (d.caja_px[0] / ancho, d.caja_px[1] / alto,
+                               d.caja_px[2] / ancho, d.caja_px[3] / alto), ahora)
+                    for d in m2.detectar_y_clasificar(bgr)]
         _, mascara = preprocesar(bgr)
         region = proponer_region(mascara)
         if region is None:

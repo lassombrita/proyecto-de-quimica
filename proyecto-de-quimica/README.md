@@ -352,7 +352,7 @@ Usa el modelo real (`vision_edge.ModeloVisionReal`). Sus eventos se guardan con 
 
 ---
 
-## Pipeline de 2 etapas (en construcción)
+## Pipeline de 2 etapas
 
 ```
 cámara ─► Detector "residuo" (YOLO11n, 1 clase) ─► recorte ─► Clasificador (MobileNetV3-Large, 16 clases)
@@ -360,30 +360,43 @@ cámara ─► Detector "residuo" (YOLO11n, 1 clase) ─► recorte ─► Clasi
                                        taxonomia/canecas.yaml (Res. 2184) ◄─┘ ─► Blanca / Negra / Verde
 ```
 
+Estado: `models/detector_residuo.onnx` y `models/clasificador_material.onnx` existen y la app los usa
+por defecto ("Motor 2 Etapas"). La versión actual se entrenó **solo con TACO** y **no pasa** los
+criterios de aceptación (`models/reporte_pipeline.txt`): hay que re-entrenar con todas las fuentes.
+
 | Archivo | Rol |
 |---|---|
-| `taxonomia/master.yaml` | 16 clases (Etapa A) + alias de TACO, TrashNet, ZeroWaste, Open Food Facts y fotos propias |
-| `taxonomia/canecas.yaml` | Clase → caneca (Etapa B), con ambigüedades comentadas y perfiles por operador |
-| `taxonomia/__init__.py` | Carga y valida ambos YAML (`python -m taxonomia`) |
+| `datos/descargar.py` | Descarga TACO, TrashNet, ZeroWaste-f y Open Food Facts (Colombia), reanudable |
+| `datos/capturar_fotos.py` | Fotos propias con la webcam → `fotos_propias/<sesion>/<clase>/` |
 | `datos/construir_manifiesto.py` | Une todas las fuentes en un solo manifiesto (una fila por objeto), sin fugas entre conjuntos |
-| `entrenamiento/pipeline.yaml` | Configuración del entrenamiento |
-| `entrenamiento/train_pipeline.py` | Exporta datasets, entrena detector y clasificador, calibra, exporta ONNX y evalúa |
+| `taxonomia/master.yaml` · `canecas.yaml` | 16 clases + alias por fuente · clase → caneca |
+| `entrenamiento/pipeline.yaml` · `train_pipeline.py` | Entrena detector y clasificador, calibra, exporta ONNX y evalúa |
+| `motor_dos_etapas.py` | Inferencia de producción (onnxruntime / cv2.dnn) usada por `app.py` y `app_main.py` |
 
-```bash
-# 1. Una sola vez, con internet: pesos preentrenados
+```powershell
+# 0. Dependencias de entrenamiento (con GPU NVIDIA: instale antes torch con CUDA desde pytorch.org)
+pip install -r requirements.txt -r entrenamiento/requirements-entrenamiento.txt
+# 1. Descargar los bancos (fuera del repo, en ..\datasets). ZeroWaste pide ~17 GB libres
+python datos/descargar.py --todo --borrar-zip
+# 2. Fotos propias (opcional pero es lo que más mejora el resultado)
+python datos/capturar_fotos.py --sesion cocina_tarde
+python datos/capturar_fotos.py --sesion prueba_sala      # examen: nunca se entrena con ella
+# 3. Manifiesto
+python datos/construir_manifiesto.py --taco ..\datasets\TACO\data --trashnet ..\datasets\trashnet `
+    --zerowaste ..\datasets\zerowaste-f --off-productos ..\datasets\off\productos_colombia.jsonl `
+    --off-imagenes ..\datasets\off\imagenes --propias fotos_propias
+# 4. Pesos base (una vez, con internet) · prueba de humo · entrenamiento completo
 python entrenamiento/train_pipeline.py --etapas preparar-pesos
-# 2. Manifiesto (offline)
-python datos/construir_manifiesto.py --taco ../TACO/data --trashnet entrenamiento/dataset-resized \
-    --propias fotos_propias --salida data/manifiesto.parquet
-# 3. Plan y conteos sin entrenar
-python entrenamiento/train_pipeline.py --dry-run
-# 4. Todo el entrenamiento (offline)
+python entrenamiento/train_pipeline.py --rapido
 python entrenamiento/train_pipeline.py
+# 5. Probar el modelo nuevo en fotos sueltas
+python motor_dos_etapas.py foto1.jpg foto2.jpg
 ```
 
 **Fotos propias:** `fotos_propias/<sesion>/<clase>/*.jpg`. Las sesiones cuyo nombre empieza por
 `prueba` se reservan para la evaluación. Los nombres de clase aceptados están en los `alias: propias`
-de `taxonomia/master.yaml` (p. ej. `bolsa_blanca`, `servilleta`, `icopor`, `paquete_papas`, `fondo`).
+de `taxonomia/master.yaml` (p. ej. `bolsa_blanca`, `servilleta`, `icopor`, `paquete_papas`, `fondo`)
+y también el nombre oficial de cada clase (`pet_botella`, `metal_lata`, …).
 
 ---
 

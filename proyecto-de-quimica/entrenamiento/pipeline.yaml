@@ -47,7 +47,7 @@ detector:
     hsv_v: 0.4
     fliplr: 0.5
     flipud: 0.1
-    cache: false                 # Usar solo RAM para entrenamiento
+    cache: false                  # false = lee de disco cada época (poca RAM). "ram" acelera si sobran ~6 GB
     plots: false                  # true requiere descargar fuentes tipográficas
   exportar:
     formato: onnx
@@ -85,6 +85,9 @@ clasificador:
       off: 0.30                      # Foto de producto nuevo != residuo
       trashnet: 0.30                 # Fondo blanco de estudio
     sampler: raiz_inversa            # peso ∝ 1/sqrt(n_clase) · uniforme | inversa | raiz_inversa
+    peso_fuente:                     # Multiplicador del muestreo por fuente (dominio real > público)
+      propias: 3.0                   # Tus fotos: misma cámara, luz y canecas que en producción
+      off: 0.7                       # Foto de catálogo: útil pero lejos del dominio "basura"
 
   entrenamiento:
     imgsz: 224
