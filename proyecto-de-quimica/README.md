@@ -1,4 +1,5 @@
 # ♻️ Reciclaje Inteligente
+https://www.canva.com/design/DAHan6epp8M/-YwrVYaVUUnEKo4jqLrdbQ/edit
 
 **Plataforma de clasificación de residuos con Visión por Computador y tablero analítico en tiempo real.**
 
